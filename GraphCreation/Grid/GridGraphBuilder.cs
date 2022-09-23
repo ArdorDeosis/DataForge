@@ -78,12 +78,12 @@ public class GridGraphBuilder<TNodeData, TEdgeData>
   /// </remarks>
   private class CoordinateEqualityComparer : EqualityComparer<IReadOnlyList<int>>
   {
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override bool Equals(IReadOnlyList<int>? left, IReadOnlyList<int>? right) =>
       left is not null && right is not null &&
       CoordinateHelpers.CoordinatesEqual(left, right);
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override int GetHashCode(IReadOnlyList<int> coordinate) => CoordinateHelpers.GetCoordinateHashCode(coordinate);
   }
 }

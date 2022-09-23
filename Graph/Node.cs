@@ -2,9 +2,20 @@
 
 namespace Graph;
 
+/// <inheritdoc/>
+/// <summary>
+/// The node of a graph.
+/// </summary>
 public sealed class Node<TNodeData, TEdgeData> : GraphComponent<TNodeData, TEdgeData>
 {
+  /// <summary>
+  /// All edges coming to this node.
+  /// </summary>
   internal readonly List<Edge<TNodeData, TEdgeData>> InternalIncomingEdgeList = new();
+
+  /// <summary>
+  /// All edges going away from this node.
+  /// </summary>
   internal readonly List<Edge<TNodeData, TEdgeData>> InternalOutgoingEdgeList = new();
 
   internal Node(GraphBase<TNodeData, TEdgeData> graph, TNodeData data) : base(graph)
@@ -12,22 +23,44 @@ public sealed class Node<TNodeData, TEdgeData> : GraphComponent<TNodeData, TEdge
     Data = data;
   }
 
+  /// <summary>
+  /// All edges connected to this node.
+  /// </summary>
   [SuppressMessage("ReSharper", "InvokeAsExtensionMethod")]
-  public IEnumerable<Edge<TNodeData, TEdgeData>> Edges => Enumerable.Concat(InternalIncomingEdges, InternalOutgoingEdges);
+  public IEnumerable<Edge<TNodeData, TEdgeData>> Edges => Enumerable.Concat(IncomingEdges, OutgoingEdges);
 
-  public IEnumerable<Edge<TNodeData, TEdgeData>> InternalIncomingEdges => InternalIncomingEdgeList;
+  /// <summary>
+  /// All edges coming to this node.
+  /// </summary>
+  public IEnumerable<Edge<TNodeData, TEdgeData>> IncomingEdges => InternalIncomingEdgeList;
 
-  public IEnumerable<Edge<TNodeData, TEdgeData>> InternalOutgoingEdges => InternalOutgoingEdgeList;
+  /// <summary>
+  /// All edges going away from this node.
+  /// </summary>
+  public IEnumerable<Edge<TNodeData, TEdgeData>> OutgoingEdges => InternalOutgoingEdgeList;
 
+  /// <summary>
+  /// This node's data.
+  /// </summary>
   public TNodeData Data { get; set; }
 
-  public IEnumerable<Node<TNodeData, TEdgeData>> Predecessors => InternalIncomingEdges.Select(edge => edge.Start).ToHashSet();
-  public IEnumerable<Node<TNodeData, TEdgeData>> Successors => InternalOutgoingEdges.Select(edge => edge.End).ToHashSet();
+  /// <summary>
+  /// All nodes from which edges go to this node.
+  /// </summary>
+  public IEnumerable<Node<TNodeData, TEdgeData>> Predecessors => IncomingEdges.Select(edge => edge.Start).ToHashSet();
 
+  /// <summary>
+  /// All nodes to which edges go from this node.
+  /// </summary>
+  public IEnumerable<Node<TNodeData, TEdgeData>> Successors => OutgoingEdges.Select(edge => edge.End).ToHashSet();
+
+  /// <summary>
+  /// All nodes connected with an edge to this node.
+  /// </summary>
   [SuppressMessage("ReSharper", "InvokeAsExtensionMethod")]
   public IEnumerable<Node<TNodeData, TEdgeData>> Neighbours =>
     Enumerable.Concat(
-      InternalIncomingEdges.Select(edge => edge.Start),
-      InternalOutgoingEdges.Select(edge => edge.End)
+      IncomingEdges.Select(edge => edge.Start),
+      OutgoingEdges.Select(edge => edge.End)
     ).ToHashSet();
 }

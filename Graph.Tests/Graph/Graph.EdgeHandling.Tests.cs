@@ -68,9 +68,9 @@ public class GraphEdgeHandlingTests
     // ASSERT
     Assert.Multiple(() =>
     {
-      Assert.That(startNode.InternalOutgoingEdges, Contains.Item(edge));
+      Assert.That(startNode.OutgoingEdges, Contains.Item(edge));
       Assert.That(startNode.Edges, Contains.Item(edge));
-      Assert.That(endNode.InternalIncomingEdges, Contains.Item(edge));
+      Assert.That(endNode.IncomingEdges, Contains.Item(edge));
       Assert.That(endNode.Edges, Contains.Item(edge));
     });
   }

@@ -55,7 +55,7 @@ public static class Pathfinding
 
     void ProcessNode(Node<TNodeData, TEdgeData> nodeBeingProcessed)
     {
-      foreach (var edge in nodeBeingProcessed.InternalOutgoingEdges)
+      foreach (var edge in nodeBeingProcessed.OutgoingEdges)
         ProcessEdge(edge);
 
       processedNodes.Add(nodeBeingProcessed);
@@ -110,7 +110,7 @@ public static class Pathfinding
 
     void ProcessNode(Node<TNodeData, TEdgeData> nodeBeingProcessed)
     {
-      foreach (var edge in nodeBeingProcessed.InternalOutgoingEdges)
+      foreach (var edge in nodeBeingProcessed.OutgoingEdges)
         ProcessEdge(edge);
       processedNodes.Add(nodeBeingProcessed);
     }
