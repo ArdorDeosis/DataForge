@@ -1,6 +1,6 @@
 ﻿namespace Graph;
 
-/// <inheritdoc/>
+/// <inheritdoc />
 /// <summary>
 /// The edge of a graph connecting two nodes and holding data.
 /// </summary>

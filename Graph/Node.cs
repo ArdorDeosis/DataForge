@@ -2,7 +2,7 @@
 
 namespace Graph;
 
-/// <inheritdoc/>
+/// <inheritdoc />
 /// <summary>
 /// The node of a graph.
 /// </summary>

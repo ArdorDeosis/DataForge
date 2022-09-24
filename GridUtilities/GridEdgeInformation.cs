@@ -26,7 +26,7 @@ public readonly struct GridEdgeInformation : IEquatable<GridEdgeInformation>
   internal GridEdgeInformation(IReadOnlyList<int> lowerCoordinate, int dimensionOfChange)
   {
     Guard.Against.NullOrEmpty(lowerCoordinate);
-    Guard.Against.OutOfRange(dimensionOfChange, nameof(dimensionOfChange),  0, lowerCoordinate.Count);
+    Guard.Against.OutOfRange(dimensionOfChange, nameof(dimensionOfChange), 0, lowerCoordinate.Count);
 
     LowerCoordinate = lowerCoordinate;
     var upperCoordinate = lowerCoordinate.ToArray();
@@ -45,15 +45,15 @@ public readonly struct GridEdgeInformation : IEquatable<GridEdgeInformation>
   public override string ToString() =>
     $"([{string.Join(", ", LowerCoordinate)}] => [{string.Join(", ", UpperCoordinate)}]; {DimensionOfChange})";
 
-  /// <inheritdoc/>
+  /// <inheritdoc />
   public bool Equals(GridEdgeInformation other) =>
     CoordinateHelpers.CoordinatesEqual(LowerCoordinate, other.LowerCoordinate) &&
     DimensionOfChange == other.DimensionOfChange;
 
-  /// <inheritdoc/>
+  /// <inheritdoc />
   public override bool Equals(object? obj) => obj is GridEdgeInformation other && Equals(other);
 
-  /// <inheritdoc/>
+  /// <inheritdoc />
   public override int GetHashCode() =>
     HashCode.Combine(
       CoordinateHelpers.GetCoordinateHashCode(LowerCoordinate),

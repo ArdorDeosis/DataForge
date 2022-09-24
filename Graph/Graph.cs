@@ -11,16 +11,16 @@ public sealed class Graph<TNodeData, TEdgeData> : GraphBase<TNodeData, TEdgeData
   private readonly List<Node<TNodeData, TEdgeData>> nodes = new();
   private readonly List<Edge<TNodeData, TEdgeData>> edges = new();
 
-  /// <inheritdoc/>
+  /// <inheritdoc />
   public override bool Contains(Node<TNodeData, TEdgeData> node) => nodes.Contains(node);
 
-  /// <inheritdoc/>
+  /// <inheritdoc />
   public override bool Contains(Edge<TNodeData, TEdgeData> edge) => edges.Contains(edge);
 
-  /// <inheritdoc/>
+  /// <inheritdoc />
   public override IEnumerable<Node<TNodeData, TEdgeData>> Nodes => nodes;
 
-  /// <inheritdoc/>
+  /// <inheritdoc />
   public override IEnumerable<Edge<TNodeData, TEdgeData>> Edges => edges;
 
   /// <summary>
@@ -150,8 +150,8 @@ public sealed class Graph<TNodeData, TEdgeData> : GraphBase<TNodeData, TEdgeData
   /// Transforms the data on the nodes and edges and creates a new graph with the same graph structure but the
   /// transformed data.
   /// </summary>
-  /// <param name="transformNodeData">Logic to transform node data.</param>
-  /// <param name="transformEdgeData">Logic to transform edge data.</param>
+  /// <param name="transformNodeData">Function to transform node data.</param>
+  /// <param name="transformEdgeData">Function to transform edge data.</param>
   /// <typeparam name="TTransformedNodeData">The type of the transformed node data.</typeparam>
   /// <typeparam name="TTransformedEdgeData">The type of the transformed edge data.</typeparam>
   /// <returns>The created graph with transformed data.</returns>
@@ -187,8 +187,8 @@ public sealed class Graph<TNodeData, TEdgeData> : GraphBase<TNodeData, TEdgeData
   /// Merges this graph with other graphs into one new graph containing all nodes and edges from this and the other
   /// graphs with transformed data.
   /// </summary>
-  /// <param name="transformNodeData">Logic to transform node data.</param>
-  /// <param name="transformEdgeData">Logic to transform edge data.</param>
+  /// <param name="transformNodeData">Function to transform node data.</param>
+  /// <param name="transformEdgeData">Function to transform edge data.</param>
   /// <param name="others">The graphs to merge this graph with.</param>
   /// <typeparam name="TTransformedNodeData">The type of the transformed node data.</typeparam>
   /// <typeparam name="TTransformedEdgeData">The type of the transformed edge data.</typeparam>
