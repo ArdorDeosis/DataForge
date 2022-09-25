@@ -48,7 +48,7 @@ public class IteratorUtilityGridCoordinatesTests
     var returnedCoordinates = function(dimensionSizes);
 
     // ASSERT
-    Assert.That(returnedCoordinates, Is.EquivalentTo(expectedCoordinates));
+    Assert.That(returnedCoordinates, Is.EqualTo(expectedCoordinates));
   }
 
   [TestCaseSource(typeof(TestData), nameof(TestData.CoordinatesWithOffsetTestData))]
@@ -58,8 +58,8 @@ public class IteratorUtilityGridCoordinatesTests
   {
     // ARRANGE
     var returnedCoordinates = function(dimensionSizes, offset);
-  
+
     // ASSERT
-    Assert.That(returnedCoordinates, Is.EquivalentTo(expectedCoordinates));
+    Assert.That(returnedCoordinates, Is.EqualTo(expectedCoordinates));
   }
 }

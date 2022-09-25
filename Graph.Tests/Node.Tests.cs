@@ -48,7 +48,7 @@ public class NodeTests
     // ASSERT
     Assert.That(middleNode.Neighbours, Is.EquivalentTo(new[]
     {
-      endNode, 
+      endNode,
       startNode,
     }));
   }

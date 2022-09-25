@@ -68,11 +68,8 @@ public sealed class Graph<TNodeData, TEdgeData> : GraphBase<TNodeData, TEdgeData
   /// <remarks>Successfully removed nodes and consequentially removed edges are invalidated.</remarks>
   public void RemoveNodes(Func<Node<TNodeData, TEdgeData>, bool> predicate)
   {
-    for (var index = nodes.Count - 1; index >= 0; --index)
-    {
-      if (predicate(nodes[index]))
-        RemoveNodeInternal(nodes[index]);
-    }
+    foreach (var node in nodes.Where(predicate).ToArray())
+      RemoveNodeInternal(node);
   }
 
   /// <summary>
@@ -112,11 +109,8 @@ public sealed class Graph<TNodeData, TEdgeData> : GraphBase<TNodeData, TEdgeData
   /// <remarks>Successfully removed edges are invalidated.</remarks>
   public void RemoveEdges(Func<Edge<TNodeData, TEdgeData>, bool> predicate)
   {
-    for (var index = edges.Count - 1; index >= 0; --index)
-    {
-      if (predicate(edges[index]))
-        RemoveEdgeInternal(edges[index]);
-    }
+    foreach (var edge in edges.Where(predicate).ToArray())
+      RemoveEdgeInternal(edge);
   }
 
   /// <summary>
@@ -178,6 +172,7 @@ public sealed class Graph<TNodeData, TEdgeData> : GraphBase<TNodeData, TEdgeData
   public Graph<TNodeData, TEdgeData> Merge(params GraphBase<TNodeData, TEdgeData>[] others)
   {
     var result = new Graph<TNodeData, TEdgeData>();
+    CopyInternal(this, result);
     foreach (var graph in others)
       CopyInternal(graph, result);
     return result;
@@ -199,6 +194,7 @@ public sealed class Graph<TNodeData, TEdgeData> : GraphBase<TNodeData, TEdgeData
     params GraphBase<TNodeData, TEdgeData>[] others)
   {
     var result = new Graph<TTransformedNodeData, TTransformedEdgeData>();
+    CopyTransformInternal(this, result, transformNodeData, transformEdgeData);
     foreach (var graph in others)
       CopyTransformInternal(graph, result, transformNodeData, transformEdgeData);
     return result;

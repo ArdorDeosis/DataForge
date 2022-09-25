@@ -17,7 +17,7 @@ public class GraphNodeHandlingTests
     // ASSERT
     Assert.That(graph.Nodes, Contains.Item(node));
   }
-  
+
   [Test]
   public void AddNode_NodeHasData()
   {
@@ -31,13 +31,13 @@ public class GraphNodeHandlingTests
     // ASSERT
     Assert.That(node.Data, Is.EqualTo(data));
   }
-  
+
   [Test]
   public void AddNodes_Array_NodesAreInGraph()
   {
     // ARRANGE
     var graph = new Graph<object, object>();
-    object[] nodeData = { new{ }, new{ }, new{ } };
+    object[] nodeData = { new { }, new { }, new { } };
 
     // ACT
     var nodes = graph.AddNodes(nodeData);
@@ -45,13 +45,13 @@ public class GraphNodeHandlingTests
     // ASSERT
     Assert.That(graph.Nodes, Is.EquivalentTo(nodes));
   }
-  
+
   [Test]
   public void AddNodes_Enumerable_NodesAreInGraph()
   {
     // ARRANGE
     var graph = new Graph<object, object>();
-    object[] nodeData = { new{ }, new{ }, new{ } };
+    object[] nodeData = { new { }, new { }, new { } };
 
     // ACT
     var nodes = graph.AddNodes(nodeData.AsEnumerable());
@@ -59,7 +59,7 @@ public class GraphNodeHandlingTests
     // ASSERT
     Assert.That(graph.Nodes, Is.EquivalentTo(nodes));
   }
-  
+
   [Test]
   public void RemoveNode_ValidNode_ReturnsTrue()
   {
@@ -70,7 +70,7 @@ public class GraphNodeHandlingTests
     // ASSERT
     Assert.That(graph.RemoveNode(node), Is.True);
   }
-  
+
   [Test]
   public void RemoveNode_NodeFromOtherGraph_ReturnsFalse()
   {
@@ -81,7 +81,7 @@ public class GraphNodeHandlingTests
     // ASSERT
     Assert.That(graph.RemoveNode(node), Is.False);
   }
-  
+
   [Test]
   public void RemoveNode_NodeIsNotInGraph()
   {

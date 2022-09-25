@@ -128,27 +128,33 @@ public class IndexedGraph<TIndex, TNodeData, TEdgeData> : GraphBase<TNodeData, T
   public bool RemoveNode(TIndex index) => RemoveNodeInternal(index);
 
   /// <summary>
-  /// Removes all nodes from the graph which fulfill the <paramref name="predicate"/>. All edges coming from or going to
-  /// a node that is removed are also removed.
+  /// Removes all nodes from the graph which fulfill the <paramref name="predicate"/>. All edges connected to a node
+  /// that is removed are also removed.
   /// </summary>
   /// <param name="predicate">The predicate a node has to fulfill to get removed.</param>
   /// <remarks>Successfully removed nodes and consequentially removed edges are invalidated.</remarks>
   public void RemoveNodes(Func<Node<TNodeData, TEdgeData>, bool> predicate)
   {
-    var indicesToRemove = nodes.Where(pair => predicate(pair.Value)).Select(pair => pair.Key).ToArray();
+    var indicesToRemove = nodes
+      .Where(pair => predicate(pair.Value))
+      .Select(pair => pair.Key)
+      .ToArray();
     foreach (var index in indicesToRemove)
       RemoveNodeInternal(index);
   }
 
   /// <summary>
-  /// Removes all nodes from the graph whose indices fulfill the <paramref name="predicate"/>. All edges coming from or
-  /// going to a node that is removed are also removed.
+  /// Removes all nodes from the graph which fulfill the <paramref name="predicate"/>. All edges connected to a node
+  /// that is removed are also removed.
   /// </summary>
-  /// <param name="predicate">The predicate a node's index has to fulfill for the node to get removed.</param>
+  /// <param name="predicate">The predicate a node has to fulfill to get removed.</param>
   /// <remarks>Successfully removed nodes and consequentially removed edges are invalidated.</remarks>
-  public void RemoveNodes(Func<TIndex, bool> predicate)
+  public void RemoveNodes(Func<Node<TNodeData, TEdgeData>, TIndex, bool> predicate)
   {
-    var indicesToRemove = nodes.Keys.Where(predicate).ToArray();
+    var indicesToRemove = nodes
+      .Where(pair => predicate(pair.Value, pair.Key))
+      .Select(pair => pair.Key)
+      .ToArray();
     foreach (var index in indicesToRemove)
       RemoveNodeInternal(index);
   }

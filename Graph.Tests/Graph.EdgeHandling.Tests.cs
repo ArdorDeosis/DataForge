@@ -104,8 +104,8 @@ public class GraphEdgeHandlingTests
     // ASSERT
     Assert.Multiple(() =>
     {
-      Assert.That(() => graph.AddEdge(node, otherNode, new { }), Throws.InvalidOperationException);
-      Assert.That(() => graph.AddEdge(otherNode, node, new { }), Throws.InvalidOperationException);
+      Assert.That(() => graph.AddEdge(node, otherNode, new { }), Throws.ArgumentException);
+      Assert.That(() => graph.AddEdge(otherNode, node, new { }), Throws.ArgumentException);
     });
   }
 
