@@ -155,7 +155,7 @@ public class GraphEdgeHandlingTests
     var edge = graph.AddEdge(startNode, endNode, new { });
 
     // ASSERT
-    Assert.That(graph.RemoveEdge(edge), Is.True);
+    Assert.That(graph.RemoveEdge(edge));
   }
 
   [Test]

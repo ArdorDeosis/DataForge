@@ -74,7 +74,7 @@ public class GraphComponentTests
   public void NewComponent_IsValid(ComponentTestData data)
   {
     // ASSERT
-    Assert.That(data.Component.IsValid, Is.True);
+    Assert.That(data.Component.IsValid);
   }
 
   [TestCaseSource(nameof(Components))]
@@ -111,7 +111,7 @@ public class GraphComponentTests
   public void IsIn_CorrectGraph_True(ComponentTestData data)
   {
     // ASSERT
-    Assert.That(data.Component.IsIn(data.Graph), Is.True);
+    Assert.That(data.Component.IsIn(data.Graph));
   }
 
   [TestCaseSource(nameof(Components))]
@@ -139,7 +139,7 @@ public class GraphComponentTests
     GraphComponent<object, object> otherComponent)
   {
     // ASSERT
-    Assert.That(component.IsInSameGraphAs(otherComponent), Is.True);
+    Assert.That(component.IsInSameGraphAs(otherComponent));
   }
 
   [TestCaseSource(nameof(ComponentPairsInDifferentGraphs))]

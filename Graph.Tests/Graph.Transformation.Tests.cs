@@ -90,7 +90,7 @@ public class GraphTransformationTests
     var node1 = graph.AddNode(data1);
 
     // ACT
-    var copy = graph.Copy(NegateValue, MakeCopy);
+    var copy = graph.Transform(NegateValue, MakeCopy);
 
     // ASSERT
     Assert.That(copy.Nodes.WithMarker(node1.Data.Marker).Data.Value, Is.EqualTo(NegateValue(node1.Data).Value));
@@ -104,7 +104,7 @@ public class GraphTransformationTests
     graph.AddEdge(graph.AddNode(noData), graph.AddNode(noData), data1);
 
     // ACT
-    var copy = graph.Copy(MakeCopy, NegateValue);
+    var copy = graph.Transform(MakeCopy, NegateValue);
 
     // ASSERT
     Assert.That(copy.Edges.WithMarker(data1.Marker).Data.Value, Is.EqualTo(NegateValue(data1).Value));

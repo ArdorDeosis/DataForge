@@ -12,7 +12,7 @@ public class GraphTests
     var node = graph.AddNode(new { });
 
     // ASSERT
-    Assert.That(graph.Contains(node), Is.True);
+    Assert.That(graph.Contains(node));
   }
 
   [Test]
@@ -39,7 +39,7 @@ public class GraphTests
     );
 
     // ASSERT
-    Assert.That(graph.Contains(edge), Is.True);
+    Assert.That(graph.Contains(edge));
   }
 
   [Test]

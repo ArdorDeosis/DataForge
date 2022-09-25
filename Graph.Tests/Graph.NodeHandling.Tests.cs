@@ -68,7 +68,7 @@ public class GraphNodeHandlingTests
     var node = graph.AddNode(new { });
 
     // ASSERT
-    Assert.That(graph.RemoveNode(node), Is.True);
+    Assert.That(graph.RemoveNode(node));
   }
 
   [Test]

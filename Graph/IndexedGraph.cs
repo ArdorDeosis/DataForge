@@ -31,6 +31,18 @@ public class IndexedGraph<TIndex, TNodeData, TEdgeData> : GraphBase<TNodeData, T
   /// <exception cref="KeyNotFoundException">If no node with the provided key exists in this graph.</exception>
   public Node<TNodeData, TEdgeData> this[TIndex index] => nodes[index];
 
+  /// <inheritdoc />
+  public override bool Contains(Node<TNodeData, TEdgeData> node) => nodes.ContainsValue(node);
+
+  /// <inheritdoc />
+  public override bool Contains(Edge<TNodeData, TEdgeData> edge) => edges.Contains(edge);
+
+  /// <summary>
+  /// Whether this graph contains a node with the provided index.
+  /// </summary>
+  /// <param name="index">The index to check.</param>
+  public bool Contains(TIndex index) => nodes.ContainsKey(index);
+
   /// <summary>
   /// Gets the node associated with the specified index.
   /// </summary>
@@ -49,19 +61,6 @@ public class IndexedGraph<TIndex, TNodeData, TEdgeData> : GraphBase<TNodeData, T
   /// <returns>Whether this graph contains a node associated with the specified index.</returns>
   public bool TryGetNode(TIndex index, [MaybeNullWhen(false)] out Node<TNodeData, TEdgeData> node) =>
     nodes.TryGetValue(index, out node);
-
-  /// <inheritdoc />
-  public override bool Contains(Node<TNodeData, TEdgeData> node) => nodes.ContainsValue(node);
-
-  /// <inheritdoc />
-  public override bool Contains(Edge<TNodeData, TEdgeData> edge) => edges.Contains(edge);
-
-
-  /// <summary>
-  /// Whether this graph contains a node with the provided index.
-  /// </summary>
-  /// <param name="index">The index to check.</param>
-  public bool Contains(TIndex index) => nodes.ContainsKey(index);
 
   /// <summary>
   /// Gets the index of the given node.
