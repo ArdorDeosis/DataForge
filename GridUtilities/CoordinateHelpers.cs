@@ -17,11 +17,11 @@ public static class CoordinateHelpers
       result[i] = left[i] + right[i];
     return result;
   }
-  
+
   /// <summary>
   /// Checks equality for two coordinates represented as <tt>int[]</tt>.
   /// </summary>
-  public static bool CoordinatesEqual(IReadOnlyList<int> left, IReadOnlyList<int> right) => 
+  public static bool CoordinatesEqual(IReadOnlyList<int> left, IReadOnlyList<int> right) =>
     left.Count == right.Count && !left.Where((t, i) => t != right[i]).Any();
 
   /// <summary>
@@ -47,4 +47,22 @@ public static class CoordinateHelpers
       [var a, var b, var c, var d, var e, var f, var g] => HashCode.Combine(a, b, c, d, e, f, g),
       [var a, var b, var c, var d, var e, var f, var g, var h, ..] => HashCode.Combine(a, b, c, d, e, f, g, h),
     };
+
+  /// <summary>
+  /// A <see cref="EqualityComparer{T}"/> to compare int arrays representing coordinates.
+  /// </summary>
+  /// <remarks>
+  /// The <see cref="GetHashCode"/> functions only produces useful hashes for coordinates with up to 8 dimensions. After
+  /// that, all further dimensions are ignored in regards to generating the hash. This could result in suboptimal
+  /// performance for retrieving objects from a dictionary for coordinates with more than 8 dimensions. 
+  /// </remarks>
+  public class EqualityComparer : EqualityComparer<IReadOnlyList<int>>
+  {
+    /// <inheritdoc />
+    public override bool Equals(IReadOnlyList<int>? left, IReadOnlyList<int>? right) =>
+      left is not null && right is not null && CoordinatesEqual(left, right);
+
+    /// <inheritdoc />
+    public override int GetHashCode(IReadOnlyList<int> coordinate) => GetCoordinateHashCode(coordinate);
+  }
 }

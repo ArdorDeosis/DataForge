@@ -9,7 +9,8 @@ public readonly struct GridEdgeData<TNodeData, TEdgeData>
   public readonly Node<TNodeData, TEdgeData> FromNode;
   public readonly Node<TNodeData, TEdgeData> ToNode;
 
-  public GridEdgeData(IReadOnlyList<int> fromCoordinates, IReadOnlyList<int> toCoordinates, Node<TNodeData, TEdgeData> fromNode,
+  public GridEdgeData(IReadOnlyList<int> fromCoordinates, IReadOnlyList<int> toCoordinates,
+    Node<TNodeData, TEdgeData> fromNode,
     Node<TNodeData, TEdgeData> toNode)
   {
     FromCoordinates = fromCoordinates;

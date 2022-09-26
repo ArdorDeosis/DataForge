@@ -3,12 +3,12 @@ using GridUtilities;
 
 namespace GraphCreation;
 
-public class IndexedGridGraphBuilder<TIndex, TNodeData, TEdgeData> : GridGraphBuilder<TNodeData, TEdgeData>
+public class IndexedGraphCreator<TIndex, TNodeData, TEdgeData> : GraphCreator
   where TIndex : notnull
 {
   internal Func<GridNodeData, TIndex> CreateIndex;
 
-  public IndexedGridGraphBuilder(GridGraphBuilder<TNodeData, TEdgeData> origin, Func<GridNodeData, TIndex> createIndex)
+  public IndexedGraphCreator(GraphCreator origin, Func<GridNodeData, TIndex> createIndex)
   {
     DimensionsInformation = origin.DimensionsInformation;
     CreateNodeData = origin.CreateNodeData;
