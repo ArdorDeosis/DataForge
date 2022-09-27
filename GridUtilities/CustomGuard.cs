@@ -18,7 +18,8 @@ internal static class CustomGuardClauses
   /// <returns><paramref name="dimensionSize"/></returns>
   /// <exception cref="ArgumentException"></exception>
   /// <exception cref="ArgumentNullException"></exception>
-  internal static IReadOnlyList<int> InvalidDimensionsList(this IGuardClause guardClause, IReadOnlyList<int> dimensionSize)
+  internal static IReadOnlyList<int> InvalidDimensionsList(this IGuardClause guardClause,
+    IReadOnlyList<int> dimensionSize)
   {
     Guard.Against.NullOrEmpty(dimensionSize);
     for (var n = 0; n < dimensionSize.Count; ++n)
@@ -31,8 +32,8 @@ internal static class CustomGuardClauses
   /// lengths.
   /// </summary>
   /// <exception cref="ArgumentException"></exception>
-  internal static void DifferentLengths(this IGuardClause guardClause, IReadOnlyList<int> left,
-    IReadOnlyList<int> right, [CallerArgumentExpression("left")] string? leftName = null,
+  internal static void DifferentLengths<T1, T2>(this IGuardClause guardClause, IReadOnlyList<T1> left,
+    IReadOnlyList<T2> right, [CallerArgumentExpression("left")] string? leftName = null,
     [CallerArgumentExpression("right")] string? rightName = null)
   {
     if (left.Count != right.Count)

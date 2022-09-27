@@ -1,18 +1,41 @@
-﻿namespace GraphCreation;
+﻿using Ardalis.GuardClauses;
+using InvalidOperationException = System.InvalidOperationException;
+
+namespace GraphCreation;
 
 public class GridGraphCreationOption<TNodeData, TEdgeData>
 {
-  public required IReadOnlyList<GridGraphDimensionInformation> DimensionInformation { get; init; }
-  public required Func<GridNodeData, TNodeData> CreateNodeData { get; init; }
-  public required Func<GridEdgeData<TNodeData, TEdgeData>, TEdgeData> CreateEdgeData { get; init; }
+  private readonly IReadOnlyList<GridGraphDimensionInformation> dimensionInformation;
+  private readonly Func<GridNodeData, TNodeData> createNodeData;
+  private readonly Func<GridEdgeData<TNodeData, TEdgeData>, TEdgeData> createEdgeData;
 
-  internal void Validate()
+  public /*required*/ IReadOnlyList<GridGraphDimensionInformation> DimensionInformation
   {
-    if (DimensionInformation.Count < 1)
-      throw new InvalidOperationException("There are no dimensions defined!");
-    if (CreateNodeData is null)
-      throw new InvalidOperationException("No method to generate node data is defined!");
-    if (CreateEdgeData is null)
-      throw new InvalidOperationException("No method to generate edge data is defined!");
+    get => dimensionInformation;
+    init
+    {
+      Guard.Against.NullOrEmpty(value, nameof(DimensionInformation));
+      dimensionInformation = value;
+    }
+  }
+
+  public /*required*/ Func<GridNodeData, TNodeData> CreateNodeData
+  {
+    get => createNodeData;
+    init
+    {
+      Guard.Against.Null(value, nameof(CreateNodeData));
+      createNodeData = value;
+    }
+  }
+
+  public /*required*/ Func<GridEdgeData<TNodeData, TEdgeData>, TEdgeData> CreateEdgeData
+  {
+    get => createEdgeData;
+    init
+    {
+      Guard.Against.Null(value, nameof(CreateEdgeData));
+      createEdgeData = value;
+    }
   }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Ardalis.GuardClauses;
 
 namespace GridUtilities;
 
@@ -10,8 +11,12 @@ public static class CoordinateHelpers
   /// <summary>
   /// Adds two coordinates represented as <tt>int[]</tt>.
   /// </summary>
-  public static int[] AddCoordinates(IReadOnlyList<int> left, IReadOnlyList<int> right)
+  public static int[] AddCoordinates(this IReadOnlyList<int> left, IReadOnlyList<int> right)
   {
+    Guard.Against.Null(left);
+    Guard.Against.Null(right);
+    Guard.Against.DifferentLengths(left, right);
+
     var result = new int[left.Count];
     for (var i = 0; i < result.Length; i++)
       result[i] = left[i] + right[i];
@@ -21,8 +26,14 @@ public static class CoordinateHelpers
   /// <summary>
   /// Checks equality for two coordinates represented as <tt>int[]</tt>.
   /// </summary>
-  public static bool CoordinatesEqual(IReadOnlyList<int> left, IReadOnlyList<int> right) =>
-    left.Count == right.Count && !left.Where((t, i) => t != right[i]).Any();
+  public static bool CoordinatesEqual(this IReadOnlyList<int> left, IReadOnlyList<int> right) =>
+    (left, right) switch
+    {
+      (null, null) => true,
+      (null, { }) or ({ }, null) => false,
+      ({ }, { }) when left.Count != right.Count => false,
+      _ => !left.Where((t, i) => t != right[i]).Any(),
+    };
 
   /// <summary>
   /// Gets a hash for a coordinate represented as <tt>int[]</tt> in compliance with the <see cref="CoordinatesEqual"/>
@@ -34,10 +45,10 @@ public static class CoordinateHelpers
   /// retrieving objects from a dictionary for coordinates with more than 8 dimensions. 
   /// </remarks>
   [ExcludeFromCodeCoverage]
-  public static int GetCoordinateHashCode(IReadOnlyList<int> obj) =>
-    obj switch
+  public static int GetCoordinateHashCode(this IReadOnlyList<int> coordinate) =>
+    coordinate switch
     {
-      [] => 0,
+      null or [] => 0,
       [var a] => a,
       [var a, var b] => HashCode.Combine(a, b),
       [var a, var b, var c] => HashCode.Combine(a, b, c),
@@ -59,10 +70,12 @@ public static class CoordinateHelpers
   public class EqualityComparer : EqualityComparer<IReadOnlyList<int>>
   {
     /// <inheritdoc />
+    [ExcludeFromCodeCoverage]
     public override bool Equals(IReadOnlyList<int>? left, IReadOnlyList<int>? right) =>
       left is not null && right is not null && CoordinatesEqual(left, right);
 
     /// <inheritdoc />
+    [ExcludeFromCodeCoverage]
     public override int GetHashCode(IReadOnlyList<int> coordinate) => GetCoordinateHashCode(coordinate);
   }
 }

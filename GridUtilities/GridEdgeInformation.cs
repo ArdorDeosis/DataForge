@@ -35,6 +35,22 @@ public readonly struct GridEdgeInformation : IEquatable<GridEdgeInformation>
     DimensionOfChange = dimensionOfChange;
   }
 
+  /// <summary>
+  /// This constructor can be used for wrapped edges. For normal edges, use the constructor that calculates the upper
+  /// coordinate. This just can't be done for wrapping dimensions, as the information about the grid size in a
+  /// particular dimension is not available here.
+  /// </summary>
+  internal GridEdgeInformation(IReadOnlyList<int> lowerCoordinate, IReadOnlyList<int> upperCoordinate,
+    int dimensionOfChange)
+  {
+    Guard.Against.NullOrEmpty(lowerCoordinate);
+    Guard.Against.OutOfRange(dimensionOfChange, nameof(dimensionOfChange), 0, lowerCoordinate.Count);
+
+    LowerCoordinate = lowerCoordinate;
+    UpperCoordinate = upperCoordinate;
+    DimensionOfChange = dimensionOfChange;
+  }
+
   [ExcludeFromCodeCoverage]
   public static bool operator ==(GridEdgeInformation left, GridEdgeInformation right) => left.Equals(right);
 
