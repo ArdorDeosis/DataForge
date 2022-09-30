@@ -5,12 +5,6 @@ namespace Graph.Tests;
 public class EdgeTests
 {
   [Test]
-  public void FailingTest()
-  {
-    Assert.Fail();
-  }
-
-  [Test]
   public void EdgeConstructor_NodeFromDifferentGraph_ThrowsArgumentException()
   {
     // ARRANGE
