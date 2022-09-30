@@ -63,7 +63,7 @@ public readonly struct GridEdgeInformation : IEquatable<GridEdgeInformation>
 
   /// <inheritdoc />
   public bool Equals(GridEdgeInformation other) =>
-    CoordinateHelpers.CoordinatesEqual(LowerCoordinate, other.LowerCoordinate) &&
+    LowerCoordinate.CoordinatesEqual(other.LowerCoordinate) &&
     DimensionOfChange == other.DimensionOfChange;
 
   /// <inheritdoc />
@@ -72,7 +72,7 @@ public readonly struct GridEdgeInformation : IEquatable<GridEdgeInformation>
   /// <inheritdoc />
   public override int GetHashCode() =>
     HashCode.Combine(
-      CoordinateHelpers.GetCoordinateHashCode(LowerCoordinate),
+      LowerCoordinate.GetCoordinateHashCode(),
       DimensionOfChange
     );
 }

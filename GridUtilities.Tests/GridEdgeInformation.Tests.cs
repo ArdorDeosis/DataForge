@@ -19,11 +19,12 @@ public class GridEdgeInformationTests
     // ASSERT
     Assert.That(() => new GridEdgeInformation(Array.Empty<int>(), 0), Throws.ArgumentException);
   }
-  
-  [TestCase(new[]{0}, 1)]
-  [TestCase(new[]{0}, -1)]
-  [TestCase(new[]{0, 0, 0}, 3)]
-  public void Constructor_OutOfBoundsDimensionOfChange_ThrowsArgumentOutOfRangeException(int[] coordinate, int dimensionOfChange)
+
+  [TestCase(new[] { 0 }, 1)]
+  [TestCase(new[] { 0 }, -1)]
+  [TestCase(new[] { 0, 0, 0 }, 3)]
+  public void Constructor_OutOfBoundsDimensionOfChange_ThrowsArgumentOutOfRangeException(int[] coordinate,
+    int dimensionOfChange)
   {
     // ASSERT
     Assert.That(() => new GridEdgeInformation(Array.Empty<int>(), 0), Throws.ArgumentException);
@@ -37,7 +38,7 @@ public class GridEdgeInformationTests
   {
     // ACT
     var upperCoordinate = new GridEdgeInformation(lowerCoordinate, dimensionOfChange).UpperCoordinate;
-    
+
     // ASSERT
     Assert.That(upperCoordinate, Is.EqualTo(expectedUpperCoordinate));
   }
@@ -63,7 +64,7 @@ public class GridEdgeInformationTests
     // ASSERT
     Assert.That(left == right);
   }
-  
+
   [Test]
   public void Equals_SameValuesAsObject_True()
   {

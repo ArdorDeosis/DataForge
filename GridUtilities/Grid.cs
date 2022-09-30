@@ -105,14 +105,6 @@ public static class Grid
   /// <exception cref="ArgumentException">
   /// If <paramref name="size"/> is empty or if any value of size is less than 1.
   /// </exception>
-  public static IEnumerable<GridEdgeInformation> EdgeInformation(IReadOnlyList<int> size)
-  {
-    Guard.Against.InvalidDimensionsList(size);
-    return EdgeInformationInternal(
-      size.Select(dimension => new GridDimensionInformation(dimension)).ToArray());
-  }
-
-  /// <inheritdoc cref="EdgeInformation(System.Collections.Generic.IReadOnlyList{int})"/>
   public static IEnumerable<GridEdgeInformation> EdgeInformation(params int[] size)
   {
     Guard.Against.InvalidDimensionsList(size);
@@ -144,7 +136,8 @@ public static class Grid
   /// <exception cref="ArgumentException">
   /// If <paramref name="size"/> is empty or if any value of size is less than 1.
   /// </exception>
-  public static IEnumerable<GridEdgeInformation> EdgeInformation(IReadOnlyList<int> size, bool wrapAllDimensions)
+  public static IEnumerable<GridEdgeInformation> EdgeInformation(IReadOnlyList<int> size,
+    bool wrapAllDimensions = false)
   {
     Guard.Against.InvalidDimensionsList(size);
     return EdgeInformationInternal(
@@ -224,6 +217,47 @@ public static class Grid
     return EdgeInformationInternal(gridDimensionData);
   }
 
+  /// <summary>
+  /// Information about all edges in a cartesian grid. Edges are drawn between all nodes in the grid that are offset by
+  /// 1 from each other in one dimension.
+  /// <br/><br/>
+  /// <b>Grid Definition</b>
+  /// <p>The grid's number of dimensions is defined by the length of the <paramref name="size"/> parameter. Every
+  /// value defines the size of the grid in the corresponding dimension. The <paramref name="offset"/> parameter
+  /// defines an offset to the grid in the corresponding dimensions. Dimension n's coordinate range is thus defined as
+  /// <tt>[offset[n], size[n] + offset[n] - 1]</tt>.The <paramref name="wrap"/> parameter defines whether the grid
+  /// wraps around at the edge of the corresponding dimensions, last node to first node. (e.g. wrapping the single
+  /// dimension in a one-dimensional grid creates the topology of a ring instead of a line, wrapping both dimensions in
+  /// a two-dimensional grid creates the topology of a torus etc.)</p>
+  /// </summary>
+  /// <param name="size">
+  /// The size of the grid in the corresponding dimensions. This also defines the number of dimensions of the grid.
+  /// </param>
+  /// <param name="offset">The offset of the grid coordinates in the corresponding dimensions.</param>
+  /// <param name="wrap">Whether the grid wraps around to itself in the corresponding dimensions.</param>
+  /// <returns>
+  /// An <see cref="IEnumerable{T}"/> of <see cref="GridEdgeInformation"/> containing the coordinates the edge is
+  /// connecting and the dimension which separates these coordinates.
+  /// </returns>
+  /// <remarks>
+  /// The <paramref name="size"/> and <paramref name="offset"/> parameters need to have the same length.
+  /// </remarks>
+  /// <exception cref="ArgumentException">
+  /// If <paramref name="size"/> is empty, if any value of size is less than 1, or if <paramref name="offset"/> has a
+  /// different length than <paramref name="size"/>.
+  /// </exception>
+  public static IEnumerable<GridEdgeInformation> EdgeInformation(IReadOnlyList<int> size, IReadOnlyList<int> offset,
+    IReadOnlyList<bool> wrap)
+  {
+    Guard.Against.InvalidDimensionsList(size);
+    Guard.Against.DifferentLengths(size, offset);
+    Guard.Against.DifferentLengths(size, wrap);
+    var gridDimensionData = new GridDimensionInformation[size.Count];
+    for (var n = 0; n < size.Count; n++)
+      gridDimensionData[n] = new GridDimensionInformation(size[n], offset[n], wrap[n]);
+    return EdgeInformationInternal(gridDimensionData);
+  }
+
   /// <inheritdoc cref="EdgeInformationInternal"/>
   /// <exception cref="ArgumentException">If <paramref name="dimensions"/> is empty.</exception>
   public static IEnumerable<GridEdgeInformation> EdgeInformation(IReadOnlyList<GridDimensionInformation> dimensions)
@@ -264,7 +298,7 @@ public static class Grid
 
     while (true)
     {
-      yield return CoordinateHelpers.AddCoordinates(currentCoordinate, offset);
+      yield return currentCoordinate.AddCoordinates(offset);
 
       if (IsCurrentCoordinateLastCoordinate())
         yield break;

@@ -14,6 +14,9 @@ public readonly struct GridDimensionInformation
   /// <summary> Whether the grid wraps around in this dimension. </summary>
   public readonly bool Wrap;
 
+  public GridDimensionInformation() =>
+    throw new InvalidOperationException("This struct is invalid with default values.");
+
   public GridDimensionInformation(int size, bool wrap) : this(size, 0, wrap)
   { }
 
