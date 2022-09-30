@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Ardalis.GuardClauses;
+using Utilities;
 
 namespace GridUtilities;
 
@@ -20,8 +21,7 @@ public readonly struct GridEdgeInformation : IEquatable<GridEdgeInformation>
   /// </summary>
   public readonly int DimensionOfChange;
 
-  public GridEdgeInformation() =>
-    throw new InvalidOperationException("This struct is not designed to be created outside of its Assembly");
+  public GridEdgeInformation() => ThrowHelper.ThrowStructNotPubliclyConstructableException(nameof(GridEdgeInformation));
 
   internal GridEdgeInformation(IReadOnlyList<int> lowerCoordinate, int dimensionOfChange)
   {

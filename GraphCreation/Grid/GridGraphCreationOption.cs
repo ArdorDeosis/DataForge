@@ -1,8 +1,10 @@
 ﻿using Ardalis.GuardClauses;
+using JetBrains.Annotations;
 using InvalidOperationException = System.InvalidOperationException;
 
 namespace GraphCreation;
 
+[PublicAPI]
 public class GridGraphCreationOption<TNodeData, TEdgeData>
 {
   private readonly IReadOnlyList<GridGraphDimensionInformation> dimensionInformation;

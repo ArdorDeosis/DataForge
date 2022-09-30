@@ -20,46 +20,23 @@ public static partial class GraphCreator
   public static Graph<TNodeData, TEdgeData> MakeLine<TNodeData, TEdgeData>(
     LineGraphCreationOption<TNodeData, TEdgeData> options)
   {
-    var graph = new Graph<TNodeData, TEdgeData>();
-
-    var nodes = new Dictionary<int, Node<TNodeData, TEdgeData>>();
-    for (var position = 0; position < options.Length; position++)
-      nodes.Add(position, graph.AddNode(options.CreateNodeData(new LineNodeData(position))));
-
-    for (var lowerPosition = 0; lowerPosition < options.Length - 1; lowerPosition++)
+    return MakeGrid(new GridGraphCreationOption<TNodeData, TEdgeData>
     {
-      if (options.EdgeDirection == EdgeDirection.None)
-        continue;
-      var lowerNode = nodes[lowerPosition];
-      var upperNode = nodes[lowerPosition + 1];
-
-      if (options.EdgeDirection.HasFlag(EdgeDirection.Forward))
+      DimensionInformation = new[]
       {
-        graph.AddEdge(
-          lowerNode,
-          upperNode,
-          options.CreateEdgeData(new LineEdgeData<TNodeData, TEdgeData>(
-            lowerPosition,
-            lowerNode,
-            upperNode)
-          )
-        );
-      }
-
-      if (options.EdgeDirection.HasFlag(EdgeDirection.Backward))
-      {
-        graph.AddEdge(
-          upperNode,
-          lowerNode,
-          options.CreateEdgeData(new LineEdgeData<TNodeData, TEdgeData>(
-            lowerPosition,
-            upperNode,
-            lowerNode)
-          )
-        );
-      }
-    }
-
-    return graph;
+        new GridGraphDimensionInformation
+        {
+          Length = options.Length,
+          Wrap = false,
+          EdgeDirection = options.EdgeDirection,
+        },
+      },
+      CreateNodeData = gridNodeData => options.CreateNodeData(new LineNodeData(gridNodeData.Coordinates[0])),
+      CreateEdgeData = gridEdgeData => options.CreateEdgeData(new LineEdgeData<TNodeData, TEdgeData>(
+        gridEdgeData.LowerCoordinate[0],
+        gridEdgeData.LowerNode,
+        gridEdgeData.UpperNode)
+      ),
+    });
   }
 }

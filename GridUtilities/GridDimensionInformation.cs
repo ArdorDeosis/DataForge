@@ -1,4 +1,6 @@
-﻿namespace GridUtilities;
+﻿using Utilities;
+
+namespace GridUtilities;
 
 /// <summary>
 /// Information about one dimension in a grid containing the grid size in that dimension an its coordinate offset.
@@ -15,7 +17,7 @@ public readonly struct GridDimensionInformation
   public readonly bool Wrap;
 
   public GridDimensionInformation() =>
-    throw new InvalidOperationException("This struct is invalid with default values.");
+    ThrowHelper.ThrowStructInvalidWithDefaultValuesException(nameof(GridDimensionInformation));
 
   public GridDimensionInformation(int size, bool wrap) : this(size, 0, wrap)
   { }

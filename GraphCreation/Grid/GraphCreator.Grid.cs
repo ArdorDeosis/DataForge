@@ -9,8 +9,8 @@ public static partial class GraphCreator
   /// Creates a graph with a n-dimensional grid structure. The number of dimensions is defined by the size of the
   /// option's <see cref="GridGraphCreationOption{TNodeData,TEdgeData}.DimensionInformation"/>. The
   /// <see cref="GridGraphCreationOption{TNodeData,TEdgeData}.DimensionInformation"/> also define the
-  /// <see cref="GridGraphDimensionInformation.Length">size</see> and
-  /// <see cref="GridGraphDimensionInformation.EdgeDirection">edge direction</see> on a per dimension basis. The
+  /// <see cref="GridGraphDimensionInformation.Length">size</see>, <see cref="GridDimensionInformation.Wrap">wrap</see>
+  /// and <see cref="GridGraphDimensionInformation.EdgeDirection">edge direction</see> on a per dimension basis. The
   /// <see cref="GridGraphCreationOption{TNodeData,TEdgeData}.CreateNodeData"/> and
   /// <see cref="GridGraphCreationOption{TNodeData,TEdgeData}.CreateEdgeData"/> functions are used to produce data for
   /// the nodes and edges in the graph depending on their position in the grid.
@@ -23,7 +23,7 @@ public static partial class GraphCreator
     GridGraphCreationOption<TNodeData, TEdgeData> options)
   {
     var gridDefinition = options.DimensionInformation
-      .Select(info => new GridDimensionInformation(info.Length))
+      .Select(info => new GridDimensionInformation(info.Length, info.Wrap))
       .ToArray();
     var graph = new Graph<TNodeData, TEdgeData>();
     var nodes =

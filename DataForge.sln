@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GridUtilities", "GridUtilit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities.Tests", "Utilities.Tests\Utilities.Tests.csproj", "{FE1962FD-DDBC-471F-B9E8-1CF48F7311D5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphCreation.Tests", "GraphCreation.Tests\GraphCreation.Tests.csproj", "{554CEDDC-384C-4CBB-969F-EC31A2FEFB8A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,5 +61,11 @@ Global
 		{FE1962FD-DDBC-471F-B9E8-1CF48F7311D5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FE1962FD-DDBC-471F-B9E8-1CF48F7311D5}.Test|Any CPU.ActiveCfg = Debug|Any CPU
 		{FE1962FD-DDBC-471F-B9E8-1CF48F7311D5}.Test|Any CPU.Build.0 = Debug|Any CPU
+		{554CEDDC-384C-4CBB-969F-EC31A2FEFB8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{554CEDDC-384C-4CBB-969F-EC31A2FEFB8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{554CEDDC-384C-4CBB-969F-EC31A2FEFB8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{554CEDDC-384C-4CBB-969F-EC31A2FEFB8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{554CEDDC-384C-4CBB-969F-EC31A2FEFB8A}.Test|Any CPU.ActiveCfg = Debug|Any CPU
+		{554CEDDC-384C-4CBB-969F-EC31A2FEFB8A}.Test|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 EndGlobal

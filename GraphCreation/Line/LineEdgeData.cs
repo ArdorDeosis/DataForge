@@ -1,4 +1,5 @@
 ﻿using Graph;
+using Utilities;
 
 namespace GraphCreation;
 
@@ -10,7 +11,10 @@ public readonly struct LineEdgeData<TNodeData, TEdgeData>
 
   public int UpperPosition => LowerPosition + 1;
 
-  public LineEdgeData(int lowerPosition, Node<TNodeData, TEdgeData> lowerNode, Node<TNodeData, TEdgeData> upperNode)
+  public LineEdgeData() =>
+    ThrowHelper.ThrowStructNotPubliclyConstructableException(nameof(LineEdgeData<TNodeData, TEdgeData>));
+
+  internal LineEdgeData(int lowerPosition, Node<TNodeData, TEdgeData> lowerNode, Node<TNodeData, TEdgeData> upperNode)
   {
     LowerPosition = lowerPosition;
     LowerNode = lowerNode;
