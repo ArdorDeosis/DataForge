@@ -6,7 +6,7 @@
 
         <IsPackable>false</IsPackable>
 
-        <RootNamespace>IteratorUtilities.Tests</RootNamespace>
+        <RootNamespace>GridUtilities.Tests</RootNamespace>
 
         <Configurations>Debug;Release;Test</Configurations>
 

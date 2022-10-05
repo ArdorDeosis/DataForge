@@ -21,7 +21,8 @@ public readonly struct GridEdgeInformation : IEquatable<GridEdgeInformation>
   /// </summary>
   public readonly int DimensionOfChange;
 
-  public GridEdgeInformation() => ThrowHelper.ThrowStructNotPubliclyConstructableException(nameof(GridEdgeInformation));
+  public GridEdgeInformation() =>
+    throw ExceptionHelper.StructNotPubliclyConstructableException(nameof(GridEdgeInformation));
 
   internal GridEdgeInformation(IReadOnlyList<int> lowerCoordinate, int dimensionOfChange)
   {

@@ -10,7 +10,7 @@ namespace Graph;
 /// <typeparam name="TEdgeData">Type of the data the edges are holding.</typeparam>
 public class IndexedGraph<TIndex, TNodeData, TEdgeData> : GraphBase<TNodeData, TEdgeData> where TIndex : notnull
 {
-  private readonly Dictionary<TIndex, Node<TNodeData, TEdgeData>> nodes = new();
+  private readonly Dictionary<TIndex, Node<TNodeData, TEdgeData>> nodes;
   private readonly List<Edge<TNodeData, TEdgeData>> edges = new();
 
   /// <summary>
@@ -23,6 +23,15 @@ public class IndexedGraph<TIndex, TNodeData, TEdgeData> : GraphBase<TNodeData, T
 
   /// <inheritdoc />
   public override IEnumerable<Edge<TNodeData, TEdgeData>> Edges => edges;
+
+  /// <param name="equalityComparer">
+  /// The <see cref="IEqualityComparer{TIndex}"/> implementation to use when comparing node indices, or null to use the
+  /// default <see cref="EqualityComparer{T}"/> for the type of the index.
+  /// </param>
+  public IndexedGraph(IEqualityComparer<TIndex>? equalityComparer = null)
+  {
+    nodes = new Dictionary<TIndex, Node<TNodeData, TEdgeData>>(equalityComparer);
+  }
 
   /// <summary>
   /// Gets the node associated with the specified index.

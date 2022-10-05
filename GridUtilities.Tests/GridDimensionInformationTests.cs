@@ -1,5 +1,4 @@
-﻿using System;
-using GridUtilities;
+﻿using GridUtilities;
 using NUnit.Framework;
 
 namespace IteratorUtilities.Tests;

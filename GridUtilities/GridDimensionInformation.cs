@@ -5,29 +5,35 @@ namespace GridUtilities;
 /// <summary>
 /// Information about one dimension in a grid containing the grid size in that dimension an its coordinate offset.
 /// </summary>
+/// TODO: use field keyword
 public readonly struct GridDimensionInformation
 {
+  private readonly int size = 1;
+
   /// <summary> The length of the grid in this dimension. </summary>
-  public readonly int Size;
+  public /*required*/ int Size
+  {
+    get => size;
+    init
+    {
+      if (value < 1)
+        throw new ArgumentException($"{nameof(size)} is less than 1");
+      size = value;
+    }
+  }
 
   /// <summary> The offset of the grid coordinates in this dimension. </summary>
-  public readonly int Offset;
+  public int Offset { get; init; } = 0;
 
   /// <summary> Whether the grid wraps around in this dimension. </summary>
-  public readonly bool Wrap;
+  public bool Wrap { get; init; } = false;
 
   public GridDimensionInformation() =>
-    ThrowHelper.ThrowStructInvalidWithDefaultValuesException(nameof(GridDimensionInformation));
+    throw ExceptionHelper.StructInvalidWithDefaultValuesException(nameof(GridDimensionInformation));
 
-  public GridDimensionInformation(int size, bool wrap) : this(size, 0, wrap)
-  { }
-
-  public GridDimensionInformation(int size, int offset = 0, bool wrap = false)
+  // TODO: not sure about this hybrid constructor/initializer approach
+  public GridDimensionInformation(int size)
   {
-    if (size < 1)
-      throw new ArgumentException($"{nameof(size)} is less than 1");
     Size = size;
-    Offset = offset;
-    Wrap = wrap;
   }
 }

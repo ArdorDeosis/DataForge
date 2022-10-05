@@ -1,15 +1,11 @@
-﻿using Utilities;
+﻿using System.Diagnostics.CodeAnalysis;
+using JetBrains.Annotations;
 
 namespace GraphCreation;
 
+[PublicAPI]
+[ExcludeFromCodeCoverage]
 public readonly struct GridNodeData
 {
-  public readonly IReadOnlyList<int> Coordinates;
-
-  public GridNodeData() => ThrowHelper.ThrowStructNotPubliclyConstructableException(nameof(GridNodeData));
-
-  internal GridNodeData(IReadOnlyList<int> coordinates)
-  {
-    Coordinates = coordinates;
-  }
+  public /*required*/ IReadOnlyList<int> Coordinates { get; init; }
 }

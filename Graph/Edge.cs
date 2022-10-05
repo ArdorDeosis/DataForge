@@ -6,8 +6,8 @@
 /// </summary>
 public class Edge<TNodeData, TEdgeData> : GraphComponent<TNodeData, TEdgeData>
 {
-  internal readonly Node<TNodeData, TEdgeData> Start;
-  internal readonly Node<TNodeData, TEdgeData> End;
+  public readonly Node<TNodeData, TEdgeData> Start;
+  public readonly Node<TNodeData, TEdgeData> End;
 
   /// <summary>
   /// A collection of both nodes this edge is connecting.

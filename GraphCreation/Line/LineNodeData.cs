@@ -1,15 +1,11 @@
-﻿using Utilities;
+﻿using System.Diagnostics.CodeAnalysis;
+using JetBrains.Annotations;
 
 namespace GraphCreation;
 
+[PublicAPI]
+[ExcludeFromCodeCoverage]
 public readonly struct LineNodeData
 {
-  public readonly int Position;
-
-  public LineNodeData() => ThrowHelper.ThrowStructNotPubliclyConstructableException(nameof(LineNodeData));
-
-  internal LineNodeData(int position)
-  {
-    Position = position;
-  }
+  public /*required*/ int Position { get; init; }
 }
