@@ -1,8 +1,7 @@
 ﻿using System;
-using GridUtilities;
 using NUnit.Framework;
 
-namespace IteratorUtilities.Tests;
+namespace GridUtilities.Tests;
 
 public class GridEdgeInformationTests
 {

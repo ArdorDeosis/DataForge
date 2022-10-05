@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GridUtilities;
 
-namespace IteratorUtilities.Tests;
+namespace GridUtilities.Tests;
 
 internal static partial class TestData
 {
