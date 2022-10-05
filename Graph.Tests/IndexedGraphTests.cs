@@ -2,7 +2,7 @@
 
 namespace Graph.Tests;
 
-public class IndexedGraphTests
+public partial class IndexedGraphTests
 {
   [Test]
   public void Indices_ContainsExistingIndex()
