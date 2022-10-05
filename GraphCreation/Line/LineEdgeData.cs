@@ -1,19 +1,14 @@
-﻿using Graph;
+﻿using System.Diagnostics.CodeAnalysis;
+using JetBrains.Annotations;
 
 namespace GraphCreation;
 
-public readonly struct LineEdgeData<TNodeData, TEdgeData>
+[PublicAPI]
+[ExcludeFromCodeCoverage]
+public readonly struct LineEdgeData<TNodeData>
 {
-  public readonly int LowerPosition;
-  public readonly Node<TNodeData, TEdgeData> LowerNode;
-  public readonly Node<TNodeData, TEdgeData> UpperNode;
-
-  public int UpperPosition => LowerPosition + 1;
-
-  public LineEdgeData(int lowerPosition, Node<TNodeData, TEdgeData> lowerNode, Node<TNodeData, TEdgeData> upperNode)
-  {
-    LowerPosition = lowerPosition;
-    LowerNode = lowerNode;
-    UpperNode = upperNode;
-  }
+  public /*required*/ int OriginPosition { get; init; }
+  public /*required*/ int DestinationPosition { get; init; }
+  public /*required*/ TNodeData OriginNodeData { get; init; }
+  public /*required*/ TNodeData DestinationNodeData { get; init; }
 }

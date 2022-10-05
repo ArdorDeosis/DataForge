@@ -1,21 +1,14 @@
-﻿using Graph;
+﻿using System.Diagnostics.CodeAnalysis;
+using JetBrains.Annotations;
 
 namespace GraphCreation;
 
-public readonly struct GridEdgeData<TNodeData, TEdgeData>
+[PublicAPI]
+[ExcludeFromCodeCoverage]
+public readonly struct GridEdgeData<TNodeData>
 {
-  public readonly IReadOnlyList<int> LowerCoordinate;
-  public readonly IReadOnlyList<int> UpperCoordinate;
-  public readonly Node<TNodeData, TEdgeData> LowerNode;
-  public readonly Node<TNodeData, TEdgeData> UpperNode;
-
-  public GridEdgeData(IReadOnlyList<int> lowerCoordinate, IReadOnlyList<int> upperCoordinate,
-    Node<TNodeData, TEdgeData> lowerNode,
-    Node<TNodeData, TEdgeData> upperNode)
-  {
-    LowerCoordinate = lowerCoordinate;
-    UpperCoordinate = upperCoordinate;
-    LowerNode = lowerNode;
-    UpperNode = upperNode;
-  }
+  public /*required*/ IReadOnlyList<int> OriginCoordinate { get; init; }
+  public /*required*/ IReadOnlyList<int> DestinationCoordinate { get; init; }
+  public /*required*/ TNodeData OriginNodeData { get; init; }
+  public /*required*/ TNodeData DestinationNodeData { get; init; }
 }

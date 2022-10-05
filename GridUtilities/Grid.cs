@@ -66,7 +66,7 @@ public static class Grid
     Guard.Against.DifferentLengths(size, offset);
     var gridDimensionData = new GridDimensionInformation[size.Count];
     for (var n = 0; n < size.Count; n++)
-      gridDimensionData[n] = new GridDimensionInformation(size[n], offset[n]);
+      gridDimensionData[n] = new GridDimensionInformation(size[n]) { Offset = offset[n] };
     return CoordinatesInternal(gridDimensionData);
   }
 
@@ -141,7 +141,7 @@ public static class Grid
   {
     Guard.Against.InvalidDimensionsList(size);
     return EdgeInformationInternal(
-      size.Select(dimension => new GridDimensionInformation(dimension, wrapAllDimensions)).ToArray());
+      size.Select(dimension => new GridDimensionInformation(dimension) { Wrap = wrapAllDimensions }).ToArray());
   }
 
   /// <summary>
@@ -173,7 +173,7 @@ public static class Grid
     Guard.Against.NullOrEmpty(wrap);
     Guard.Against.DifferentLengths(size, wrap);
     return EdgeInformationInternal(
-      size.Select((dimension, index) => new GridDimensionInformation(dimension, wrap[index])).ToArray());
+      size.Select((dimension, index) => new GridDimensionInformation(dimension) { Wrap = wrap[index] }).ToArray());
   }
 
   /// <summary>
@@ -213,7 +213,7 @@ public static class Grid
     Guard.Against.DifferentLengths(size, offset);
     var gridDimensionData = new GridDimensionInformation[size.Count];
     for (var n = 0; n < size.Count; n++)
-      gridDimensionData[n] = new GridDimensionInformation(size[n], offset[n], wrapAllDimensions);
+      gridDimensionData[n] = new GridDimensionInformation(size[n]) { Offset = offset[n], Wrap = wrapAllDimensions };
     return EdgeInformationInternal(gridDimensionData);
   }
 
@@ -254,7 +254,7 @@ public static class Grid
     Guard.Against.DifferentLengths(size, wrap);
     var gridDimensionData = new GridDimensionInformation[size.Count];
     for (var n = 0; n < size.Count; n++)
-      gridDimensionData[n] = new GridDimensionInformation(size[n], offset[n], wrap[n]);
+      gridDimensionData[n] = new GridDimensionInformation(size[n]) { Offset = offset[n], Wrap = wrap[n] };
     return EdgeInformationInternal(gridDimensionData);
   }
 

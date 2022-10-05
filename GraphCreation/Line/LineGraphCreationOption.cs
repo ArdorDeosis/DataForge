@@ -1,42 +1,25 @@
 ﻿using Ardalis.GuardClauses;
+using JetBrains.Annotations;
 
 namespace GraphCreation;
 
+/// TODO: use field keyword
+[PublicAPI]
 public class LineGraphCreationOption<TNodeData, TEdgeData>
 {
   private readonly int length;
-  private readonly Func<LineNodeData, TNodeData> createNodeData;
-  private readonly Func<LineEdgeData<TNodeData, TEdgeData>, TEdgeData> createEdgeData;
 
   public /*required*/ int Length
   {
     get => length;
-    init
-    {
-      Guard.Against.NegativeOrZero(value, nameof(Length));
-      length = value;
-    }
+    init => length = Guard.Against.NegativeOrZero(value, nameof(Length));
   }
+
+
+#pragma warning disable CS8618 // TODO: I'd hope these warnings vanish with the required keyword
+  public /*required*/ Func<LineNodeData, TNodeData> CreateNodeData { get; init; }
+  public /*required*/ Func<LineEdgeData<TNodeData>, TEdgeData> CreateEdgeData { get; init; }
+#pragma warning restore CS8618
 
   public EdgeDirection EdgeDirection { get; init; } = EdgeDirection.Forward;
-
-  public /*required*/ Func<LineNodeData, TNodeData> CreateNodeData
-  {
-    get => createNodeData;
-    init
-    {
-      Guard.Against.Null(value, nameof(CreateNodeData));
-      createNodeData = value;
-    }
-  }
-
-  public /*required*/ Func<LineEdgeData<TNodeData, TEdgeData>, TEdgeData> CreateEdgeData
-  {
-    get => createEdgeData;
-    init
-    {
-      Guard.Against.Null(value, nameof(CreateEdgeData));
-      createEdgeData = value;
-    }
-  }
 }

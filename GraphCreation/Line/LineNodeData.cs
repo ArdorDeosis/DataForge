@@ -1,11 +1,11 @@
-﻿namespace GraphCreation;
+﻿using System.Diagnostics.CodeAnalysis;
+using JetBrains.Annotations;
 
+namespace GraphCreation;
+
+[PublicAPI]
+[ExcludeFromCodeCoverage]
 public readonly struct LineNodeData
 {
-  public readonly int Position;
-
-  internal LineNodeData(int position)
-  {
-    Position = position;
-  }
+  public /*required*/ int Position { get; init; }
 }

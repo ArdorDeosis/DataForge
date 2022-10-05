@@ -5,12 +5,6 @@
         <Nullable>enable</Nullable>
 
         <IsPackable>false</IsPackable>
-
-        <RootNamespace>GridUtilities.Tests</RootNamespace>
-
-        <Configurations>Debug;Release;Test</Configurations>
-
-        <Platforms>AnyCPU</Platforms>
     </PropertyGroup>
 
     <ItemGroup>
@@ -21,7 +15,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\GraphCreation\GraphCreation.csproj" />
+        <ProjectReference Include="..\Utilities\Utilities.csproj"/>
     </ItemGroup>
 
 </Project>
