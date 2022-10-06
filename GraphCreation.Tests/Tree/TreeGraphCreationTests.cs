@@ -33,11 +33,28 @@ public class TreeGraphCreationTests
 
   [TestCaseSource(nameof(OptionsAndExpectedEdgeData))]
   // this tests the edge data creation and the edge direction parameters
-  public void TreeGraph_HasExpectedEdgeData(TreeGraphCreationOptions<int, (TreeIndex, TreeIndex)> options,
+  public void TreeGraph_HasExpectedStructure(TreeGraphCreationOptions<TreeIndex, (TreeIndex, TreeIndex)> options,
     (TreeIndex, TreeIndex)[] expectedEdgeData)
   {
     // ACT
-    var graphs = new GraphBase<int, (TreeIndex, TreeIndex)>[]
+    var graphs = new GraphBase<TreeIndex, (TreeIndex, TreeIndex)>[]
+    {
+      GraphCreator.MakeTree(options),
+      GraphCreator.MakeIndexedTree(options),
+    };
+
+    // ASSERT
+    foreach (var graph in graphs)
+      Assert.That(graph.Edges.Select(edge => (edge.Start.Data, edge.End.Data)), Is.EquivalentTo(expectedEdgeData));
+  }
+
+  [TestCaseSource(nameof(OptionsAndExpectedEdgeData))]
+  // this tests the edge data creation and the edge direction parameters
+  public void TreeGraph_HasExpectedEdgeData(TreeGraphCreationOptions<TreeIndex, (TreeIndex, TreeIndex)> options,
+    (TreeIndex, TreeIndex)[] expectedEdgeData)
+  {
+    // ACT
+    var graphs = new GraphBase<TreeIndex, (TreeIndex, TreeIndex)>[]
     {
       GraphCreator.MakeTree(options),
       GraphCreator.MakeIndexedTree(options),
@@ -84,7 +101,7 @@ public class TreeGraphCreationTests
         CreateNodeData = CreateNodeData,
         CreateEdgeData = CreateEdgeData,
       },
-      new TreeIndex[]
+      new[]
       {
         new(),
         TreeIndexHelper.FromArray(0),
@@ -103,7 +120,7 @@ public class TreeGraphCreationTests
         CreateNodeData = CreateNodeData,
         CreateEdgeData = CreateEdgeData,
       },
-      new TreeIndex[]
+      new[]
       {
         new(),
         TreeIndexHelper.FromArray(0),
@@ -128,16 +145,16 @@ public class TreeGraphCreationTests
   private static IEnumerable<object[]> OptionsAndExpectedEdgeData()
   {
     const int maxDepth = 2;
-    int CreateNodeData(TreeIndex _) => 0;
+    TreeIndex CreateNodeData(TreeIndex index) => index;
 
-    (TreeIndex from, TreeIndex to) CreateEdgeData(EdgeDefinition<TreeIndex, int> data) =>
-      (data.OriginAddress, data.DestinationAddress);
+    (TreeIndex from, TreeIndex to) CreateEdgeData(EdgeDefinition<TreeIndex, TreeIndex> data) =>
+      (data.OriginIndex, data.DestinationIndex);
 
-    int CalculateChildNodeCount(TreeIndex addressData, int _) => addressData.ChildIndex == 0 ? 2 : 0;
+    int CalculateChildNodeCount(TreeIndex addressData, TreeIndex _) => addressData.ChildIndex == 0 ? 2 : 0;
 
     yield return new object[]
     {
-      new TreeGraphCreationOptions<int, (TreeIndex from, TreeIndex to)>
+      new TreeGraphCreationOptions<TreeIndex, (TreeIndex from, TreeIndex to)>
       {
         MaxDepth = maxDepth,
         CalculateChildNodeCount = CalculateChildNodeCount,
@@ -149,7 +166,7 @@ public class TreeGraphCreationTests
     };
     yield return new object[]
     {
-      new TreeGraphCreationOptions<int, (TreeIndex from, TreeIndex to)>
+      new TreeGraphCreationOptions<TreeIndex, (TreeIndex from, TreeIndex to)>
       {
         MaxDepth = maxDepth,
         CalculateChildNodeCount = CalculateChildNodeCount,
@@ -167,7 +184,7 @@ public class TreeGraphCreationTests
     };
     yield return new object[]
     {
-      new TreeGraphCreationOptions<int, (TreeIndex from, TreeIndex to)>
+      new TreeGraphCreationOptions<TreeIndex, (TreeIndex from, TreeIndex to)>
       {
         MaxDepth = maxDepth,
         CalculateChildNodeCount = CalculateChildNodeCount,
@@ -185,7 +202,7 @@ public class TreeGraphCreationTests
     };
     yield return new object[]
     {
-      new TreeGraphCreationOptions<int, (TreeIndex from, TreeIndex to)>
+      new TreeGraphCreationOptions<TreeIndex, (TreeIndex from, TreeIndex to)>
       {
         MaxDepth = maxDepth,
         CalculateChildNodeCount = CalculateChildNodeCount,

@@ -17,8 +17,8 @@ public class LineGraphCreationOption<TNodeData, TEdgeData>
 
 
 #pragma warning disable CS8618 // TODO: I'd hope these warnings vanish with the required keyword
-  public /*required*/ Func<LineNodeData, TNodeData> CreateNodeData { get; init; }
-  public /*required*/ Func<LineEdgeData<TNodeData>, TEdgeData> CreateEdgeData { get; init; }
+  public /*required*/ Func<int, TNodeData> CreateNodeData { get; init; }
+  public /*required*/ Func<EdgeDefinition<int, TNodeData>, TEdgeData> CreateEdgeData { get; init; }
 #pragma warning restore CS8618
 
   public EdgeDirection EdgeDirection { get; init; } = EdgeDirection.Forward;

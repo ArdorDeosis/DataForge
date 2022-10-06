@@ -40,8 +40,8 @@ public static partial class GraphCreator
       {
         graph.AddEdge(nodeIndex.ParentIndex, nodeIndex, options.CreateEdgeData(new EdgeDefinition<TreeIndex, TNodeData>
         {
-          OriginAddress = nodeIndex.ParentIndex,
-          DestinationAddress = nodeIndex,
+          OriginIndex = nodeIndex.ParentIndex,
+          DestinationIndex = nodeIndex,
           OriginNodeData = graph[nodeIndex.ParentIndex].Data,
           DestinationNodeData = nodeData,
         }));
@@ -51,8 +51,8 @@ public static partial class GraphCreator
       {
         graph.AddEdge(nodeIndex, nodeIndex.ParentIndex, options.CreateEdgeData(new EdgeDefinition<TreeIndex, TNodeData>
         {
-          OriginAddress = nodeIndex,
-          DestinationAddress = nodeIndex.ParentIndex,
+          OriginIndex = nodeIndex,
+          DestinationIndex = nodeIndex.ParentIndex,
           OriginNodeData = nodeData,
           DestinationNodeData = graph[nodeIndex.ParentIndex].Data,
         }));

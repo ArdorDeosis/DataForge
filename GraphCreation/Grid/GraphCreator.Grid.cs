@@ -49,7 +49,7 @@ public static partial class GraphCreator
       .ToArray();
     var graph = new IndexedGraph<IReadOnlyList<int>, TNodeData, TEdgeData>(new CoordinateHelpers.EqualityComparer());
     foreach (var coordinate in Grid.Coordinates(gridDefinition))
-      graph.AddNode(coordinate, options.CreateNodeData(new GridNodeData { Coordinates = coordinate }));
+      graph.AddNode(coordinate, options.CreateNodeData(coordinate));
 
     foreach (var info in Grid.EdgeInformation(gridDefinition))
     {
@@ -64,10 +64,10 @@ public static partial class GraphCreator
         graph.AddEdge(
           lowerNode,
           upperNode,
-          options.CreateEdgeData(new GridEdgeData<TNodeData>
+          options.CreateEdgeData(new EdgeDefinition<IReadOnlyList<int>, TNodeData>
           {
-            OriginCoordinate = info.LowerCoordinate,
-            DestinationCoordinate = info.UpperCoordinate,
+            OriginIndex = info.LowerCoordinate,
+            DestinationIndex = info.UpperCoordinate,
             OriginNodeData = lowerNode.Data,
             DestinationNodeData = upperNode.Data,
           })
@@ -79,10 +79,10 @@ public static partial class GraphCreator
         graph.AddEdge(
           upperNode,
           lowerNode,
-          options.CreateEdgeData(new GridEdgeData<TNodeData>
+          options.CreateEdgeData(new EdgeDefinition<IReadOnlyList<int>, TNodeData>
           {
-            OriginCoordinate = info.UpperCoordinate,
-            DestinationCoordinate = info.LowerCoordinate,
+            OriginIndex = info.UpperCoordinate,
+            DestinationIndex = info.LowerCoordinate,
             OriginNodeData = upperNode.Data,
             DestinationNodeData = lowerNode.Data,
           })

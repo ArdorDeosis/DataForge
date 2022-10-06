@@ -21,12 +21,12 @@ public class GridGraphCreationOption<TNodeData, TEdgeData>
   /// <summary>
   /// Function to create the node data.
   /// </summary>
-  public /*required*/ Func<GridNodeData, TNodeData> CreateNodeData { get; init; }
+  public /*required*/ Func<IReadOnlyList<int>, TNodeData> CreateNodeData { get; init; }
 
   /// <summary>
   /// Function to create the edge data.
   /// </summary>
-  public /*required*/ Func<GridEdgeData<TNodeData>, TEdgeData> CreateEdgeData { get; init; }
+  public /*required*/ Func<EdgeDefinition<IReadOnlyList<int>, TNodeData>, TEdgeData> CreateEdgeData { get; init; }
 
 #pragma warning restore CS8618
 }

@@ -46,12 +46,12 @@ public static partial class GraphCreator
           EdgeDirection = options.EdgeDirection,
         },
       },
-      CreateNodeData = gridNodeData =>
-        options.CreateNodeData(new LineNodeData { Position = gridNodeData.Coordinates[0] }),
-      CreateEdgeData = gridEdgeData => options.CreateEdgeData(new LineEdgeData<TNodeData>
+      CreateNodeData = coordinate =>
+        options.CreateNodeData(coordinate[0]),
+      CreateEdgeData = gridEdgeData => options.CreateEdgeData(new EdgeDefinition<int, TNodeData>
       {
-        OriginPosition = gridEdgeData.OriginCoordinate[0],
-        DestinationPosition = gridEdgeData.DestinationCoordinate[0],
+        OriginIndex = gridEdgeData.OriginIndex[0],
+        DestinationIndex = gridEdgeData.DestinationIndex[0],
         OriginNodeData = gridEdgeData.OriginNodeData,
         DestinationNodeData = gridEdgeData.DestinationNodeData,
       }),
