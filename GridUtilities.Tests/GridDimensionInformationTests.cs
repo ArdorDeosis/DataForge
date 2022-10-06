@@ -1,7 +1,6 @@
-﻿using GridUtilities;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
-namespace IteratorUtilities.Tests;
+namespace GridUtilities.Tests;
 
 public class GridDimensionInformationTests
 {
