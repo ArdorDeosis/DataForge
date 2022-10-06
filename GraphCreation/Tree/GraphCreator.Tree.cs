@@ -25,39 +25,37 @@ public static partial class GraphCreator
       var nodeData = options.CreateNodeData(addressData);
       graph.AddNode(address, nodeData);
 
-      AddEdges(address, nodeData);
+      AddEdges(addressData, nodeData);
 
       EnqueueChildNodes(address, addressData, nodeData);
     }
 
     return graph;
 
-    void AddEdges(IReadOnlyList<int> address, TNodeData nodeData)
+    void AddEdges(TreeNodeData nodeIndex, TNodeData nodeData)
     {
-      if (address.Count <= 1 || options.EdgeDirection == EdgeDirection.None)
+      if (nodeIndex.ParentAddress is null || options.EdgeDirection == EdgeDirection.None)
         return;
-
-      var parentAddress = address.SkipLast(1).ToArray();
 
       if (options.EdgeDirection.HasFlag(EdgeDirection.Forward))
       {
-        graph.AddEdge(parentAddress, address, options.CreateEdgeData(new TreeEdgeData<TNodeData>
+        graph.AddEdge(nodeIndex.ParentAddress, nodeIndex.Address, options.CreateEdgeData(new TreeEdgeData<TNodeData>
         {
-          OriginAddress = parentAddress,
-          DestinationAddress = address,
-          OriginNodeData = graph[parentAddress].Data,
+          OriginAddress = nodeIndex.ParentAddress,
+          DestinationAddress = nodeIndex.Address,
+          OriginNodeData = graph[nodeIndex.ParentAddress].Data,
           DestinationNodeData = nodeData,
         }));
       }
 
       if (options.EdgeDirection.HasFlag(EdgeDirection.Backward))
       {
-        graph.AddEdge(parentAddress, address, options.CreateEdgeData(new TreeEdgeData<TNodeData>
+        graph.AddEdge(nodeIndex.Address, nodeIndex.ParentAddress, options.CreateEdgeData(new TreeEdgeData<TNodeData>
         {
-          OriginAddress = address,
-          DestinationAddress = parentAddress,
+          OriginAddress = nodeIndex.Address,
+          DestinationAddress = nodeIndex.ParentAddress,
           OriginNodeData = nodeData,
-          DestinationNodeData = graph[parentAddress].Data,
+          DestinationNodeData = graph[nodeIndex.ParentAddress].Data,
         }));
       }
     }
