@@ -32,7 +32,7 @@ public class TreeGraphCreationOptions<TNodeData, TEdgeData>
   public int? MaxDepth
   {
     get => maxDepth;
-    init => maxDepth = value is null ? null : Guard.Against.NegativeOrZero(value.Value, nameof(MaxDepth));
+    init => maxDepth = value is null ? null : Guard.Against.Negative(value.Value, nameof(MaxDepth));
   }
 
   public EdgeDirection EdgeDirection { get; init; } = EdgeDirection.Forward;

@@ -22,4 +22,4 @@ jobs:
       - name: Build
         run: dotnet build --no-restore
       - name: Run Unit Tests
-        run: dotnet test -c test
+        run: dotnet test

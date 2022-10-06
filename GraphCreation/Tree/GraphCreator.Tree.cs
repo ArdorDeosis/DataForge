@@ -15,7 +15,7 @@ public static partial class GraphCreator
     var graph = new IndexedGraph<IReadOnlyList<int>, TNodeData, TEdgeData>(new CoordinateHelpers.EqualityComparer());
 
     var queue = new Queue<IReadOnlyList<int>>();
-    queue.Enqueue(new[] { 0 });
+    queue.Enqueue(Array.Empty<int>());
 
     while (queue.Count > 0)
     {
