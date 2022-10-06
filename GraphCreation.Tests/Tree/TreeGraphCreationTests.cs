@@ -6,15 +6,21 @@ using NUnit.Framework;
 
 namespace GraphCreation.Tests;
 
+internal static class TreeIndexHelper
+{
+  internal static TreeIndex FromArray(params int[] childIndices) =>
+    childIndices.Aggregate(new TreeIndex(), (lastIndex, childIndex) => new TreeIndex(lastIndex, childIndex));
+}
+
 public class TreeGraphCreationTests
 {
   [TestCaseSource(nameof(OptionsAndExpectedNodeIndicesOrData))]
   // this tests the node data creation the node child count calculation and the max depth parameter
-  public void TreeGraph_HasExpectedNodeData(TreeGraphCreationOptions<IReadOnlyList<int>, int> options,
-    IReadOnlyList<int>[] expectedNodeData)
+  public void TreeGraph_HasExpectedNodeData(TreeGraphCreationOptions<TreeIndex, int> options,
+    TreeIndex[] expectedNodeData)
   {
     // ACT
-    var graphs = new GraphBase<IReadOnlyList<int>, int>[]
+    var graphs = new GraphBase<TreeIndex, int>[]
     {
       GraphCreator.MakeTree(options),
       GraphCreator.MakeIndexedTree(options),
@@ -27,11 +33,11 @@ public class TreeGraphCreationTests
 
   [TestCaseSource(nameof(OptionsAndExpectedEdgeData))]
   // this tests the edge data creation and the edge direction parameters
-  public void TreeGraph_HasExpectedEdgeData(TreeGraphCreationOptions<int, (int[], int[])> options,
-    (int[], int[])[] expectedEdgeData)
+  public void TreeGraph_HasExpectedEdgeData(TreeGraphCreationOptions<int, (TreeIndex, TreeIndex)> options,
+    (TreeIndex, TreeIndex)[] expectedEdgeData)
   {
     // ACT
-    var graphs = new GraphBase<int, (int[], int[])>[]
+    var graphs = new GraphBase<int, (TreeIndex, TreeIndex)>[]
     {
       GraphCreator.MakeTree(options),
       GraphCreator.MakeIndexedTree(options),
@@ -43,8 +49,8 @@ public class TreeGraphCreationTests
   }
 
   [TestCaseSource(nameof(OptionsAndExpectedNodeIndicesOrData))]
-  public void IndexedTreeGraph_HasExpectedIndices(TreeGraphCreationOptions<IReadOnlyList<int>, int> options,
-    IReadOnlyList<int>[] expectedIndices)
+  public void IndexedTreeGraph_HasExpectedIndices(TreeGraphCreationOptions<TreeIndex, int> options,
+    TreeIndex[] expectedIndices)
   {
     // ACT
     var graph = GraphCreator.MakeIndexedTree(options);
@@ -55,150 +61,148 @@ public class TreeGraphCreationTests
 
   private static IEnumerable<object[]> OptionsAndExpectedNodeIndicesOrData()
   {
-    IReadOnlyList<int> CreateNodeData(TreeNodeData data) => data.Address;
-    int CreateEdgeData(TreeEdgeData<IReadOnlyList<int>> _) => 0;
+    TreeIndex CreateNodeData(TreeIndex data) => data;
+    int CreateEdgeData(EdgeDefinition<TreeIndex, TreeIndex> _) => 0;
 
     yield return new object[]
     {
-      new TreeGraphCreationOptions<IReadOnlyList<int>, int>
+      new TreeGraphCreationOptions<TreeIndex, int>
       {
         MaxDepth = 0,
         CalculateChildNodeCount = (_, _) => 0xBEEF,
         CreateNodeData = CreateNodeData,
         CreateEdgeData = CreateEdgeData,
       },
-      new[] { Array.Empty<int>() },
+      new[] { new TreeIndex() },
     };
     yield return new object[]
     {
-      new TreeGraphCreationOptions<IReadOnlyList<int>, int>
+      new TreeGraphCreationOptions<TreeIndex, int>
       {
         MaxDepth = 2,
         CalculateChildNodeCount = (_, _) => 2,
         CreateNodeData = CreateNodeData,
         CreateEdgeData = CreateEdgeData,
       },
-      new IReadOnlyList<int>[]
+      new TreeIndex[]
       {
-        Array.Empty<int>(),
-        new[] { 0 },
-        new[] { 1 },
-        new[] { 0, 0 },
-        new[] { 0, 1 },
-        new[] { 1, 0 },
-        new[] { 1, 1 },
+        new(),
+        TreeIndexHelper.FromArray(0),
+        TreeIndexHelper.FromArray(1),
+        TreeIndexHelper.FromArray(0, 0),
+        TreeIndexHelper.FromArray(0, 1),
+        TreeIndexHelper.FromArray(1, 0),
+        TreeIndexHelper.FromArray(1, 1),
       },
     };
     yield return new object[]
     {
-      new TreeGraphCreationOptions<IReadOnlyList<int>, int>
+      new TreeGraphCreationOptions<TreeIndex, int>
       {
-        MaxDepth = 10, // TODO: should be null
-        CalculateChildNodeCount = (_, address) => 3 - address.Count,
+        CalculateChildNodeCount = (_, address) => 3 - address.Depth,
         CreateNodeData = CreateNodeData,
         CreateEdgeData = CreateEdgeData,
       },
-      new IReadOnlyList<int>[]
+      new TreeIndex[]
       {
-        Array.Empty<int>(),
-        new[] { 0 },
-        new[] { 1 },
-        new[] { 2 },
-        new[] { 0, 0 },
-        new[] { 0, 1 },
-        new[] { 1, 0 },
-        new[] { 1, 1 },
-        new[] { 2, 0 },
-        new[] { 2, 1 },
-        new[] { 0, 0, 0 },
-        new[] { 0, 1, 0 },
-        new[] { 1, 0, 0 },
-        new[] { 1, 1, 0 },
-        new[] { 2, 0, 0 },
-        new[] { 2, 1, 0 },
+        new(),
+        TreeIndexHelper.FromArray(0),
+        TreeIndexHelper.FromArray(1),
+        TreeIndexHelper.FromArray(2),
+        TreeIndexHelper.FromArray(0, 0),
+        TreeIndexHelper.FromArray(0, 1),
+        TreeIndexHelper.FromArray(1, 0),
+        TreeIndexHelper.FromArray(1, 1),
+        TreeIndexHelper.FromArray(2, 0),
+        TreeIndexHelper.FromArray(2, 1),
+        TreeIndexHelper.FromArray(0, 0, 0),
+        TreeIndexHelper.FromArray(0, 1, 0),
+        TreeIndexHelper.FromArray(1, 0, 0),
+        TreeIndexHelper.FromArray(1, 1, 0),
+        TreeIndexHelper.FromArray(2, 0, 0),
+        TreeIndexHelper.FromArray(2, 1, 0),
       },
     };
   }
 
   private static IEnumerable<object[]> OptionsAndExpectedEdgeData()
   {
-    int CreateNodeData(TreeNodeData _) => 0;
+    const int maxDepth = 2;
+    int CreateNodeData(TreeIndex _) => 0;
 
-    (int[] from, int[] to) CreateEdgeData(TreeEdgeData<int> data) =>
-      (data.OriginAddress.ToArray(), data.DestinationAddress.ToArray());
+    (TreeIndex from, TreeIndex to) CreateEdgeData(EdgeDefinition<TreeIndex, int> data) =>
+      (data.OriginAddress, data.DestinationAddress);
+
+    int CalculateChildNodeCount(TreeIndex addressData, int _) => addressData.ChildIndex == 0 ? 2 : 0;
 
     yield return new object[]
     {
-      new TreeGraphCreationOptions<int, (int[] from, int[] to)>
+      new TreeGraphCreationOptions<int, (TreeIndex from, TreeIndex to)>
       {
-        MaxDepth = 1,
-        CalculateChildNodeCount = (addressData, _) =>
-          addressData.Address.Count == 0 || addressData.Address[^1] == 0 ? 2 : 0,
+        MaxDepth = maxDepth,
+        CalculateChildNodeCount = CalculateChildNodeCount,
         CreateNodeData = CreateNodeData,
         CreateEdgeData = CreateEdgeData,
         EdgeDirection = EdgeDirection.None,
       },
-      Array.Empty<(int[], int[])>(),
+      Array.Empty<(TreeIndex, TreeIndex)>(),
     };
     yield return new object[]
     {
-      new TreeGraphCreationOptions<int, (int[] from, int[] to)>
+      new TreeGraphCreationOptions<int, (TreeIndex from, TreeIndex to)>
       {
-        MaxDepth = 2,
-        CalculateChildNodeCount = (addressData, _) =>
-          addressData.Address.Count == 0 || addressData.Address[^1] == 0 ? 2 : 0,
+        MaxDepth = maxDepth,
+        CalculateChildNodeCount = CalculateChildNodeCount,
         CreateNodeData = CreateNodeData,
         CreateEdgeData = CreateEdgeData,
         EdgeDirection = EdgeDirection.Forward,
       },
       new[]
       {
-        (Array.Empty<int>(), new[] { 0 }),
-        (Array.Empty<int>(), new[] { 1 }),
-        (new[] { 0 }, new[] { 0, 0 }),
-        (new[] { 0 }, new[] { 0, 1 }),
+        (new TreeIndex(), TreeIndexHelper.FromArray(0)),
+        (new TreeIndex(), TreeIndexHelper.FromArray(1)),
+        (TreeIndexHelper.FromArray(0), TreeIndexHelper.FromArray(0, 0)),
+        (TreeIndexHelper.FromArray(0), TreeIndexHelper.FromArray(0, 1)),
       },
     };
     yield return new object[]
     {
-      new TreeGraphCreationOptions<int, (int[] from, int[] to)>
+      new TreeGraphCreationOptions<int, (TreeIndex from, TreeIndex to)>
       {
-        MaxDepth = 2,
-        CalculateChildNodeCount = (addressData, _) =>
-          addressData.Address.Count == 0 || addressData.Address[^1] == 0 ? 2 : 0,
+        MaxDepth = maxDepth,
+        CalculateChildNodeCount = CalculateChildNodeCount,
         CreateNodeData = CreateNodeData,
         CreateEdgeData = CreateEdgeData,
         EdgeDirection = EdgeDirection.Backward,
       },
       new[]
       {
-        (new[] { 0 }, Array.Empty<int>()),
-        (new[] { 1 }, Array.Empty<int>()),
-        (new[] { 0, 0 }, new[] { 0 }),
-        (new[] { 0, 1 }, new[] { 0 }),
+        (TreeIndexHelper.FromArray(0), new TreeIndex()),
+        (TreeIndexHelper.FromArray(1), new TreeIndex()),
+        (TreeIndexHelper.FromArray(0, 0), TreeIndexHelper.FromArray(0)),
+        (TreeIndexHelper.FromArray(0, 1), TreeIndexHelper.FromArray(0)),
       },
     };
     yield return new object[]
     {
-      new TreeGraphCreationOptions<int, (int[] from, int[] to)>
+      new TreeGraphCreationOptions<int, (TreeIndex from, TreeIndex to)>
       {
-        MaxDepth = 2,
-        CalculateChildNodeCount = (addressData, _) =>
-          addressData.Address.Count == 0 || addressData.Address[^1] == 0 ? 2 : 0,
+        MaxDepth = maxDepth,
+        CalculateChildNodeCount = CalculateChildNodeCount,
         CreateNodeData = CreateNodeData,
         CreateEdgeData = CreateEdgeData,
         EdgeDirection = EdgeDirection.ForwardAndBackward,
       },
       new[]
       {
-        (Array.Empty<int>(), new[] { 0 }),
-        (Array.Empty<int>(), new[] { 1 }),
-        (new[] { 0 }, new[] { 0, 0 }),
-        (new[] { 0 }, new[] { 0, 1 }),
-        (new[] { 0 }, Array.Empty<int>()),
-        (new[] { 1 }, Array.Empty<int>()),
-        (new[] { 0, 0 }, new[] { 0 }),
-        (new[] { 0, 1 }, new[] { 0 }),
+        (new TreeIndex(), TreeIndexHelper.FromArray(0)),
+        (new TreeIndex(), TreeIndexHelper.FromArray(1)),
+        (TreeIndexHelper.FromArray(0), TreeIndexHelper.FromArray(0, 0)),
+        (TreeIndexHelper.FromArray(0), TreeIndexHelper.FromArray(0, 1)),
+        (TreeIndexHelper.FromArray(0), new TreeIndex()),
+        (TreeIndexHelper.FromArray(1), new TreeIndex()),
+        (TreeIndexHelper.FromArray(0, 0), TreeIndexHelper.FromArray(0)),
+        (TreeIndexHelper.FromArray(0, 1), TreeIndexHelper.FromArray(0)),
       },
     };
   }

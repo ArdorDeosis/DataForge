@@ -12,17 +12,17 @@ public class TreeGraphCreationOptions<TNodeData, TEdgeData>
   /// <summary>
   /// Function to calculate the number of child nodes for a given node.
   /// </summary>
-  public /*required*/ Func<TreeNodeData, TNodeData, int> CalculateChildNodeCount { get; init; }
+  public /*required*/ Func<TreeIndex, TNodeData, int> CalculateChildNodeCount { get; init; }
 
   /// <summary>
   /// Function to create the node data.
   /// </summary>
-  public /*required*/ Func<TreeNodeData, TNodeData> CreateNodeData { get; init; }
+  public /*required*/ Func<TreeIndex, TNodeData> CreateNodeData { get; init; }
 
   /// <summary>
   /// Function to create the edge data.
   /// </summary>
-  public /*required*/ Func<TreeEdgeData<TNodeData>, TEdgeData> CreateEdgeData { get; init; }
+  public /*required*/ Func<EdgeDefinition<TreeIndex, TNodeData>, TEdgeData> CreateEdgeData { get; init; }
 
 #pragma warning restore CS8618
 
