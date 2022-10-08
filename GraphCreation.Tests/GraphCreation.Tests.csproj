@@ -18,8 +18,4 @@
         <ProjectReference Include="..\GraphCreation\GraphCreation.csproj"/>
     </ItemGroup>
 
-    <ItemGroup>
-        <Folder Include="Disk"/>
-    </ItemGroup>
-
 </Project>

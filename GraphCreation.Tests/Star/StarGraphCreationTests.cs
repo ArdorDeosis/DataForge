@@ -98,7 +98,7 @@ public class StarGraphCreationTests
     // ASSERT
     foreach (var graph in graphs)
     {
-      // Assert.That(graph.Edges, Has.Count.EqualTo(expectedEdges.Length));
+      Assert.That(graph.Edges, Has.Count.EqualTo(expectedEdges.Length));
       var edges = graph.Edges.Select(edge => (
         Math.Max(edge.Start.Data.ray, edge.End.Data.ray),
         edge.Start.Data.distance,

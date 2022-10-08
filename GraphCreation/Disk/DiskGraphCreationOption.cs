@@ -8,8 +8,9 @@ namespace GraphCreation;
 public sealed class DiskGraphCreationOption<TNodeData, TEdgeData>
   : IndexedGraphDataCreationOption<DiskIndex, TNodeData, TEdgeData>
 {
-  private readonly int meridianCount;
-  private readonly int ringCount;
+  // TODO: these default values should go once the required keyword is in use
+  private readonly int meridianCount = 1;
+  private readonly int ringCount = 1;
 
   public /*required*/ int MeridianCount
   {
@@ -20,7 +21,7 @@ public sealed class DiskGraphCreationOption<TNodeData, TEdgeData>
   public /*required*/ int RingCount
   {
     get => ringCount;
-    init => ringCount = Guard.Against.Negative(value, nameof(RingCount));
+    init => ringCount = Guard.Against.NegativeOrZero(value, nameof(RingCount));
   }
 
   public EdgeDirection MeridianEdgeDirection { get; init; } = EdgeDirection.Forward;
