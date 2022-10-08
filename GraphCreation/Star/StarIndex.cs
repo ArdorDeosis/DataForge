@@ -1,7 +1,9 @@
 ﻿using Ardalis.GuardClauses;
+using JetBrains.Annotations;
 
 namespace GraphCreation;
 
+[PublicAPI]
 public sealed class StarIndex : IEquatable<StarIndex>
 {
   public int Ray { get; }

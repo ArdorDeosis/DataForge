@@ -1,7 +1,9 @@
 ﻿using Ardalis.GuardClauses;
+using JetBrains.Annotations;
 
 namespace GraphCreation;
 
+[PublicAPI]
 public sealed class DiskIndex : IEquatable<DiskIndex>
 {
   public int Meridian { get; }
