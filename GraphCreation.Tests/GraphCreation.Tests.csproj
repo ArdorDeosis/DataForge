@@ -20,7 +20,6 @@
 
     <ItemGroup>
         <Folder Include="Disk"/>
-        <Folder Include="Star"/>
     </ItemGroup>
 
 </Project>

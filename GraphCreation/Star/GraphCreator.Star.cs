@@ -42,13 +42,14 @@ public static partial class GraphCreator
     graph.AddNode(centerIndex, options.CreateNodeData(centerIndex));
     for (var ray = 0; ray < options.RayCount; ray++)
     {
-      for (var n = 1; n <= options.CalculateRayLength(ray); n++)
+      var rayLength = options.CalculateRayLength(ray);
+      for (var n = 1; n <= rayLength; n++)
       {
         var index = new StarIndex(ray, n);
         graph.AddNode(index, options.CreateNodeData(index));
         graph.AddEdgesForDirection(
           options.EdgeDirection,
-          new StarIndex(ray, n - 1),
+          n == 1 ? centerIndex : new StarIndex(ray, n - 1),
           index,
           options.CreateEdgeData
         );

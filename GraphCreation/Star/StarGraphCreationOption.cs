@@ -13,7 +13,7 @@ public sealed class StarGraphCreationOption<TNodeData, TEdgeData>
   public /*required*/ int RayCount
   {
     get => rayCount;
-    init => rayCount = Guard.Against.NegativeOrZero(value, nameof(RayCount));
+    init => rayCount = Guard.Against.Negative(value, nameof(RayCount));
   }
 
   public EdgeDirection EdgeDirection { get; init; } = EdgeDirection.Forward;
