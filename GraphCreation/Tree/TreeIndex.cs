@@ -1,10 +1,11 @@
-﻿using Ardalis.GuardClauses;
+﻿using System.Diagnostics.CodeAnalysis;
+using Ardalis.GuardClauses;
 using JetBrains.Annotations;
 
 namespace GraphCreation;
 
 [PublicAPI]
-public class TreeIndex : IEquatable<TreeIndex>
+public sealed class TreeIndex : IEquatable<TreeIndex>
 {
   public TreeIndex()
   { }
@@ -22,6 +23,7 @@ public class TreeIndex : IEquatable<TreeIndex>
 
   public int Depth { get; private init; }
 
+  [MemberNotNullWhen(false, nameof(ParentIndex))]
   public bool IsRoot => ParentIndex is null;
 
 

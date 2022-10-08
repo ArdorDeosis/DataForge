@@ -48,7 +48,7 @@ public static partial class GraphCreator
       },
       CreateNodeData = coordinate =>
         options.CreateNodeData(coordinate[0]),
-      CreateEdgeData = gridEdgeData => options.CreateEdgeData(new EdgeDefinition<int, TNodeData>
+      CreateEdgeData = gridEdgeData => options.CreateEdgeData(new IndexedGraphEdgeDefinition<int, TNodeData>
       {
         OriginIndex = gridEdgeData.OriginIndex[0],
         DestinationIndex = gridEdgeData.DestinationIndex[0],

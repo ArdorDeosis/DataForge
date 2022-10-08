@@ -20,7 +20,6 @@ public class TreeIndexTests
   public void Initializer_InvalidChildIndex_ThrowsArgumentException() =>
     Assert.That(() => new TreeIndex(null!, -1), Throws.ArgumentException);
 
-
   [TestCaseSource(nameof(TreeIndicesAndExpectedDepths))]
   public void Depth_ExpectedValue(TreeIndex index, int expectedDepth) =>
     Assert.That(index.Depth, Is.EqualTo(expectedDepth));

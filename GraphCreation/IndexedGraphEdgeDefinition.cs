@@ -3,7 +3,7 @@
 namespace GraphCreation;
 
 [ExcludeFromCodeCoverage]
-public readonly struct EdgeDefinition<TIndex, TNodeData>
+public readonly struct IndexedGraphEdgeDefinition<TIndex, TNodeData> where TIndex : notnull
 {
   public /*required*/ TIndex OriginIndex { get; init; }
   public /*required*/ TIndex DestinationIndex { get; init; }

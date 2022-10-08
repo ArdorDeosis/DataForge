@@ -1,5 +1,4 @@
 ﻿using Graph;
-using GridUtilities;
 
 namespace GraphCreation;
 
@@ -24,40 +23,13 @@ public static partial class GraphCreator
       var nodeData = options.CreateNodeData(index);
       graph.AddNode(index, nodeData);
 
-      AddEdges(index, nodeData);
+      if (!index.IsRoot)
+        graph.AddEdgesForDirection(options.EdgeDirection, index.ParentIndex, index, options.CreateEdgeData);
 
       EnqueueChildNodes(index, nodeData);
     }
 
     return graph;
-
-    void AddEdges(TreeIndex nodeIndex, TNodeData nodeData)
-    {
-      if (nodeIndex.ParentIndex is null || options.EdgeDirection == EdgeDirection.None)
-        return;
-
-      if (options.EdgeDirection.HasFlag(EdgeDirection.Forward))
-      {
-        graph.AddEdge(nodeIndex.ParentIndex, nodeIndex, options.CreateEdgeData(new EdgeDefinition<TreeIndex, TNodeData>
-        {
-          OriginIndex = nodeIndex.ParentIndex,
-          DestinationIndex = nodeIndex,
-          OriginNodeData = graph[nodeIndex.ParentIndex].Data,
-          DestinationNodeData = nodeData,
-        }));
-      }
-
-      if (options.EdgeDirection.HasFlag(EdgeDirection.Backward))
-      {
-        graph.AddEdge(nodeIndex, nodeIndex.ParentIndex, options.CreateEdgeData(new EdgeDefinition<TreeIndex, TNodeData>
-        {
-          OriginIndex = nodeIndex,
-          DestinationIndex = nodeIndex.ParentIndex,
-          OriginNodeData = nodeData,
-          DestinationNodeData = graph[nodeIndex.ParentIndex].Data,
-        }));
-      }
-    }
 
     void EnqueueChildNodes(TreeIndex index, TNodeData data)
     {

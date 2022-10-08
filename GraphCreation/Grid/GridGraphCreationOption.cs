@@ -8,25 +8,16 @@ namespace GraphCreation;
 /// <typeparam name="TNodeData">Type of the data the nodes are holding.</typeparam>
 /// <typeparam name="TEdgeData">Type of the data the edges are holding.</typeparam>
 [PublicAPI]
-public class GridGraphCreationOption<TNodeData, TEdgeData>
+public sealed class GridGraphCreationOption<TNodeData, TEdgeData>
+  : IndexedGraphDataCreationOption<IReadOnlyList<int>, TNodeData, TEdgeData>
 {
-#pragma warning disable CS8618 // TODO: I'd hope these warnings vanish with the required keyword
+#pragma warning disable CS8618 // TODO: These warnings should vanish when the required keyword comes
 
   /// <summary>
   /// Dimensional information about the grid including size, wrap and edge direction. Each element represents one
   /// dimension in the grid. 
   /// </summary>
   public /*required*/ IReadOnlyList<GridGraphDimensionInformation> DimensionInformation { get; init; }
-
-  /// <summary>
-  /// Function to create the node data.
-  /// </summary>
-  public /*required*/ Func<IReadOnlyList<int>, TNodeData> CreateNodeData { get; init; }
-
-  /// <summary>
-  /// Function to create the edge data.
-  /// </summary>
-  public /*required*/ Func<EdgeDefinition<IReadOnlyList<int>, TNodeData>, TEdgeData> CreateEdgeData { get; init; }
 
 #pragma warning restore CS8618
 }
