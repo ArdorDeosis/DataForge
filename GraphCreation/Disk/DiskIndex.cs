@@ -1,6 +1,6 @@
 ﻿using Ardalis.GuardClauses;
 
-namespace GraphCreation.Disk;
+namespace GraphCreation;
 
 public sealed class DiskIndex : IEquatable<DiskIndex>
 {
