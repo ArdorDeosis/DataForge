@@ -10,7 +10,7 @@ public static partial class GraphCreator
   /// <see cref="LineGraphCreationOption{TNodeData,TEdgeData}.EdgeDirection">edge direction</see>. The
   /// <see cref="LineGraphCreationOption{TNodeData,TEdgeData}.CreateNodeData"/> and
   /// <see cref="LineGraphCreationOption{TNodeData,TEdgeData}.CreateEdgeData"/> functions are used to produce data for
-  /// the nodes and edges in the graph depending on their position in the grid.
+  /// the nodes and edges in the graph depending on their position on the line.
   /// </summary>
   /// <param name="options">Definition of the grid structure.</param>
   /// <typeparam name="TNodeData">Type of the data the nodes are holding.</typeparam>
@@ -26,7 +26,7 @@ public static partial class GraphCreator
   /// <see cref="LineGraphCreationOption{TNodeData,TEdgeData}.EdgeDirection">edge direction</see>. The
   /// <see cref="LineGraphCreationOption{TNodeData,TEdgeData}.CreateNodeData"/> and
   /// <see cref="LineGraphCreationOption{TNodeData,TEdgeData}.CreateEdgeData"/> functions are used to produce data for
-  /// the nodes and edges in the graph depending on their position in the grid.
+  /// the nodes and edges in the graph depending on their position on the line.
   /// </summary>
   /// <param name="options">Definition of the grid structure.</param>
   /// <typeparam name="TNodeData">Type of the data the nodes are holding.</typeparam>
