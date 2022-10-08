@@ -5,7 +5,7 @@ namespace GraphCreation;
 
 /// TODO: use field keyword
 [PublicAPI]
-public class LineGraphCreationOption<TNodeData, TEdgeData>
+public class LineGraphCreationOption<TNodeData, TEdgeData> : IndexedGraphDataCreationOption<int, TNodeData, TEdgeData>
 {
   private readonly int length;
 
@@ -14,12 +14,6 @@ public class LineGraphCreationOption<TNodeData, TEdgeData>
     get => length;
     init => length = Guard.Against.NegativeOrZero(value, nameof(Length));
   }
-
-
-#pragma warning disable CS8618 // TODO: I'd hope these warnings vanish with the required keyword
-  public /*required*/ Func<LineNodeData, TNodeData> CreateNodeData { get; init; }
-  public /*required*/ Func<LineEdgeData<TNodeData>, TEdgeData> CreateEdgeData { get; init; }
-#pragma warning restore CS8618
 
   public EdgeDirection EdgeDirection { get; init; } = EdgeDirection.Forward;
 }

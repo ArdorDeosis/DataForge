@@ -19,7 +19,7 @@ public class GridGraphCreationTests
         new() { Length = 2 },
         new() { Length = 2 },
       },
-      CreateNodeData = data => data.Coordinates[0] * 2 + data.Coordinates[1],
+      CreateNodeData = data => data[0] * 2 + data[1],
       CreateEdgeData = _ => 0,
     };
 
@@ -74,7 +74,7 @@ public class GridGraphCreationTests
       {
         new() { Length = 3, Wrap = wrap, EdgeDirection = direction },
       },
-      CreateNodeData = data => data.Coordinates[0],
+      CreateNodeData = coordinate => coordinate[0],
       CreateEdgeData = _ => 0,
     };
 
@@ -100,7 +100,7 @@ public class GridGraphCreationTests
     var options = new GridGraphCreationOption<IReadOnlyList<int>, int>
     {
       DimensionInformation = gridSize.Select(size => new GridGraphDimensionInformation { Length = size }).ToArray(),
-      CreateNodeData = data => data.Coordinates,
+      CreateNodeData = coordinate => coordinate,
       CreateEdgeData = _ => 0,
     };
 

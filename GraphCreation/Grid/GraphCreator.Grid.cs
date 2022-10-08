@@ -49,46 +49,15 @@ public static partial class GraphCreator
       .ToArray();
     var graph = new IndexedGraph<IReadOnlyList<int>, TNodeData, TEdgeData>(new CoordinateHelpers.EqualityComparer());
     foreach (var coordinate in Grid.Coordinates(gridDefinition))
-      graph.AddNode(coordinate, options.CreateNodeData(new GridNodeData { Coordinates = coordinate }));
+      graph.AddNode(coordinate, options.CreateNodeData(coordinate));
 
     foreach (var info in Grid.EdgeInformation(gridDefinition))
-    {
-      var direction = options.DimensionInformation[info.DimensionOfChange].EdgeDirection;
-      if (direction == EdgeDirection.None)
-        continue;
-      var lowerNode = graph[info.LowerCoordinate];
-      var upperNode = graph[info.UpperCoordinate];
-
-      if (direction.HasFlag(EdgeDirection.Forward))
-      {
-        graph.AddEdge(
-          lowerNode,
-          upperNode,
-          options.CreateEdgeData(new GridEdgeData<TNodeData>
-          {
-            OriginCoordinate = info.LowerCoordinate,
-            DestinationCoordinate = info.UpperCoordinate,
-            OriginNodeData = lowerNode.Data,
-            DestinationNodeData = upperNode.Data,
-          })
-        );
-      }
-
-      if (direction.HasFlag(EdgeDirection.Backward))
-      {
-        graph.AddEdge(
-          upperNode,
-          lowerNode,
-          options.CreateEdgeData(new GridEdgeData<TNodeData>
-          {
-            OriginCoordinate = info.UpperCoordinate,
-            DestinationCoordinate = info.LowerCoordinate,
-            OriginNodeData = upperNode.Data,
-            DestinationNodeData = lowerNode.Data,
-          })
-        );
-      }
-    }
+      graph.AddEdgesForDirection(
+        options.DimensionInformation[info.DimensionOfChange].EdgeDirection,
+        info.LowerCoordinate,
+        info.UpperCoordinate,
+        options.CreateEdgeData
+      );
 
     return graph;
   }
