@@ -6,13 +6,6 @@ namespace GridUtilities.Tests;
 public class GridEdgeInformationTests
 {
   [Test]
-  public void PublicParameterlessConstructor_ThrowsInvalidOperationException()
-  {
-    // ASSERT
-    Assert.That(() => new GridEdgeInformation(), Throws.InvalidOperationException);
-  }
-
-  [Test]
   public void Constructor_EmptyLowerCoordinate_ThrowsArgumentException()
   {
     // ASSERT
