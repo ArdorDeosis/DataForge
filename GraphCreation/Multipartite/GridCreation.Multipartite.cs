@@ -4,8 +4,8 @@ namespace GraphCreation;
 
 public static partial class GridCreation
 {
-  public static Graph<TNodeData, TEdgeData> MakeCompleteMultipartite<TNodeData, TEdgeData>(
-    CompleteMultipartiteGraphCreationOption<TNodeData, TEdgeData> options)
+  public static Graph<TNodeData, TEdgeData> MakeMultipartite<TNodeData, TEdgeData>(
+    MultipartiteGraphCreationOption<TNodeData, TEdgeData> options)
   {
     var graph = new Graph<TNodeData, TEdgeData>();
 
@@ -21,12 +21,10 @@ public static partial class GridCreation
         {
           foreach (var upperNode in nodeSets[upperSet])
           {
-            graph.AddEdgesForDirection(
-              options.EdgeDirection,
-              lowerNode,
-              upperNode,
-              options.CreateEdgeData
-            );
+            if (options.CreateEdge(lowerNode.Data, upperNode.Data, EdgeDirection.Forward))
+              graph.AddEdge(lowerNode, upperNode, options.CreateEdgeData(lowerNode.Data, upperNode.Data));
+            if (options.CreateEdge(upperNode.Data, lowerNode.Data, EdgeDirection.Backward))
+              graph.AddEdge(upperNode, lowerNode, options.CreateEdgeData(upperNode.Data, lowerNode.Data));
           }
         }
       }

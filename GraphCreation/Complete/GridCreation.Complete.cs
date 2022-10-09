@@ -2,7 +2,7 @@
 
 namespace GraphCreation;
 
-public static partial class GridCreation
+public static partial class GraphCreator
 {
   public static Graph<TNodeData, TEdgeData> MakeComplete<TNodeData, TEdgeData>(
     CompleteGraphCreationOption<TNodeData, TEdgeData> options)

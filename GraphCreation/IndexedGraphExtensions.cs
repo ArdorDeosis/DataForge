@@ -2,7 +2,7 @@
 
 namespace GraphCreation;
 
-internal static class IndexedGraphExtensions
+internal static class GraphConvenienceExtensions
 {
   internal static void AddEdgesForDirection<TIndex, TNodeData, TEdgeData>(
     this IndexedGraph<TIndex, TNodeData, TEdgeData> graph,
