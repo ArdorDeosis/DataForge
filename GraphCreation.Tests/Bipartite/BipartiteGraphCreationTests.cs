@@ -5,108 +5,95 @@ using NUnit.Framework;
 
 namespace GraphCreation.Tests;
 
-public class MultipartiteGraphCreationTests
+public class BipartiteGraphCreationTests
 {
   [Test]
-  public void MultipartiteGraph_HasExpectedNodeData()
+  public void BipartiteGraph_HasExpectedNodeData()
   {
     // ARRANGE
-    var options = new MultipartiteGraphCreationOption<int, int>
+    var options = new BipartiteGraphCreationOption<int, int>
     {
       CreateEdgeData = (_, _) => 0,
-      NodeDataSets = NodeDataSets,
+      NodeDataSetA = NodeDataSetA,
+      NodeDataSetB = NodeDataSetB,
       CreateEdge = (_, _, _) => false,
     };
 
     // ACT
-    var graph = GraphCreator.MakeMultipartite(options);
+    var graph = GraphCreator.MakeBipartite(options);
 
     // ASSERT
-    Assert.That(graph.Nodes.Select(node => node.Data), Is.EqualTo(NodeDataSets.SelectMany(set => set)));
+    Assert.That(graph.Nodes.Select(node => node.Data), Is.EqualTo(NodeDataSetA.Concat(NodeDataSetB)));
   }
 
   [TestCaseSource(nameof(EdgeDirectionAndExpectedEdges))]
-  public void MultipartiteGraph_HasExpectedStructureData(EdgeDirection edgeDirection, (int, int)[] expectedEdges)
+  public void BipartiteGraph_HasExpectedStructureData(EdgeDirection edgeDirection, (int, int)[] expectedEdges)
   {
     // ARRANGE
-    var options = new MultipartiteGraphCreationOption<int, int>
+    var options = new BipartiteGraphCreationOption<int, int>
     {
       CreateEdgeData = (_, _) => 0,
-      NodeDataSets = NodeDataSets,
+      NodeDataSetA = NodeDataSetA,
+      NodeDataSetB = NodeDataSetB,
       CreateEdge = (_, _, direction) => edgeDirection.HasFlag(direction),
     };
 
     // ACT
-    var graph = GraphCreator.MakeMultipartite(options);
+    var graph = GraphCreator.MakeBipartite(options);
 
     // ASSERT
     Assert.That(graph.Edges.Select(edge => (edge.Start.Data, edge.End.Data)), Is.EquivalentTo(expectedEdges));
   }
 
   [TestCaseSource(nameof(EdgeDirectionAndExpectedEdges))]
-  public void MultipartiteGraph_HasExpectedEdgeData(EdgeDirection edgeDirection, (int, int)[] expectedEdges)
+  public void BipartiteGraph_HasExpectedEdgeData(EdgeDirection edgeDirection, (int, int)[] expectedEdges)
   {
     // ARRANGE
-    var options = new MultipartiteGraphCreationOption<int, (int, int)>
+    var options = new BipartiteGraphCreationOption<int, (int, int)>
     {
       CreateEdgeData = (from, to) => (from, to),
-      NodeDataSets = NodeDataSets,
+      NodeDataSetA = NodeDataSetA,
+      NodeDataSetB = NodeDataSetB,
       CreateEdge = (_, _, direction) => edgeDirection.HasFlag(direction),
     };
 
     // ACT
-    var graph = GraphCreator.MakeMultipartite(options);
+    var graph = GraphCreator.MakeBipartite(options);
 
     // ASSERT
     Assert.That(graph.Edges.Select(edge => edge.Data), Is.EquivalentTo(expectedEdges));
   }
 
   [Test]
-  public void MultipartiteGraph_CustomEdgeCreation_HasExpectedEdges()
+  public void BipartiteGraph_CustomEdgeCreation_HasExpectedEdges()
   {
     // ARRANGE
-    var options = new MultipartiteGraphCreationOption<string, int>
+    var options = new BipartiteGraphCreationOption<string, int>
     {
       CreateEdgeData = (_, _) => 0,
-      NodeDataSets = new[]
-      {
-        new[] { "Horst", "Hermann" },
-        new[] { "Asa", "Kriemhild" },
-        new[] { "Þor", "Grima" },
-      },
+      NodeDataSetA = new[] { "Horst", "Hermann" },
+      NodeDataSetB = new[] { "Asa", "Kriemhild" },
       CreateEdge = (fromData, toData, _) => fromData.Length < toData.Length,
     };
     var expectedEdges = new[]
     {
-      ("Horst", "Kriemhild"),
-      ("Hermann", "Kriemhild"),
-      ("Asa", "Horst"), ("Asa", "Hermann"), ("Asa", "Grima"),
-      ("Þor", "Horst"), ("Þor", "Hermann"), ("Þor", "Kriemhild"),
-      ("Grima", "Hermann"), ("Grima", "Kriemhild"),
+      ("Horst", "Kriemhild"), ("Hermann", "Kriemhild"),
+      ("Asa", "Horst"), ("Asa", "Hermann"),
     };
 
     // ACT
-    var graph = GraphCreator.MakeMultipartite(options);
+    var graph = GraphCreator.MakeBipartite(options);
 
     // ASSERT
     Assert.That(graph.Edges.Select(edge => (edge.Start.Data, edge.End.Data)), Is.EquivalentTo(expectedEdges));
   }
 
-  private static int[][] NodeDataSets =>
-    new[]
-    {
-      new[] { 0, 1 },
-      new[] { 0xC0FFEE, 0xBEEF },
-      new[] { int.MinValue, int.MaxValue },
-    };
+  private static IEnumerable<int> NodeDataSetA => new[] { 0xC0FFEE, 0xBEEF };
+  private static IEnumerable<int> NodeDataSetB => new[] { int.MinValue, int.MaxValue };
 
   private static (int, int)[] ForwardEdges =>
     new[]
     {
-      (0, 0xC0FFEE), (0, 0xBEEF),
-      (0, int.MinValue), (0, int.MaxValue),
-      (1, 0xC0FFEE), (1, 0xBEEF),
-      (1, int.MinValue), (1, int.MaxValue),
       (0xC0FFEE, int.MinValue), (0xC0FFEE, int.MaxValue),
       (0xBEEF, int.MinValue), (0xBEEF, int.MaxValue),
     };
