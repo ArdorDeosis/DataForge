@@ -2,7 +2,7 @@
 
 namespace GraphCreation;
 
-internal static class IndexedGraphExtensions
+internal static class GraphConvenienceExtensions
 {
   internal static void AddEdgesForDirection<TIndex, TNodeData, TEdgeData>(
     this IndexedGraph<TIndex, TNodeData, TEdgeData> graph,
@@ -35,5 +35,20 @@ internal static class IndexedGraphExtensions
         DestinationNodeData = graph[lowerIndex].Data,
       }));
     }
+  }
+
+  internal static void AddEdgesForDirection<TNodeData, TEdgeData>(
+    this Graph<TNodeData, TEdgeData> graph,
+    EdgeDirection direction,
+    Node<TNodeData, TEdgeData> lowerNode,
+    Node<TNodeData, TEdgeData> upperNode,
+    Func<TNodeData, TNodeData, TEdgeData> createEdgeData
+  )
+  {
+    if (direction.HasFlag(EdgeDirection.Forward))
+      graph.AddEdge(lowerNode, upperNode, createEdgeData(lowerNode.Data, upperNode.Data));
+
+    if (direction.HasFlag(EdgeDirection.Backward))
+      graph.AddEdge(upperNode, lowerNode, createEdgeData(upperNode.Data, lowerNode.Data));
   }
 }
