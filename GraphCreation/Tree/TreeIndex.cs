@@ -4,6 +4,9 @@ using JetBrains.Annotations;
 
 namespace GraphCreation;
 
+/// <summary>
+/// An index for a node in a tree graph.
+/// </summary>
 [PublicAPI]
 public sealed class TreeIndex : IEquatable<TreeIndex>
 {
@@ -17,12 +20,24 @@ public sealed class TreeIndex : IEquatable<TreeIndex>
     Depth = parentIndex.Depth + 1;
   }
 
+  /// <summary>
+  /// The Index of the node's parent node. <tt>null</tt> if it is the root node.
+  /// </summary>
   public TreeIndex? ParentIndex { get; private init; }
 
+  /// <summary>
+  /// The number of this node in the list of child nodes of its parent node. 0 if it is the root node.
+  /// </summary>
   public int ChildIndex { get; private init; }
 
+  /// <summary>
+  /// The depth of the node from the root node. (How far down the tree is this node?) 
+  /// </summary>
   public int Depth { get; private init; }
 
+  /// <summary>
+  /// Whether this is the root node of the tree graph.
+  /// </summary>
   [MemberNotNullWhen(false, nameof(ParentIndex))]
   public bool IsRoot => ParentIndex is null;
 

@@ -10,7 +10,7 @@ public class DiskGraphCreationTests
   public void DiskGraph_HasExpectedNodeData()
   {
     // ARRANGE
-    var options = new DiskGraphCreationOption<(int ray, int distance), int>
+    var options = new DiskGraphCreationOptions<(int ray, int distance), int>
     {
       CreateNodeData = index => (index.Meridian, index.Distance),
       CreateEdgeData = _ => 0,
@@ -41,14 +41,14 @@ public class DiskGraphCreationTests
   public void DiskGraph_HasExpectedEdgeData()
   {
     // ARRANGE
-    var options = new DiskGraphCreationOption<DiskIndex, (DiskIndex, DiskIndex)>
+    var options = new DiskGraphCreationOptions<DiskIndex, (DiskIndex, DiskIndex)>
     {
       MeridianCount = 3,
       RingCount = 2,
       CreateNodeData = index => index,
       CreateEdgeData = data => (
-        data.OriginIndex,
-        data.DestinationIndex
+        OriginIndex: data.StartIndex,
+        DestinationIndex: data.EndIndex
       ),
       MeridianEdgeDirection = EdgeDirection.Backward,
       RingEdgeDirection = EdgeDirection.ForwardAndBackward,
@@ -92,7 +92,7 @@ public class DiskGraphCreationTests
   public void DiskGraph_HasExpectedStructure()
   {
     // ARRANGE
-    var options = new DiskGraphCreationOption<DiskIndex, int>
+    var options = new DiskGraphCreationOptions<DiskIndex, int>
     {
       MeridianCount = 3,
       RingCount = 2,
@@ -136,7 +136,7 @@ public class DiskGraphCreationTests
   public void IndexedDiskGraph_HasExpectedIndices()
   {
     // ARRANGE
-    var options = new DiskGraphCreationOption<int, int>
+    var options = new DiskGraphCreationOptions<int, int>
     {
       CreateNodeData = _ => 0,
       CreateEdgeData = _ => 0,

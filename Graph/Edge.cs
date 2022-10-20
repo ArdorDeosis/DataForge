@@ -6,13 +6,21 @@
 /// </summary>
 public class Edge<TNodeData, TEdgeData> : GraphComponent<TNodeData, TEdgeData>
 {
+  /// <summary>
+  /// The node this edge comes from.
+  /// </summary>
   public readonly Node<TNodeData, TEdgeData> Start;
+  
+  /// <summary>
+  /// The node this edge goes to.
+  /// </summary>
   public readonly Node<TNodeData, TEdgeData> End;
 
   /// <summary>
-  /// A collection of both nodes this edge is connecting.
+  /// A collection of the nodes this edge is connecting. Contains only one node, if the edge starts and ends at the
+  /// same node.  
   /// </summary>
-  internal IEnumerable<Node<TNodeData, TEdgeData>> Nodes
+  public IEnumerable<Node<TNodeData, TEdgeData>> Nodes
   {
     get
     {

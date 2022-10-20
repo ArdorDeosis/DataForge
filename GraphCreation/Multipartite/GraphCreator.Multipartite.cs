@@ -4,8 +4,15 @@ namespace GraphCreation;
 
 public static partial class GraphCreator
 {
+  /// <summary>
+  /// Creates a multipartite graph from two sets of node data.
+  /// </summary>
+  /// <param name="options">Creation options for the graph creation.</param>
+  /// <typeparam name="TNodeData">Type of the data the nodes are holding.</typeparam>
+  /// <typeparam name="TEdgeData">Type of the data the edges are holding.</typeparam>
+  /// <returns>The created graph.</returns>
   public static Graph<TNodeData, TEdgeData> MakeMultipartite<TNodeData, TEdgeData>(
-    MultipartiteGraphCreationOption<TNodeData, TEdgeData> options)
+    MultipartiteGraphCreationOptions<TNodeData, TEdgeData> options)
   {
     var graph = new Graph<TNodeData, TEdgeData>();
 
@@ -21,9 +28,9 @@ public static partial class GraphCreator
         {
           foreach (var upperNode in nodeSets[upperSet])
           {
-            if (options.CreateEdge(lowerNode.Data, upperNode.Data, EdgeDirection.Forward))
+            if (options.ShouldCreateEdge(lowerNode.Data, upperNode.Data, EdgeDirection.Forward))
               graph.AddEdge(lowerNode, upperNode, options.CreateEdgeData(lowerNode.Data, upperNode.Data));
-            if (options.CreateEdge(upperNode.Data, lowerNode.Data, EdgeDirection.Backward))
+            if (options.ShouldCreateEdge(upperNode.Data, lowerNode.Data, EdgeDirection.Backward))
               graph.AddEdge(upperNode, lowerNode, options.CreateEdgeData(upperNode.Data, lowerNode.Data));
           }
         }

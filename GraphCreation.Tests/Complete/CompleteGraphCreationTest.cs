@@ -10,7 +10,7 @@ public class CompleteGraphCreationTest
   public void CompleteGraph_AllNodesAreCreated(int[] nodeData)
   {
     // ARRANGE
-    var options = new CompleteGraphCreationOption<int, int>
+    var options = new CompleteGraphCreationOptions<int, int>
     {
       NodeData = nodeData,
       CreateEdgeData = (_, _) => 0,
@@ -29,7 +29,7 @@ public class CompleteGraphCreationTest
   {
     // ARRANGE
     var data = Enumerable.Range(0, 5);
-    var options = new CompleteGraphCreationOption<int, int>
+    var options = new CompleteGraphCreationOptions<int, int>
     {
       NodeData = data,
       CreateEdgeData = (_, _) => 0,
@@ -48,7 +48,7 @@ public class CompleteGraphCreationTest
   {
     // ARRANGE
     var data = Enumerable.Range(0, 3);
-    var options = new CompleteGraphCreationOption<int, int>
+    var options = new CompleteGraphCreationOptions<int, int>
     {
       NodeData = data,
       CreateEdgeData = (from, to) => from + to,

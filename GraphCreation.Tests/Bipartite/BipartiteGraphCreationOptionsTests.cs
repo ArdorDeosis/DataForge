@@ -10,9 +10,9 @@ public class BipartiteGraphCreationOptionsTests
     bool expectedValue)
   {
     // ARRANGE
-    var options = new BipartiteGraphCreationOption<int, int>();
+    var options = new BipartiteGraphCreationOptions<int, int>();
 
     // ASSERT
-    Assert.That(options.CreateEdge(0, 0, edgeDirection), Is.EqualTo(expectedValue));
+    Assert.That(options.ShouldCreateEdge(0, 0, edgeDirection), Is.EqualTo(expectedValue));
   }
 }

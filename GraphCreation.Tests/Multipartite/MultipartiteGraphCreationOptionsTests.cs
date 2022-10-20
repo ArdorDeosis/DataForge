@@ -10,9 +10,9 @@ public class MultipartiteGraphCreationOptionsTests
     bool expectedValue)
   {
     // ARRANGE
-    var options = new MultipartiteGraphCreationOption<int, int>();
+    var options = new MultipartiteGraphCreationOptions<int, int>();
 
     // ASSERT
-    Assert.That(options.CreateEdge(0, 0, edgeDirection), Is.EqualTo(expectedValue));
+    Assert.That(options.ShouldCreateEdge(0, 0, edgeDirection), Is.EqualTo(expectedValue));
   }
 }

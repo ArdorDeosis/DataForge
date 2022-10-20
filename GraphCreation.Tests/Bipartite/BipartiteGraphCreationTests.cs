@@ -11,12 +11,12 @@ public class BipartiteGraphCreationTests
   public void BipartiteGraph_HasExpectedNodeData()
   {
     // ARRANGE
-    var options = new BipartiteGraphCreationOption<int, int>
+    var options = new BipartiteGraphCreationOptions<int, int>
     {
       CreateEdgeData = (_, _) => 0,
       NodeDataSetA = NodeDataSetA,
       NodeDataSetB = NodeDataSetB,
-      CreateEdge = (_, _, _) => false,
+      ShouldCreateEdge = (_, _, _) => false,
     };
 
     // ACT
@@ -30,12 +30,12 @@ public class BipartiteGraphCreationTests
   public void BipartiteGraph_HasExpectedStructureData(EdgeDirection edgeDirection, (int, int)[] expectedEdges)
   {
     // ARRANGE
-    var options = new BipartiteGraphCreationOption<int, int>
+    var options = new BipartiteGraphCreationOptions<int, int>
     {
       CreateEdgeData = (_, _) => 0,
       NodeDataSetA = NodeDataSetA,
       NodeDataSetB = NodeDataSetB,
-      CreateEdge = (_, _, direction) => edgeDirection.HasFlag(direction),
+      ShouldCreateEdge = (_, _, direction) => edgeDirection.HasFlag(direction),
     };
 
     // ACT
@@ -49,12 +49,12 @@ public class BipartiteGraphCreationTests
   public void BipartiteGraph_HasExpectedEdgeData(EdgeDirection edgeDirection, (int, int)[] expectedEdges)
   {
     // ARRANGE
-    var options = new BipartiteGraphCreationOption<int, (int, int)>
+    var options = new BipartiteGraphCreationOptions<int, (int, int)>
     {
       CreateEdgeData = (from, to) => (from, to),
       NodeDataSetA = NodeDataSetA,
       NodeDataSetB = NodeDataSetB,
-      CreateEdge = (_, _, direction) => edgeDirection.HasFlag(direction),
+      ShouldCreateEdge = (_, _, direction) => edgeDirection.HasFlag(direction),
     };
 
     // ACT
@@ -68,13 +68,14 @@ public class BipartiteGraphCreationTests
   public void BipartiteGraph_CustomEdgeCreation_HasExpectedEdges()
   {
     // ARRANGE
-    var options = new BipartiteGraphCreationOption<string, int>
+    var options = new BipartiteGraphCreationOptions<string, int>
     {
       CreateEdgeData = (_, _) => 0,
       NodeDataSetA = new[] { "Horst", "Hermann" },
       NodeDataSetB = new[] { "Asa", "Kriemhild" },
-      CreateEdge = (fromData, toData, _) => fromData.Length < toData.Length,
+      ShouldCreateEdge = (fromData, toData, _) => fromData.Length < toData.Length,
     };
+
     var expectedEdges = new[]
     {
       ("Horst", "Kriemhild"), ("Hermann", "Kriemhild"),

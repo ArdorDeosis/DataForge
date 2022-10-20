@@ -9,30 +9,30 @@ internal static class GraphConvenienceExtensions
     EdgeDirection direction,
     TIndex lowerIndex,
     TIndex upperIndex,
-    Func<IndexedGraphEdgeDefinition<TIndex, TNodeData>, TEdgeData> createEdgeData
+    Func<IndexedGraphEdgeDataCreationInput<TIndex, TNodeData>, TEdgeData> createEdgeData
   ) where TIndex : notnull
   {
     if (direction == EdgeDirection.None) return;
 
     if (direction.HasFlag(EdgeDirection.Forward))
     {
-      graph.AddEdge(lowerIndex, upperIndex, createEdgeData(new IndexedGraphEdgeDefinition<TIndex, TNodeData>
+      graph.AddEdge(lowerIndex, upperIndex, createEdgeData(new IndexedGraphEdgeDataCreationInput<TIndex, TNodeData>
       {
-        OriginIndex = lowerIndex,
-        DestinationIndex = upperIndex,
-        OriginNodeData = graph[lowerIndex].Data,
-        DestinationNodeData = graph[upperIndex].Data,
+        StartIndex = lowerIndex,
+        EndIndex = upperIndex,
+        StartNodeData = graph[lowerIndex].Data,
+        EndNodeData = graph[upperIndex].Data,
       }));
     }
 
     if (direction.HasFlag(EdgeDirection.Backward))
     {
-      graph.AddEdge(upperIndex, lowerIndex, createEdgeData(new IndexedGraphEdgeDefinition<TIndex, TNodeData>
+      graph.AddEdge(upperIndex, lowerIndex, createEdgeData(new IndexedGraphEdgeDataCreationInput<TIndex, TNodeData>
       {
-        OriginIndex = upperIndex,
-        DestinationIndex = lowerIndex,
-        OriginNodeData = graph[upperIndex].Data,
-        DestinationNodeData = graph[lowerIndex].Data,
+        StartIndex = upperIndex,
+        EndIndex = lowerIndex,
+        StartNodeData = graph[upperIndex].Data,
+        EndNodeData = graph[lowerIndex].Data,
       }));
     }
   }

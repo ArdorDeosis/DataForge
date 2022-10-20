@@ -12,7 +12,7 @@ public class LineGraphCreationTests
   public void LineGraph_HasExpectedNodeData()
   {
     // ARRANGE
-    var options = new LineGraphCreationOption<int, int>
+    var options = new LineGraphCreationOptions<int, int>
     {
       Length = 4,
       CreateNodeData = position => position,
@@ -35,11 +35,11 @@ public class LineGraphCreationTests
   public void LineGraph_HasExpectedEdgeData()
   {
     // ARRANGE
-    var options = new LineGraphCreationOption<int, (int, int)>
+    var options = new LineGraphCreationOptions<int, (int, int)>
     {
       Length = 4,
       CreateNodeData = _ => 0,
-      CreateEdgeData = data => (data.OriginIndex, data.DestinationIndex),
+      CreateEdgeData = data => (OriginIndex: data.StartIndex, DestinationIndex: data.EndIndex),
       EdgeDirection = EdgeDirection.ForwardAndBackward,
     };
     var expectedEdges = new[] { (0, 1), (1, 2), (2, 3), (3, 2), (2, 1), (1, 0) };
@@ -60,7 +60,7 @@ public class LineGraphCreationTests
   public void LineGraph_HasExpectedStructure(EdgeDirection direction, (int from, int to)[] edges)
   {
     // ARRANGE
-    var options = new LineGraphCreationOption<int, int>
+    var options = new LineGraphCreationOptions<int, int>
     {
       Length = 3,
       CreateNodeData = position => position,
@@ -87,7 +87,7 @@ public class LineGraphCreationTests
   public void IndexedLineGraph_HasExpectedIndices()
   {
     // ARRANGE
-    var options = new LineGraphCreationOption<int, int>
+    var options = new LineGraphCreationOptions<int, int>
     {
       Length = 5,
       CreateNodeData = position => position,

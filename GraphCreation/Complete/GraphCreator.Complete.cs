@@ -5,10 +5,10 @@ namespace GraphCreation;
 public static partial class GraphCreator
 {
   /// <summary>
-  /// Creates a complete graph from a set of data. The
-  /// <see cref="CompleteGraphCreationOption{TNodeData,TEdgeData}">options</see> provide the  
-  /// <see cref="CompleteGraphCreationOption{TNodeData,TEdgeData}.NodeData">node data</see>, 
-  /// <see cref="CompleteGraphCreationOption{TNodeData,TEdgeData}.EdgeDirection">edge direction</see> and a function to 
+  /// Creates a complete graph from a set of node data. The
+  /// <see cref="CompleteGraphCreationOptions{TNodeData,TEdgeData}">options</see> provide the  
+  /// <see cref="CompleteGraphCreationOptions{TNodeData,TEdgeData}.NodeData">node data</see>, 
+  /// <see cref="CompleteGraphCreationOptions{TNodeData,TEdgeData}.EdgeDirection">edge direction</see> and a function to 
   /// <see cref="UnindexedGraphEdgeDataCreationOption{TNodeData,TEdgeData}.CreateEdgeData">generate edge data</see>.
   /// </summary>
   /// <param name="options">Graph creation options.</param>
@@ -16,7 +16,7 @@ public static partial class GraphCreator
   /// <typeparam name="TEdgeData">Type of the data the edges are holding.</typeparam>
   /// <returns>The created graph.</returns>
   public static Graph<TNodeData, TEdgeData> MakeComplete<TNodeData, TEdgeData>(
-    CompleteGraphCreationOption<TNodeData, TEdgeData> options)
+    CompleteGraphCreationOptions<TNodeData, TEdgeData> options)
   {
     var graph = new Graph<TNodeData, TEdgeData>();
 

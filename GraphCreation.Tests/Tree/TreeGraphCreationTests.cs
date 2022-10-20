@@ -79,7 +79,7 @@ public class TreeGraphCreationTests
   private static IEnumerable<object[]> OptionsAndExpectedNodeIndicesOrData()
   {
     TreeIndex CreateNodeData(TreeIndex data) => data;
-    int CreateEdgeData(IndexedGraphEdgeDefinition<TreeIndex, TreeIndex> _) => 0;
+    int CreateEdgeData(IndexedGraphEdgeDataCreationInput<TreeIndex, TreeIndex> _) => 0;
 
     yield return new object[]
     {
@@ -147,8 +147,8 @@ public class TreeGraphCreationTests
     const int maxDepth = 2;
     TreeIndex CreateNodeData(TreeIndex index) => index;
 
-    (TreeIndex from, TreeIndex to) CreateEdgeData(IndexedGraphEdgeDefinition<TreeIndex, TreeIndex> data) =>
-      (data.OriginIndex, data.DestinationIndex);
+    (TreeIndex from, TreeIndex to) CreateEdgeData(IndexedGraphEdgeDataCreationInput<TreeIndex, TreeIndex> data) =>
+      (data.StartIndex, data.EndIndex);
 
     int CalculateChildNodeCount(TreeIndex addressData, TreeIndex _) => addressData.ChildIndex == 0 ? 2 : 0;
 

@@ -57,6 +57,7 @@ public sealed class Node<TNodeData, TEdgeData> : GraphComponent<TNodeData, TEdge
   /// <summary>
   /// All nodes connected with an edge to this node.
   /// </summary>
+  /// <remarks>This can contain the node itself if it has an edge connecting it to itself.</remarks>
   [SuppressMessage("ReSharper", "InvokeAsExtensionMethod")]
   public IEnumerable<Node<TNodeData, TEdgeData>> Neighbours =>
     Enumerable.Concat(

@@ -6,11 +6,11 @@ public static partial class GraphCreator
 {
   /// <summary>
   /// Creates a graph with a disk structure. The <paramref name="options"/> define the number of
-  /// <see cref="DiskGraphCreationOption{TNodeData,TEdgeData}.RingCount">rings</see> and 
-  /// <see cref="DiskGraphCreationOption{TNodeData,TEdgeData}.MeridianCount">meridians</see>, edge directions and
+  /// <see cref="DiskGraphCreationOptions{TNodeData,TEdgeData}.RingCount">rings</see> and 
+  /// <see cref="DiskGraphCreationOptions{TNodeData,TEdgeData}.MeridianCount">meridians</see>, edge directions and
   /// whether a center node should be created. The
-  /// <see cref="DiskGraphCreationOption{TNodeData,TEdgeData}.CreateNodeData"/> and
-  /// <see cref="DiskGraphCreationOption{TNodeData,TEdgeData}.CreateEdgeData"/> functions are used to produce data for
+  /// <see cref="DiskGraphCreationOptions{TNodeData,TEdgeData}.CreateNodeData"/> and
+  /// <see cref="DiskGraphCreationOptions{TNodeData,TEdgeData}.CreateEdgeData"/> functions are used to produce data for
   /// the nodes and edges in the graph depending on their position on the disk.
   /// </summary>
   /// <param name="options">Definition of the disk structure.</param>
@@ -18,17 +18,17 @@ public static partial class GraphCreator
   /// <typeparam name="TEdgeData">Type of the data the edges are holding.</typeparam>
   /// <returns>The created graph.</returns>
   public static Graph<TNodeData, TEdgeData> MakeDisk<TNodeData, TEdgeData>(
-    DiskGraphCreationOption<TNodeData, TEdgeData> options) =>
+    DiskGraphCreationOptions<TNodeData, TEdgeData> options) =>
     MakeIndexedDisk(options).ToNonIndexedGraph();
 
   /// <summary>
   /// Creates an indexed graph with a disk structure. Nodes are indexed by their position on the disk represented as a
   /// <see cref="DiskIndex"/>. The <paramref name="options"/> define the number of
-  /// <see cref="DiskGraphCreationOption{TNodeData,TEdgeData}.RingCount">rings</see> and 
-  /// <see cref="DiskGraphCreationOption{TNodeData,TEdgeData}.MeridianCount">meridians</see>, edge directions and
+  /// <see cref="DiskGraphCreationOptions{TNodeData,TEdgeData}.RingCount">rings</see> and 
+  /// <see cref="DiskGraphCreationOptions{TNodeData,TEdgeData}.MeridianCount">meridians</see>, edge directions and
   /// whether a center node should be created. The
-  /// <see cref="DiskGraphCreationOption{TNodeData,TEdgeData}.CreateNodeData"/> and
-  /// <see cref="DiskGraphCreationOption{TNodeData,TEdgeData}.CreateEdgeData"/> functions are used to produce data for
+  /// <see cref="DiskGraphCreationOptions{TNodeData,TEdgeData}.CreateNodeData"/> and
+  /// <see cref="DiskGraphCreationOptions{TNodeData,TEdgeData}.CreateEdgeData"/> functions are used to produce data for
   /// the nodes and edges in the graph depending on their position on the disk.
   /// </summary>
   /// <param name="options">Definition of the disk structure.</param>
@@ -36,7 +36,7 @@ public static partial class GraphCreator
   /// <typeparam name="TEdgeData">Type of the data the edges are holding.</typeparam>
   /// <returns>The created graph.</returns>
   public static IndexedGraph<DiskIndex, TNodeData, TEdgeData> MakeIndexedDisk<TNodeData, TEdgeData>(
-    DiskGraphCreationOption<TNodeData, TEdgeData> options)
+    DiskGraphCreationOptions<TNodeData, TEdgeData> options)
   {
     var graph = new IndexedGraph<DiskIndex, TNodeData, TEdgeData>();
     var centerIndex = new DiskIndex();

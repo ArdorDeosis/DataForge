@@ -8,21 +8,18 @@ namespace GridUtilities;
 /// Information about an edge in a cartesian grid. The lower and upper coordinates are equal in all dimensions except
 /// the one indicated by <see cref="DimensionOfChange"/>, in which they differ by 1.
 /// </summary>
-public readonly struct GridEdgeInformation : IEquatable<GridEdgeInformation>
+public sealed class GridEdgeInformation : IEquatable<GridEdgeInformation>
 {
   /// <summary> The lower coordinate of the edge. </summary>
-  public readonly IReadOnlyList<int> LowerCoordinate;
+  public IReadOnlyList<int> LowerCoordinate { get; }
 
   /// <summary> The upper coordinate of the edge. </summary>
-  public readonly IReadOnlyList<int> UpperCoordinate;
+  public IReadOnlyList<int> UpperCoordinate { get; }
 
   /// <summary>
   /// The dimension in which the coordinates differ and thus the dimension along which the edge runs.
   /// </summary>
-  public readonly int DimensionOfChange;
-
-  public GridEdgeInformation() =>
-    throw ExceptionHelper.StructNotPubliclyConstructableException(nameof(GridEdgeInformation));
+  public int DimensionOfChange { get; }
 
   internal GridEdgeInformation(IReadOnlyList<int> lowerCoordinate, int dimensionOfChange)
   {
@@ -63,17 +60,30 @@ public readonly struct GridEdgeInformation : IEquatable<GridEdgeInformation>
     $"([{string.Join(", ", LowerCoordinate)}] => [{string.Join(", ", UpperCoordinate)}]; {DimensionOfChange})";
 
   /// <inheritdoc />
-  public bool Equals(GridEdgeInformation other) =>
-    LowerCoordinate.CoordinatesEqual(other.LowerCoordinate) &&
-    DimensionOfChange == other.DimensionOfChange;
+  public bool Equals(GridEdgeInformation? other)
+  {
+    if (ReferenceEquals(null, other))
+      return false;
+    if (ReferenceEquals(this, other))
+      return true;
+    return LowerCoordinate.CoordinatesEqual(other.LowerCoordinate) &&
+      UpperCoordinate.CoordinatesEqual(other.UpperCoordinate);
+  }
 
   /// <inheritdoc />
-  public override bool Equals(object? obj) => obj is GridEdgeInformation other && Equals(other);
+  public override bool Equals(object? obj)
+  {
+    if (ReferenceEquals(null, obj))
+      return false;
+    if (ReferenceEquals(this, obj))
+      return true;
+    return obj is GridEdgeInformation other && Equals(other);
+  }
 
   /// <inheritdoc />
   public override int GetHashCode() =>
     HashCode.Combine(
       LowerCoordinate.GetCoordinateHashCode(),
-      DimensionOfChange
+      UpperCoordinate.GetCoordinateHashCode()
     );
 }

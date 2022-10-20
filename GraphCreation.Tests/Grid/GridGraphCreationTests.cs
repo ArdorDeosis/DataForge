@@ -12,7 +12,7 @@ public class GridGraphCreationTests
   public void GridGraph_HasExpectedNodeData()
   {
     // ARRANGE
-    var options = new GridGraphCreationOption<int, int>
+    var options = new GridGraphCreationOptions<int, int>
     {
       DimensionInformation = new GridGraphDimensionInformation[]
       {
@@ -41,7 +41,7 @@ public class GridGraphCreationTests
     // ARRANGE
     var edgeData = new[] { "Horst", "Hermann", "Kurt", "Willy" };
     var edgeCounter = 0;
-    var options = new GridGraphCreationOption<int, string>
+    var options = new GridGraphCreationOptions<int, string>
     {
       DimensionInformation = new GridGraphDimensionInformation[]
       {
@@ -68,7 +68,7 @@ public class GridGraphCreationTests
   public void GridGraph_HasExpectedStructure(EdgeDirection direction, bool wrap, (int from, int to)[] edges)
   {
     // ARRANGE
-    var options = new GridGraphCreationOption<int, int>
+    var options = new GridGraphCreationOptions<int, int>
     {
       DimensionInformation = new GridGraphDimensionInformation[]
       {
@@ -97,7 +97,7 @@ public class GridGraphCreationTests
   public void IndexedGridGraph_HasExpectedIndices(IReadOnlyList<int> gridSize, int[][] expectedCoordinates)
   {
     // ARRANGE
-    var options = new GridGraphCreationOption<IReadOnlyList<int>, int>
+    var options = new GridGraphCreationOptions<IReadOnlyList<int>, int>
     {
       DimensionInformation = gridSize.Select(size => new GridGraphDimensionInformation { Length = size }).ToArray(),
       CreateNodeData = coordinate => coordinate,
