@@ -11,11 +11,11 @@ public class MultipartiteGraphCreationTests
   public void MultipartiteGraph_HasExpectedNodeData()
   {
     // ARRANGE
-    var options = new MultipartiteGraphCreationOption<int, int>
+    var options = new MultipartiteGraphCreationOptions<int, int>
     {
       CreateEdgeData = (_, _) => 0,
       NodeDataSets = NodeDataSets,
-      CreateEdge = (_, _, _) => false,
+      ShouldCreateEdge = (_, _, _) => false,
     };
 
     // ACT
@@ -29,11 +29,11 @@ public class MultipartiteGraphCreationTests
   public void MultipartiteGraph_HasExpectedStructureData(EdgeDirection edgeDirection, (int, int)[] expectedEdges)
   {
     // ARRANGE
-    var options = new MultipartiteGraphCreationOption<int, int>
+    var options = new MultipartiteGraphCreationOptions<int, int>
     {
       CreateEdgeData = (_, _) => 0,
       NodeDataSets = NodeDataSets,
-      CreateEdge = (_, _, direction) => edgeDirection.HasFlag(direction),
+      ShouldCreateEdge = (_, _, direction) => edgeDirection.HasFlag(direction),
     };
 
     // ACT
@@ -47,11 +47,11 @@ public class MultipartiteGraphCreationTests
   public void MultipartiteGraph_HasExpectedEdgeData(EdgeDirection edgeDirection, (int, int)[] expectedEdges)
   {
     // ARRANGE
-    var options = new MultipartiteGraphCreationOption<int, (int, int)>
+    var options = new MultipartiteGraphCreationOptions<int, (int, int)>
     {
       CreateEdgeData = (from, to) => (from, to),
       NodeDataSets = NodeDataSets,
-      CreateEdge = (_, _, direction) => edgeDirection.HasFlag(direction),
+      ShouldCreateEdge = (_, _, direction) => edgeDirection.HasFlag(direction),
     };
 
     // ACT
@@ -65,7 +65,7 @@ public class MultipartiteGraphCreationTests
   public void MultipartiteGraph_CustomEdgeCreation_HasExpectedEdges()
   {
     // ARRANGE
-    var options = new MultipartiteGraphCreationOption<string, int>
+    var options = new MultipartiteGraphCreationOptions<string, int>
     {
       CreateEdgeData = (_, _) => 0,
       NodeDataSets = new[]
@@ -74,7 +74,7 @@ public class MultipartiteGraphCreationTests
         new[] { "Asa", "Kriemhild" },
         new[] { "Þor", "Grima" },
       },
-      CreateEdge = (fromData, toData, _) => fromData.Length < toData.Length,
+      ShouldCreateEdge = (fromData, toData, _) => fromData.Length < toData.Length,
     };
     var expectedEdges = new[]
     {

@@ -33,7 +33,7 @@ public abstract class GraphComponent<TNodeData, TEdgeData>
   /// <summary>
   /// Whether this component is valid.
   /// </summary>
-  internal bool IsValid => graph != null;
+  public bool IsValid => graph != null;
 
   /// <summary>
   /// Invalidates this component.
@@ -51,7 +51,7 @@ public abstract class GraphComponent<TNodeData, TEdgeData>
   /// <param name="graph">The graph to check.</param>
   [SuppressMessage("ReSharper", "ParameterHidesMember")]
   internal bool IsIn(GraphBase<TNodeData, TEdgeData> graph) => Graph == graph;
-  
+
   /// <summary>
   /// Whether this component belongs to the same graph as the provided component.
   /// </summary>

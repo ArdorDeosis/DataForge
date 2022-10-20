@@ -6,10 +6,10 @@ public static partial class GraphCreator
 {
   /// <summary>
   /// Creates a graph with a ring structure. The options define the
-  /// <see cref="RingGraphCreationOption{TNodeData,TEdgeData}.Size">size</see> and
-  /// <see cref="RingGraphCreationOption{TNodeData,TEdgeData}.EdgeDirection">edge direction</see>. The
-  /// <see cref="RingGraphCreationOption{TNodeData,TEdgeData}.CreateNodeData"/> and
-  /// <see cref="RingGraphCreationOption{TNodeData,TEdgeData}.CreateEdgeData"/> functions are used to produce data for
+  /// <see cref="RingGraphCreationOptions{TNodeData,TEdgeData}.Size">size</see> and
+  /// <see cref="RingGraphCreationOptions{TNodeData,TEdgeData}.EdgeDirection">edge direction</see>. The
+  /// <see cref="RingGraphCreationOptions{TNodeData,TEdgeData}.CreateNodeData"/> and
+  /// <see cref="RingGraphCreationOptions{TNodeData,TEdgeData}.CreateEdgeData"/> functions are used to produce data for
   /// the nodes and edges in the graph depending on their position in the ring.
   /// </summary>
   /// <param name="options">Definition of the grid structure.</param>
@@ -17,25 +17,27 @@ public static partial class GraphCreator
   /// <typeparam name="TEdgeData">Type of the data the edges are holding.</typeparam>
   /// <returns>The created graph.</returns>
   public static Graph<TNodeData, TEdgeData> MakeRing<TNodeData, TEdgeData>(
-    RingGraphCreationOption<TNodeData, TEdgeData> options) =>
+    RingGraphCreationOptions<TNodeData, TEdgeData> options) =>
     MakeIndexedRing(options).ToNonIndexedGraph();
 
   /// <summary>
   /// Creates a graph with a ring structure. The nodes are indexed with their position in the ring. The options define
-  /// the <see cref="RingGraphCreationOption{TNodeData,TEdgeData}.Size">size</see> and
-  /// <see cref="RingGraphCreationOption{TNodeData,TEdgeData}.EdgeDirection">edge direction</see>. The
-  /// <see cref="RingGraphCreationOption{TNodeData,TEdgeData}.CreateNodeData"/> and
-  /// <see cref="RingGraphCreationOption{TNodeData,TEdgeData}.CreateEdgeData"/> functions are used to produce data for
-  /// the nodes and edges in the graph depending on their position in the ring.
+  /// the <see cref="RingGraphCreationOptions{TNodeData,TEdgeData}.Size">size</see> and
+  /// <see cref="RingGraphCreationOptions{TNodeData,TEdgeData}.EdgeDirection">edge direction</see>. The
+  /// <see cref="RingGraphCreationOptions{TNodeData,TEdgeData}.CreateNodeData"/> and
+  /// <see cref="RingGraphCreationOptions{TNodeData,TEdgeData}.CreateEdgeData"/> functions are used to produce data for
+  /// the nodes and edges in the graph depending on their position in the ring. Nodes are indexed by their position on
+  /// the ring from 0 to <see cref="RingGraphCreationOptions{TNodeData,TEdgeData}.Size">
+  /// RingGraphCreationOption&lt;TNodeData,TEdgeData&gt;.Size</see> - 1.
   /// </summary>
-  /// <param name="options">Definition of the grid structure.</param>
+  /// <param name="options">Definition of the ring structure.</param>
   /// <typeparam name="TNodeData">Type of the data the nodes are holding.</typeparam>
   /// <typeparam name="TEdgeData">Type of the data the edges are holding.</typeparam>
   /// <returns>The created graph.</returns>
   public static IndexedGraph<int, TNodeData, TEdgeData> MakeIndexedRing<TNodeData, TEdgeData>(
-    RingGraphCreationOption<TNodeData, TEdgeData> options)
+    RingGraphCreationOptions<TNodeData, TEdgeData> options)
   {
-    return MakeIndexedGrid(new GridGraphCreationOption<TNodeData, TEdgeData>
+    return MakeIndexedGrid(new GridGraphCreationOptions<TNodeData, TEdgeData>
     {
       DimensionInformation = new[]
       {
@@ -48,12 +50,12 @@ public static partial class GraphCreator
       },
       CreateNodeData = coordinate =>
         options.CreateNodeData(coordinate[0]),
-      CreateEdgeData = gridEdgeData => options.CreateEdgeData(new IndexedGraphEdgeDefinition<int, TNodeData>
+      CreateEdgeData = gridEdgeData => options.CreateEdgeData(new IndexedGraphEdgeDataCreationInput<int, TNodeData>
       {
-        OriginIndex = gridEdgeData.OriginIndex[0],
-        DestinationIndex = gridEdgeData.DestinationIndex[0],
-        OriginNodeData = gridEdgeData.OriginNodeData,
-        DestinationNodeData = gridEdgeData.DestinationNodeData,
+        StartIndex = gridEdgeData.StartIndex[0],
+        EndIndex = gridEdgeData.EndIndex[0],
+        StartNodeData = gridEdgeData.StartNodeData,
+        EndNodeData = gridEdgeData.EndNodeData,
       }),
     }).Transform(node => node, edge => edge, coordinate => coordinate[0]);
   }

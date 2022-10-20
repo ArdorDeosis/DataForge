@@ -3,12 +3,25 @@ using JetBrains.Annotations;
 
 namespace GraphCreation;
 
+/// <summary>
+/// An index for a node in a star graph.
+/// </summary>
 [PublicAPI]
 public sealed class StarIndex : IEquatable<StarIndex>
 {
+  /// <summary>
+  /// The number of the ray the node is on.
+  /// </summary>
   public int Ray { get; }
+
+  /// <summary>
+  /// The from the center to the node on its ray.
+  /// </summary>
   public int Distance { get; }
 
+  /// <summary>
+  /// Whether the node is the center node of the star graph.
+  /// </summary>
   public bool IsCenter => Distance == 0;
 
   public StarIndex()

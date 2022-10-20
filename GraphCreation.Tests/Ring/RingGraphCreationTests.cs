@@ -12,7 +12,7 @@ public class RingGraphCreationTests
   public void RingGraph_HasExpectedNodeData()
   {
     // ARRANGE
-    var options = new RingGraphCreationOption<int, int>
+    var options = new RingGraphCreationOptions<int, int>
     {
       Size = 4,
       CreateNodeData = position => position,
@@ -35,11 +35,11 @@ public class RingGraphCreationTests
   public void RingGraph_HasExpectedEdgeData()
   {
     // ARRANGE
-    var options = new RingGraphCreationOption<int, (int, int)>
+    var options = new RingGraphCreationOptions<int, (int, int)>
     {
       Size = 4,
       CreateNodeData = _ => 0,
-      CreateEdgeData = data => (data.OriginIndex, data.DestinationIndex),
+      CreateEdgeData = data => (OriginIndex: data.StartIndex, DestinationIndex: data.EndIndex),
       EdgeDirection = EdgeDirection.ForwardAndBackward,
     };
     var expectedEdges = new[] { (0, 1), (1, 2), (2, 3), (3, 0), (0, 3), (3, 2), (2, 1), (1, 0) };
@@ -60,7 +60,7 @@ public class RingGraphCreationTests
   public void RingGraph_HasExpectedStructure(EdgeDirection direction, (int from, int to)[] edges)
   {
     // ARRANGE
-    var options = new RingGraphCreationOption<int, int>
+    var options = new RingGraphCreationOptions<int, int>
     {
       Size = 3,
       CreateNodeData = position => position,
@@ -87,7 +87,7 @@ public class RingGraphCreationTests
   public void IndexedRingGraph_HasExpectedIndices()
   {
     // ARRANGE
-    var options = new RingGraphCreationOption<int, int>
+    var options = new RingGraphCreationOptions<int, int>
     {
       Size = 5,
       CreateNodeData = position => position,

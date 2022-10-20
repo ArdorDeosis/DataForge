@@ -8,8 +8,8 @@ namespace GraphCreation;
 /// <typeparam name="TNodeData">Type of the data the nodes are holding.</typeparam>
 /// <typeparam name="TEdgeData">Type of the data the edges are holding.</typeparam>
 [PublicAPI]
-public sealed class GridGraphCreationOption<TNodeData, TEdgeData>
-  : IndexedGraphDataCreationOption<IReadOnlyList<int>, TNodeData, TEdgeData>
+public sealed class GridGraphCreationOptions<TNodeData, TEdgeData>
+  : IndexedGraphDataCreationOptions<IReadOnlyList<int>, TNodeData, TEdgeData>
 {
 #pragma warning disable CS8618 // TODO: These warnings should vanish when the required keyword comes
 

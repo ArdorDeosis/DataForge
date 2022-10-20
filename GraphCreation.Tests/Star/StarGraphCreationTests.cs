@@ -12,7 +12,7 @@ public class StarGraphCreationTests
   public void StarGraph_HasExpectedNodeData()
   {
     // ARRANGE
-    var options = new StarGraphCreationOption<(int ray, int distance), int>
+    var options = new StarGraphCreationOptions<(int ray, int distance), int>
     {
       CreateNodeData = index => (index.Ray, index.Distance),
       CreateEdgeData = _ => 0,
@@ -44,15 +44,15 @@ public class StarGraphCreationTests
   public void StarGraph_HasExpectedEdgeData()
   {
     // ARRANGE
-    var options = new StarGraphCreationOption<(int ray, int distance), (int ray, int from, int to)>
+    var options = new StarGraphCreationOptions<(int ray, int distance), (int ray, int from, int to)>
     {
       RayCount = 3,
       CalculateRayLength = _ => 2,
       CreateNodeData = index => (index.Ray, index.Distance),
       CreateEdgeData = data => (
-        Math.Max(data.OriginIndex.Ray, data.DestinationIndex.Ray),
-        data.OriginIndex.Distance,
-        data.DestinationIndex.Distance
+        Math.Max(data.StartIndex.Ray, data.EndIndex.Ray),
+        data.StartIndex.Distance,
+        data.EndIndex.Distance
       ),
       EdgeDirection = EdgeDirection.ForwardAndBackward,
     };
@@ -79,7 +79,7 @@ public class StarGraphCreationTests
   public void StarGraph_HasExpectedStructure(EdgeDirection direction, (int ray, int from, int to)[] expectedEdges)
   {
     // ARRANGE
-    var options = new StarGraphCreationOption<(int ray, int distance), int>
+    var options = new StarGraphCreationOptions<(int ray, int distance), int>
     {
       RayCount = 3,
       CalculateRayLength = _ => 2,
@@ -113,7 +113,7 @@ public class StarGraphCreationTests
   public void IndexedStarGraph_HasExpectedIndices()
   {
     // ARRANGE
-    var options = new StarGraphCreationOption<int, int>
+    var options = new StarGraphCreationOptions<int, int>
     {
       RayCount = 3,
       CalculateRayLength = n => 3 - n,
