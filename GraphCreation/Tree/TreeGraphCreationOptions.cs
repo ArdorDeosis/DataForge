@@ -15,7 +15,7 @@ public sealed class
   TreeGraphCreationOptions<TNodeData, TEdgeData> : IndexedGraphDataCreationOptions<TreeIndex, TNodeData, TEdgeData>
 {
   private readonly int? maxDepth;
-#pragma warning disable CS8618 // TODO: These warnings should vanish when the required keyword comes
+#pragma warning disable CS8618 // these warnings should vanish when the required keyword comes
 
   /// <summary>
   /// Function to calculate the number of child nodes for a given node.

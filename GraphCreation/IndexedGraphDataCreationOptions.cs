@@ -8,10 +8,11 @@ namespace GraphCreation;
 /// <typeparam name="TIndex">Index type of the graph to be created.</typeparam>
 /// <typeparam name="TNodeData">Type of the node data of the graph to be created.</typeparam>
 /// <typeparam name="TEdgeData">Type of the edge data of the graph to be created.</typeparam>
+/// TODO: use required keyword in C# 11
 [PublicAPI]
 public abstract class IndexedGraphDataCreationOptions<TIndex, TNodeData, TEdgeData> where TIndex : notnull
 {
-#pragma warning disable CS8618 // TODO: These warnings should vanish when the required keyword comes
+#pragma warning disable CS8618 // these warnings should vanish when the required keyword comes
   /// <summary>
   /// Function to create node data based on the node's index in the graph.
   /// <code>TNodeData CreateNodeData(TIndex index)</code>
