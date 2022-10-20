@@ -43,6 +43,19 @@ public class GridEdgeInformationTests
 
     // ASSERT
     Assert.That(left.Equals(left));
+    Assert.That(left.Equals((object)left));
+  }
+
+  [Test]
+  public void Equals_Null_False()
+  {
+    // ARRANGE
+    var left = new GridEdgeInformation(new[] { 0xBEEF, 0xC0FFEE }, 0);
+    GridEdgeInformation? right = null;
+
+    // ASSERT
+    Assert.That(left.Equals(right), Is.False);
+    Assert.That(left.Equals((object?)right), Is.False);
   }
 
   [Test]
