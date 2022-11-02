@@ -101,4 +101,64 @@ public partial class IndexedGraphTests
     // ASSERT
     Assert.That(graph.Contains(0xC0FFEE), Is.False);
   }
+
+  [Test]
+  public void Order_EmptyGraph_IsZero()
+  {
+    // ARRANGE
+    var graph = new IndexedGraph<int, int, int>();
+
+    // ASSERT
+    Assert.That(graph.Order, Is.Zero);
+  }
+
+  [Test]
+  public void Order_IsCorrect()
+  {
+    // ARRANGE
+    var graph = new IndexedGraph<int, int, int>();
+    graph.AddNode(0, 0xC0FFEE);
+    graph.AddNode(1, 0xBEEF);
+
+    // ASSERT
+    Assert.That(graph.Order, Is.EqualTo(2));
+  }
+
+  [Test]
+  public void Size_EmptyGraph_IsZero()
+  {
+    // ARRANGE
+    var graph = new IndexedGraph<int, int, int>();
+
+    // ASSERT
+    Assert.That(graph.Size, Is.Zero);
+  }
+
+  [Test]
+  public void Size_NoEdges_IsZero()
+  {
+    // ARRANGE
+    var graph = new IndexedGraph<int, int, int>();
+    graph.AddNode(0, 0xC0FFEE);
+    graph.AddNode(1, 0xBEEF);
+
+    // ASSERT
+    Assert.That(graph.Size, Is.Zero);
+  }
+
+  [Test]
+  public void Size_IsCorrectValue()
+  {
+    // ARRANGE
+    var graph = new IndexedGraph<int, int, int>();
+    var node1 = graph.AddNode(0, 0xC0FFEE);
+    var node2 = graph.AddNode(1, 0xBEEF);
+    graph.AddEdge(node1, node1, 0xF00D);
+    graph.AddEdge(node1, node2, 0xF00D);
+    graph.AddEdge(node2, node1, 0xF00D);
+    graph.AddEdge(node2, node2, 0xF00D);
+
+    // ASSERT
+    Assert.That(graph.Size, Is.EqualTo(4));
+  }
 }

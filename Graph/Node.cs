@@ -64,4 +64,10 @@ public sealed class Node<TNodeData, TEdgeData> : GraphComponent<TNodeData, TEdge
       IncomingEdges.Select(edge => edge.Start),
       OutgoingEdges.Select(edge => edge.End)
     ).ToHashSet();
+
+  /// <summary>
+  /// Degree of the node. (number of edges starting or ending at this node)
+  /// </summary>
+  /// <remarks>A loop edge (starting and ending on this node) contributes 2 to this metric.</remarks>
+  public int Degree => InternalIncomingEdgeList.Count + InternalOutgoingEdgeList.Count;
 }

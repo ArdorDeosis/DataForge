@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.Linq;
+using NUnit.Framework;
 
 namespace Graph.Tests;
 
@@ -51,5 +52,22 @@ public class NodeTests
       endNode,
       startNode,
     }));
+  }
+
+  [Test]
+  public void Degree_CorrectValue()
+  {
+    // ARRANGE
+    var graph = new Graph<int, int>();
+    var nodes = graph.AddNodes(Enumerable.Range(0, 4)).ToArray();
+    graph.AddEdge(nodes[1], nodes[2], 0);
+    graph.AddEdge(nodes[2], nodes[3], 0);
+    graph.AddEdge(nodes[3], nodes[3], 0);
+
+    var expectedDegrees = new[] { 0, 1, 2, 3 };
+
+    // ASSERT
+    for (var i = 0; i < 4; i++)
+      Assert.That(nodes[i].Degree, Is.EqualTo(expectedDegrees[i]));
   }
 }
