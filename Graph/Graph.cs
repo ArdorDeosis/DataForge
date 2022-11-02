@@ -23,6 +23,12 @@ public sealed class Graph<TNodeData, TEdgeData> : GraphBase<TNodeData, TEdgeData
   /// <inheritdoc />
   public override IEnumerable<Edge<TNodeData, TEdgeData>> Edges => edges;
 
+  /// <inheritdoc />
+  public override int Order => nodes.Count;
+
+  /// <inheritdoc />
+  public override int Size => edges.Count;
+
   /// <summary>
   /// Adds a node to this graph holding the provided data.
   /// </summary>

@@ -26,6 +26,12 @@ public class IndexedGraph<TIndex, TNodeData, TEdgeData> : GraphBase<TNodeData, T
   /// <inheritdoc />
   public override IEnumerable<Edge<TNodeData, TEdgeData>> Edges => edges;
 
+  /// <inheritdoc />
+  public override int Order => nodes.Count;
+
+  /// <inheritdoc />
+  public override int Size => edges.Count;
+
   /// <param name="equalityComparer">
   /// The <see cref="IEqualityComparer{TIndex}"/> implementation to use when comparing node indices, or null to use the
   /// default <see cref="EqualityComparer{T}"/> for the type of the index.

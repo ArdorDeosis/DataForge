@@ -30,6 +30,16 @@ public abstract class GraphBase<TNodeData, TEdgeData>
   public abstract IEnumerable<Edge<TNodeData, TEdgeData>> Edges { get; }
 
   /// <summary>
+  /// Order of the graph. (Number of Nodes)
+  /// </summary>
+  public abstract int Order { get; }
+
+  /// <summary>
+  /// Size of the graph. (Number of Edges)
+  /// </summary>
+  public abstract int Size { get; }
+
+  /// <summary>
   /// Creates a node with the provided data for this graph.
   /// </summary>
   /// <param name="data">The data the node will hold.</param>
