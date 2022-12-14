@@ -1,9 +1,8 @@
 ﻿namespace Graph;
 
-public interface IEdge<TNodeData, TEdgeData>
+public interface IEdge<TNodeData, TEdgeData> : IGraphComponent<TNodeData, TEdgeData>
 {
-    IGraph<TNodeData, TEdgeData> Graph { get; }
     TEdgeData Data { get; set; }
-    bool IsValid { get; }
-    void Invalidate();
+    INode<TNodeData, TEdgeData> Origin { get; }
+    INode<TNodeData, TEdgeData> Destination { get; }
 }

@@ -4,17 +4,17 @@ namespace Graph;
 
 public interface IReadOnlyIndexedGraph<TNodeIndex, TNodeData, TEdgeData> where TNodeIndex : notnull
 {
-  IEnumerable<IIndexedNode<TNodeIndex, TNodeData, TEdgeData>> Nodes { get; }
-  IEnumerable<IEdge<TNodeData, TEdgeData>> Edges { get; }
-  IEnumerable<TNodeIndex> NodeIndices { get; }
-  int Order { get; }
-  int Size { get; }
-  IIndexedNode<TNodeIndex, TNodeData, TEdgeData> this[TNodeIndex index] { get; }
-  IIndexedNode<TNodeIndex, TNodeData, TEdgeData> GetNode(TNodeIndex index);
+  public IEnumerable<IIndexedNode<TNodeIndex, TNodeData, TEdgeData>> Nodes { get; }
+  public IEnumerable<IIndexedEdge<TNodeIndex, TNodeData, TEdgeData>> Edges { get; }
+  public IEnumerable<TNodeIndex> NodeIndices { get; }
+  public int Order { get; }
+  public int Size { get; }
+  public IIndexedNode<TNodeIndex, TNodeData, TEdgeData> this[TNodeIndex index] { get; }
+  public IIndexedNode<TNodeIndex, TNodeData, TEdgeData> GetNode(TNodeIndex index);
 
-  bool TryGetNode(TNodeIndex index,
+  public bool TryGetNode(TNodeIndex index,
     [NotNullWhen(true)] out IIndexedNode<TNodeIndex, TNodeData, TEdgeData>? node);
 
-  bool TryGetNodeIndex(INode<TNodeData, TEdgeData> node, [NotNullWhen(true)] out TNodeIndex? index);
-  bool Contains(TNodeIndex index);
+  public bool TryGetNodeIndex(INode<TNodeData, TEdgeData> node, [NotNullWhen(true)] out TNodeIndex? index);
+  public bool Contains(TNodeIndex index);
 }
