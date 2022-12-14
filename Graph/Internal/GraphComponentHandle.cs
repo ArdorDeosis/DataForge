@@ -10,4 +10,7 @@ internal abstract class GraphComponentHandle<TNodeIndex, TNodeData, TEdgeIndex, 
     {
         Graph = graph ?? throw new ArgumentNullException(nameof(graph));
     }
+
+    protected InvalidOperationException ComponentInvalidException =>
+        new("This graph component has been removed from its graph.");
 }
