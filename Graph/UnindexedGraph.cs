@@ -1,6 +1,6 @@
 namespace Graph;
 
-public sealed class Graph<TNodeData, TEdgeData> : IGraph<TNodeData, TEdgeData>
+public sealed class UnindexedGraph<TNodeData, TEdgeData> : IGraph<TNodeData, TEdgeData>
 {
   private readonly InternalGraph<uint, TNodeData, TEdgeData> graph = new();
   private uint nodeIndexCounter;

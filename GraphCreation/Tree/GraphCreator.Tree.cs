@@ -37,10 +37,10 @@ public static partial class GraphCreator
   /// <typeparam name="TNodeData">Type of the data the nodes are holding.</typeparam>
   /// <typeparam name="TEdgeData">Type of the data the edges are holding.</typeparam>
   /// <returns>The created graph.</returns>
-  public static OldIndexedGraph<TreeIndex, TNodeData, TEdgeData> MakeIndexedTree<TNodeData, TEdgeData>(
+  public static IndexedGraph<TreeIndex, TNodeData, TEdgeData> MakeIndexedTree<TNodeData, TEdgeData>(
     TreeGraphCreationOptions<TNodeData, TEdgeData> options)
   {
-    var graph = new OldIndexedGraph<TreeIndex, TNodeData, TEdgeData>();
+    var graph = new IndexedGraph<TreeIndex, TNodeData, TEdgeData>();
 
     var queue = new Queue<TreeIndex>();
     queue.Enqueue(new TreeIndex());

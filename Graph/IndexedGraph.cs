@@ -8,7 +8,7 @@ namespace Graph;
 /// <typeparam name="TIndex">Type of the node indices.</typeparam>
 /// <typeparam name="TNodeData">Type of the data the nodes are holding.</typeparam>
 /// <typeparam name="TEdgeData">Type of the data the edges are holding.</typeparam>
-public class OldIndexedGraph<TIndex, TNodeData, TEdgeData> : GraphBase<TNodeData, TEdgeData> where TIndex : notnull
+public class IndexedGraph<TIndex, TNodeData, TEdgeData> : GraphBase<TNodeData, TEdgeData> where TIndex : notnull
 {
   private readonly Dictionary<TIndex, OldNode<,,>> nodes;
   private readonly List<OldEdge<,,>> edges = new();
@@ -37,13 +37,13 @@ public class OldIndexedGraph<TIndex, TNodeData, TEdgeData> : GraphBase<TNodeData
   /// default <see cref="EqualityComparer{T}"/> for the type of the index.
   /// </param>
   /// <remarks>
-  /// Several operations on an <see cref="OldIndexedGraph{TIndex,TNodeData,TEdgeData}"/> produce a new instance of graph
+  /// Several operations on an <see cref="IndexedGraph{TIndex,TNodeData,TEdgeData}"/> produce a new instance of graph
   /// (e.g. <see cref="Copy()"/>). The <paramref name="equalityComparer"/> will be used for all of these produces
   /// graphs. If a new instance of <see cref="IEqualityComparer{TIndex}"/> should be created, use the constructor with
   /// the factory method parameter
-  /// <see cref="OldIndexedGraph{TIndex,TNodeData,TEdgeData}(System.Func{System.Collections.Generic.IEqualityComparer{TIndex}?})"/>.
+  /// <see cref="IndexedGraph{TIndex,TNodeData,TEdgeData}(System.Func{System.Collections.Generic.IEqualityComparer{TIndex}?})"/>.
   /// </remarks>
-  public OldIndexedGraph(IEqualityComparer<TIndex>? equalityComparer = null)
+  public IndexedGraph(IEqualityComparer<TIndex>? equalityComparer = null)
     : this(() => equalityComparer) { }
 
   /// <param name="equalityComparerFactoryMethod">
@@ -52,13 +52,13 @@ public class OldIndexedGraph<TIndex, TNodeData, TEdgeData> : GraphBase<TNodeData
   /// is used.
   /// </param>
   /// <remarks>
-  /// Several operations on an <see cref="OldIndexedGraph{TIndex,TNodeData,TEdgeData}"/> produce a new instance of graph
+  /// Several operations on an <see cref="IndexedGraph{TIndex,TNodeData,TEdgeData}"/> produce a new instance of graph
   /// (e.g. <see cref="Copy()"/>). The <paramref name="equalityComparerFactoryMethod"/> is used in these cases to
   /// produce a new instance of <see cref="IEqualityComparer{TIndex}"/>. If the same instance should be used for the
   /// copy, use the constructor with the instance parameter
-  /// <see cref="OldIndexedGraph{TIndex,TNodeData,TEdgeData}(System.Collections.Generic.IEqualityComparer{TIndex}?)"/>.
+  /// <see cref="IndexedGraph{TIndex,TNodeData,TEdgeData}(System.Collections.Generic.IEqualityComparer{TIndex}?)"/>.
   /// </remarks>
-  public OldIndexedGraph(Func<IEqualityComparer<TIndex>?> equalityComparerFactoryMethod)
+  public IndexedGraph(Func<IEqualityComparer<TIndex>?> equalityComparerFactoryMethod)
   {
     this.equalityComparerFactoryMethod = equalityComparerFactoryMethod;
     nodes = new Dictionary<TIndex, OldNode<,,>>(equalityComparerFactoryMethod());
@@ -266,9 +266,9 @@ public class OldIndexedGraph<TIndex, TNodeData, TEdgeData> : GraphBase<TNodeData
   /// too, use <see cref="Copy(Func{TNodeData, TNodeData}, Func{TEdgeData, TEdgeData})"/> or
   /// <see cref="Transform{TTransformedNodeData,TTransformedEdgeData}"/> to provide custom copy logic.
   /// </remarks>
-  public OldIndexedGraph<TIndex, TNodeData, TEdgeData> Copy()
+  public IndexedGraph<TIndex, TNodeData, TEdgeData> Copy()
   {
-    var result = new OldIndexedGraph<TIndex, TNodeData, TEdgeData>(equalityComparerFactoryMethod);
+    var result = new IndexedGraph<TIndex, TNodeData, TEdgeData>(equalityComparerFactoryMethod);
     CopyInternal(this, result);
     return result;
   }
@@ -279,7 +279,7 @@ public class OldIndexedGraph<TIndex, TNodeData, TEdgeData> : GraphBase<TNodeData
   /// <param name="copyNodeData">Copy function for node data.</param>
   /// <param name="copyEdgeData">Copy function for edge data.</param>
   /// <returns>The copied graph.</returns>
-  public OldIndexedGraph<TIndex, TNodeData, TEdgeData> Copy(Func<TNodeData, TNodeData> copyNodeData,
+  public IndexedGraph<TIndex, TNodeData, TEdgeData> Copy(Func<TNodeData, TNodeData> copyNodeData,
     Func<TEdgeData, TEdgeData> copyEdgeData) =>
     Transform(copyNodeData, copyEdgeData);
 
@@ -292,11 +292,11 @@ public class OldIndexedGraph<TIndex, TNodeData, TEdgeData> : GraphBase<TNodeData
   /// <typeparam name="TTransformedNodeData">The type of the transformed node data.</typeparam>
   /// <typeparam name="TTransformedEdgeData">The type of the transformed edge data.</typeparam>
   /// <returns>The created graph with transformed data.</returns>
-  public OldIndexedGraph<TIndex, TTransformedNodeData, TTransformedEdgeData> Transform<TTransformedNodeData,
+  public IndexedGraph<TIndex, TTransformedNodeData, TTransformedEdgeData> Transform<TTransformedNodeData,
     TTransformedEdgeData>(
     Func<TNodeData, TTransformedNodeData> transformNodeData, Func<TEdgeData, TTransformedEdgeData> transformEdgeData)
   {
-    var result = new OldIndexedGraph<TIndex, TTransformedNodeData, TTransformedEdgeData>(equalityComparerFactoryMethod);
+    var result = new IndexedGraph<TIndex, TTransformedNodeData, TTransformedEdgeData>(equalityComparerFactoryMethod);
     CopyTransformInternal(this, result, transformNodeData, transformEdgeData, index => index);
     return result;
   }
@@ -320,12 +320,12 @@ public class OldIndexedGraph<TIndex, TNodeData, TEdgeData> : GraphBase<TNodeData
   /// If the index transformation causes a collision of indices in the new graph.
   /// </exception>
   /// <remarks>
-  /// Several operations on an <see cref="OldIndexedGraph{TIndex,TNodeData,TEdgeData}"/> produce a new instance of graph
+  /// Several operations on an <see cref="IndexedGraph{TIndex,TNodeData,TEdgeData}"/> produce a new instance of graph
   /// (e.g. <see cref="Copy()"/>). The <paramref name="equalityComparer"/> will be used for all of these produces
   /// graphs. If a new instance of <see cref="IEqualityComparer{TIndex}"/> should be created, use the overload with the
   /// factory method parameter.
   /// </remarks>
-  public OldIndexedGraph<TTransformedIndex, TTransformedNodeData, TTransformedEdgeData>
+  public IndexedGraph<TTransformedIndex, TTransformedNodeData, TTransformedEdgeData>
     Transform<TTransformedIndex, TTransformedNodeData, TTransformedEdgeData>(
       Func<TNodeData, TTransformedNodeData> transformNodeData, Func<TEdgeData, TTransformedEdgeData> transformEdgeData,
       Func<TIndex, TTransformedIndex> transformIndex, IEqualityComparer<TTransformedIndex>? equalityComparer = null)
@@ -352,20 +352,20 @@ public class OldIndexedGraph<TIndex, TNodeData, TEdgeData> : GraphBase<TNodeData
   /// If the index transformation causes a collision of indices in the new graph.
   /// </exception>
   /// <remarks>
-  /// Several operations on an <see cref="OldIndexedGraph{TIndex,TNodeData,TEdgeData}"/> produce a new instance of graph
+  /// Several operations on an <see cref="IndexedGraph{TIndex,TNodeData,TEdgeData}"/> produce a new instance of graph
   /// (e.g. <see cref="Copy()"/>). The <paramref name="equalityComparerFactoryMethod"/> is used in these cases to
   /// produce a new instance of <see cref="IEqualityComparer{TIndex}"/>. If the same instance should be used for the
   /// copy, use the overload with the instance parameter.
   /// </remarks>
   [SuppressMessage("ReSharper", "ParameterHidesMember")]
-  public OldIndexedGraph<TTransformedIndex, TTransformedNodeData, TTransformedEdgeData>
+  public IndexedGraph<TTransformedIndex, TTransformedNodeData, TTransformedEdgeData>
     Transform<TTransformedIndex, TTransformedNodeData, TTransformedEdgeData>(
       Func<TNodeData, TTransformedNodeData> transformNodeData, Func<TEdgeData, TTransformedEdgeData> transformEdgeData,
       Func<TIndex, TTransformedIndex> transformIndex,
       Func<IEqualityComparer<TTransformedIndex>?> equalityComparerFactoryMethod) where TTransformedIndex : notnull
   {
     var result =
-      new OldIndexedGraph<TTransformedIndex, TTransformedNodeData, TTransformedEdgeData>(equalityComparerFactoryMethod);
+      new IndexedGraph<TTransformedIndex, TTransformedNodeData, TTransformedEdgeData>(equalityComparerFactoryMethod);
     CopyTransformInternal(this, result, transformNodeData, transformEdgeData, transformIndex);
     return result;
   }
@@ -455,8 +455,8 @@ public class OldIndexedGraph<TIndex, TNodeData, TEdgeData> : GraphBase<TNodeData
     return edges.Remove(edge);
   }
 
-  private static void CopyInternal(OldIndexedGraph<TIndex, TNodeData, TEdgeData> source,
-    OldIndexedGraph<TIndex, TNodeData, TEdgeData> target)
+  private static void CopyInternal(IndexedGraph<TIndex, TNodeData, TEdgeData> source,
+    IndexedGraph<TIndex, TNodeData, TEdgeData> target)
   {
     var nodeDictionary =
       source.nodes.Keys.ToDictionary(index => source.nodes[index],
@@ -466,8 +466,8 @@ public class OldIndexedGraph<TIndex, TNodeData, TEdgeData> : GraphBase<TNodeData
   }
 
   private static void CopyTransformInternal<TTransformedIndex, TTransformedNodeData, TTransformedEdgeData>(
-    OldIndexedGraph<TIndex, TNodeData, TEdgeData> source,
-    OldIndexedGraph<TTransformedIndex, TTransformedNodeData, TTransformedEdgeData> target,
+    IndexedGraph<TIndex, TNodeData, TEdgeData> source,
+    IndexedGraph<TTransformedIndex, TTransformedNodeData, TTransformedEdgeData> target,
     Func<TNodeData, TTransformedNodeData> transformNodeData, Func<TEdgeData, TTransformedEdgeData> transformEdgeData,
     Func<TIndex, TTransformedIndex> transformIndex)
     where TTransformedIndex : notnull
