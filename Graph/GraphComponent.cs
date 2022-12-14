@@ -7,7 +7,7 @@ namespace Graph;
 /// </summary>
 /// <typeparam name="TNodeData">Type of the data the nodes are holding.</typeparam>
 /// <typeparam name="TEdgeData">Type of the data the edge is holding.</typeparam>
-public abstract class GraphComponent<TNodeData, TEdgeData>
+public abstract class GraphComponent<TNodeIndex, TNodeData, TEdgeData>
 {
   private GraphBase<TNodeData, TEdgeData>? graph;
 

@@ -16,7 +16,7 @@ public static partial class GraphCreator
   /// <typeparam name="TNodeData">Type of the data the nodes are holding.</typeparam>
   /// <typeparam name="TEdgeData">Type of the data the edges are holding.</typeparam>
   /// <returns>The created graph.</returns>
-  public static Graph<TNodeData, TEdgeData> MakeStar<TNodeData, TEdgeData>(
+  public static OldGraph<TNodeData, TEdgeData> MakeStar<TNodeData, TEdgeData>(
     StarGraphCreationOptions<TNodeData, TEdgeData> options) =>
     MakeIndexedStar(options).ToNonIndexedGraph();
 
@@ -33,10 +33,10 @@ public static partial class GraphCreator
   /// <typeparam name="TNodeData">Type of the data the nodes are holding.</typeparam>
   /// <typeparam name="TEdgeData">Type of the data the edges are holding.</typeparam>
   /// <returns>The created graph.</returns>
-  public static IndexedGraph<StarIndex, TNodeData, TEdgeData> MakeIndexedStar<TNodeData, TEdgeData>(
+  public static OldIndexedGraph<StarIndex, TNodeData, TEdgeData> MakeIndexedStar<TNodeData, TEdgeData>(
     StarGraphCreationOptions<TNodeData, TEdgeData> options)
   {
-    var graph = new IndexedGraph<StarIndex, TNodeData, TEdgeData>();
+    var graph = new OldIndexedGraph<StarIndex, TNodeData, TEdgeData>();
     var centerIndex = new StarIndex();
     graph.AddNode(centerIndex, options.CreateNodeData(centerIndex));
     for (var ray = 0; ray < options.RayCount; ray++)

@@ -9,7 +9,7 @@ public class GraphTests
   public void ContainsNode_NodeExists_True()
   {
     // ARRANGE
-    var graph = new Graph<object, object>();
+    var graph = new OldGraph<object, object>();
     var node = graph.AddNode(new { });
 
     // ASSERT
@@ -20,7 +20,7 @@ public class GraphTests
   public void ContainsNode_NodeDoesNotExist_False()
   {
     // ARRANGE
-    var graph = new Graph<object, object>();
+    var graph = new OldGraph<object, object>();
     var node = graph.AddNode(new { });
     graph.RemoveNode(node);
 
@@ -32,7 +32,7 @@ public class GraphTests
   public void ContainsEdge_EdgeExists_True()
   {
     // ARRANGE
-    var graph = new Graph<object, object>();
+    var graph = new OldGraph<object, object>();
     var edge = graph.AddEdge(
       graph.AddNode(new { }),
       graph.AddNode(new { }),
@@ -47,7 +47,7 @@ public class GraphTests
   public void ContainsEdge_EdgeDoesNotExist_False()
   {
     // ARRANGE
-    var graph = new Graph<object, object>();
+    var graph = new OldGraph<object, object>();
     var edge = graph.AddEdge(
       graph.AddNode(new { }),
       graph.AddNode(new { }),
@@ -63,7 +63,7 @@ public class GraphTests
   public void Order_EmptyGraph_IsZero()
   {
     // ARRANGE
-    var graph = new Graph<int, int>();
+    var graph = new OldGraph<int, int>();
 
     // ASSERT
     Assert.That(graph.Order, Is.Zero);
@@ -73,7 +73,7 @@ public class GraphTests
   public void Order_IsCorrect()
   {
     // ARRANGE
-    var graph = new Graph<int, int>();
+    var graph = new OldGraph<int, int>();
     graph.AddNode(0xC0FFEE);
     graph.AddNode(0xBEEF);
 
@@ -85,7 +85,7 @@ public class GraphTests
   public void Size_EmptyGraph_IsZero()
   {
     // ARRANGE
-    var graph = new Graph<int, int>();
+    var graph = new OldGraph<int, int>();
 
     // ASSERT
     Assert.That(graph.Size, Is.Zero);
@@ -95,7 +95,7 @@ public class GraphTests
   public void Size_NoEdges_IsZero()
   {
     // ARRANGE
-    var graph = new Graph<int, int>();
+    var graph = new OldGraph<int, int>();
     graph.AddNode(0xC0FFEE);
     graph.AddNode(0xBEEF);
 
@@ -107,7 +107,7 @@ public class GraphTests
   public void Size_IsCorrectValue()
   {
     // ARRANGE
-    var graph = new Graph<int, int>();
+    var graph = new OldGraph<int, int>();
     var node1 = graph.AddNode(0xC0FFEE);
     var node2 = graph.AddNode(0xBEEF);
     graph.AddEdge(node1, node1, 0xF00D);

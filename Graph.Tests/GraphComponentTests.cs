@@ -9,7 +9,7 @@ public class GraphComponentTests
   public struct ComponentTestData
   {
     internal GraphComponent<object, object> Component { get; init; }
-    internal Graph<object, object> Graph { get; init; }
+    internal OldGraph<object, object> Graph { get; init; }
     internal Action RemoveComponent { get; init; }
   }
 
@@ -17,7 +17,7 @@ public class GraphComponentTests
   {
     get
     {
-      var graph = new Graph<object, object>();
+      var graph = new OldGraph<object, object>();
       var node = graph.AddNode(new { });
       var edge = graph.AddEdge(graph.AddNode(new { }), graph.AddNode(new { }), new { });
       yield return new ComponentTestData
@@ -39,7 +39,7 @@ public class GraphComponentTests
   {
     get
     {
-      var graph = new Graph<object, object>();
+      var graph = new OldGraph<object, object>();
       var node1 = graph.AddNode(new { });
       var node2 = graph.AddNode(new { });
       var edge1 = graph.AddEdge(graph.AddNode(new { }), graph.AddNode(new { }), new { });
@@ -57,8 +57,8 @@ public class GraphComponentTests
   {
     get
     {
-      var graph1 = new Graph<object, object>();
-      var graph2 = new Graph<object, object>();
+      var graph1 = new OldGraph<object, object>();
+      var graph2 = new OldGraph<object, object>();
       var node1 = graph1.AddNode(new { });
       var edge1 = graph1.AddEdge(graph1.AddNode(new { }), graph1.AddNode(new { }), new { });
       var node2 = graph2.AddNode(new { });
@@ -118,7 +118,7 @@ public class GraphComponentTests
   public void IsIn_OtherGraph_False(ComponentTestData data)
   {
     // ARRANGE
-    var otherGraph = new Graph<object, object>();
+    var otherGraph = new OldGraph<object, object>();
 
     // ASSERT
     Assert.That(data.Component.IsIn(otherGraph), Is.False);

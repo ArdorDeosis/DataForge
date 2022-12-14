@@ -15,10 +15,10 @@ public static partial class GraphCreator
   /// <typeparam name="TNodeData">Type of the data the nodes are holding.</typeparam>
   /// <typeparam name="TEdgeData">Type of the data the edges are holding.</typeparam>
   /// <returns>The created graph.</returns>
-  public static Graph<TNodeData, TEdgeData> MakeComplete<TNodeData, TEdgeData>(
+  public static OldGraph<TNodeData, TEdgeData> MakeComplete<TNodeData, TEdgeData>(
     CompleteGraphCreationOptions<TNodeData, TEdgeData> options)
   {
-    var graph = new Graph<TNodeData, TEdgeData>();
+    var graph = new OldGraph<TNodeData, TEdgeData>();
 
     var nodeArray = graph.AddNodes(options.NodeData).ToArray();
 

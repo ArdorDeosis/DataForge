@@ -9,7 +9,7 @@ public class GraphNodeHandlingTests
   public void AddNode_NodeIsInGraph()
   {
     // ARRANGE
-    var graph = new Graph<object, object>();
+    var graph = new OldGraph<object, object>();
 
     // ACT
     var node = graph.AddNode(new { });
@@ -22,7 +22,7 @@ public class GraphNodeHandlingTests
   public void AddNode_NodeHasData()
   {
     // ARRANGE
-    var graph = new Graph<object, object>();
+    var graph = new OldGraph<object, object>();
     var data = new { };
 
     // ACT
@@ -36,7 +36,7 @@ public class GraphNodeHandlingTests
   public void AddNodes_Array_NodesAreInGraph()
   {
     // ARRANGE
-    var graph = new Graph<object, object>();
+    var graph = new OldGraph<object, object>();
     object[] nodeData = { new { }, new { }, new { } };
 
     // ACT
@@ -50,7 +50,7 @@ public class GraphNodeHandlingTests
   public void AddNodes_Enumerable_NodesAreInGraph()
   {
     // ARRANGE
-    var graph = new Graph<object, object>();
+    var graph = new OldGraph<object, object>();
     object[] nodeData = { new { }, new { }, new { } };
 
     // ACT
@@ -64,7 +64,7 @@ public class GraphNodeHandlingTests
   public void RemoveNode_ValidNode_ReturnsTrue()
   {
     // ARRANGE
-    var graph = new Graph<object, object>();
+    var graph = new OldGraph<object, object>();
     var node = graph.AddNode(new { });
 
     // ASSERT
@@ -75,8 +75,8 @@ public class GraphNodeHandlingTests
   public void RemoveNode_NodeFromOtherGraph_ReturnsFalse()
   {
     // ARRANGE
-    var graph = new Graph<object, object>();
-    var node = new Graph<object, object>().AddNode(new { });
+    var graph = new OldGraph<object, object>();
+    var node = new OldGraph<object, object>().AddNode(new { });
 
     // ASSERT
     Assert.That(graph.RemoveNode(node), Is.False);
@@ -86,7 +86,7 @@ public class GraphNodeHandlingTests
   public void RemoveNode_NodeIsNotInGraph()
   {
     // ARRANGE
-    var graph = new Graph<object, object>();
+    var graph = new OldGraph<object, object>();
     var node = graph.AddNode(new { });
 
     // ACT
@@ -100,7 +100,7 @@ public class GraphNodeHandlingTests
   public void RemoveNode_ConnectedEdgesAreRemoved()
   {
     // ARRANGE
-    var graph = new Graph<object, object>();
+    var graph = new OldGraph<object, object>();
     var startNode = graph.AddNode(new { });
     var middleNode = graph.AddNode(new { });
     var endNode = graph.AddNode(new { });
@@ -122,7 +122,7 @@ public class GraphNodeHandlingTests
   public void RemoveNode_ConnectedNodesHaveNoReferenceToImplicitlyRemovedEdges()
   {
     // ARRANGE
-    var graph = new Graph<object, object>();
+    var graph = new OldGraph<object, object>();
     var startNode = graph.AddNode(new { });
     var middleNode = graph.AddNode(new { });
     var endNode = graph.AddNode(new { });
@@ -144,7 +144,7 @@ public class GraphNodeHandlingTests
   public void RemoveNodes_ByPredicate_NodesAreNotInGraph()
   {
     // ARRANGE
-    var graph = new Graph<bool, object>();
+    var graph = new OldGraph<bool, object>();
     var nodeToRemove = graph.AddNode(true);
     var nodeToKeep = graph.AddNode(false);
 

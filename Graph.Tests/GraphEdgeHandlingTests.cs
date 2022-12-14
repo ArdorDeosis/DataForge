@@ -8,7 +8,7 @@ public class GraphEdgeHandlingTests
   public void AddEdge_EdgeIsInGraph()
   {
     // ARRANGE
-    var graph = new Graph<object, object>();
+    var graph = new OldGraph<object, object>();
     var startNode = graph.AddNode(new { });
     var endNode = graph.AddNode(new { });
 
@@ -23,7 +23,7 @@ public class GraphEdgeHandlingTests
   public void AddEdge_EdgeHasData()
   {
     // ARRANGE
-    var graph = new Graph<object, object>();
+    var graph = new OldGraph<object, object>();
     var startNode = graph.AddNode(new { });
     var endNode = graph.AddNode(new { });
     var data = new { };
@@ -39,7 +39,7 @@ public class GraphEdgeHandlingTests
   public void AddEdge_EdgeHasReferenceToNodes()
   {
     // ARRANGE
-    var graph = new Graph<object, object>();
+    var graph = new OldGraph<object, object>();
     var startNode = graph.AddNode(new { });
     var endNode = graph.AddNode(new { });
 
@@ -58,7 +58,7 @@ public class GraphEdgeHandlingTests
   public void AddEdge_NodesHaveReferenceToEdge()
   {
     // ARRANGE
-    var graph = new Graph<object, object>();
+    var graph = new OldGraph<object, object>();
     var startNode = graph.AddNode(new { });
     var endNode = graph.AddNode(new { });
 
@@ -79,7 +79,7 @@ public class GraphEdgeHandlingTests
   public void AddEdge_WithInvalidNode_ThrowsInvalidOperationException()
   {
     // ARRANGE
-    var graph = new Graph<object, object>();
+    var graph = new OldGraph<object, object>();
     var validNode = graph.AddNode(new { });
     var invalidNode = graph.AddNode(new { });
     invalidNode.Invalidate();
@@ -96,8 +96,8 @@ public class GraphEdgeHandlingTests
   public void AddEdge_WithNodeInOtherGraph_ThrowsInvalidOperationException()
   {
     // ARRANGE
-    var graph = new Graph<object, object>();
-    var otherGraph = new Graph<object, object>();
+    var graph = new OldGraph<object, object>();
+    var otherGraph = new OldGraph<object, object>();
     var node = graph.AddNode(new { });
     var otherNode = otherGraph.AddNode(new { });
 
@@ -113,7 +113,7 @@ public class GraphEdgeHandlingTests
   public void RemoveEdge_EdgeIsNotInGraph()
   {
     // ARRANGE
-    var graph = new Graph<object, object>();
+    var graph = new OldGraph<object, object>();
     var startNode = graph.AddNode(new { });
     var endNode = graph.AddNode(new { });
     var edge = graph.AddEdge(startNode, endNode, new { });
@@ -129,7 +129,7 @@ public class GraphEdgeHandlingTests
   public void RemoveEdge_NodesHaveNoReferenceToEdge()
   {
     // ARRANGE
-    var graph = new Graph<object, object>();
+    var graph = new OldGraph<object, object>();
     var startNode = graph.AddNode(new { });
     var endNode = graph.AddNode(new { });
     var edge = graph.AddEdge(startNode, endNode, new { });
@@ -149,7 +149,7 @@ public class GraphEdgeHandlingTests
   public void RemoveEdge_ValidEdge_ReturnsTrue()
   {
     // ARRANGE
-    var graph = new Graph<object, object>();
+    var graph = new OldGraph<object, object>();
     var startNode = graph.AddNode(new { });
     var endNode = graph.AddNode(new { });
     var edge = graph.AddEdge(startNode, endNode, new { });
@@ -162,8 +162,8 @@ public class GraphEdgeHandlingTests
   public void RemoveEdge_EdgeFromDifferentGraph_ReturnsFalse()
   {
     // ARRANGE
-    var graph = new Graph<object, object>();
-    var otherGraph = new Graph<object, object>();
+    var graph = new OldGraph<object, object>();
+    var otherGraph = new OldGraph<object, object>();
     var edge = otherGraph.AddEdge(
       otherGraph.AddNode(new { }),
       otherGraph.AddNode(new { }),
@@ -178,7 +178,7 @@ public class GraphEdgeHandlingTests
   public void RemoveEdges_ByPredicate_MatchingEdgesAreRemoved()
   {
     // ARRANGE
-    var graph = new Graph<object, bool>();
+    var graph = new OldGraph<object, bool>();
     var startNode = graph.AddNode(new { });
     var endNode = graph.AddNode(new { });
     var edgeToRemove = graph.AddEdge(startNode, endNode, true);

@@ -9,15 +9,15 @@ namespace Graph;
 [ExcludeFromCodeCoverage]
 public static class Pathfinding
 {
-  private record PathFindingData<TNodeData, TEdgeData, TDistance>(Edge<TNodeData, TEdgeData>[] Path, TDistance Distance)
+  private record PathFindingData<TNodeData, TEdgeData, TDistance>(OldEdge<,,>[] Path, TDistance Distance)
   {
-    public readonly Edge<TNodeData, TEdgeData>[] Path = Path;
+    public readonly OldEdge<,,>[] Path = Path;
     public readonly TDistance Distance = Distance;
   }
 
   private static PathFindingData<TNodeData, TEdgeData, TDistance>? AStarPath<TNodeData, TEdgeData, TDistance>(
-    Node<TNodeData, TEdgeData> start,
-    Node<TNodeData, TEdgeData> end,
+    OldNode<,,> start,
+    OldNode<,,> end,
     TDistance initialDistance,
     Func<TDistance, TEdgeData, TDistance> calculateDistance,
     IComparer<TDistance> comparer)
@@ -28,17 +28,17 @@ public static class Pathfinding
       throw new InvalidOperationException("start and end node are not part of the same graph");
 
     var pathFindingData =
-      new Dictionary<Node<TNodeData, TEdgeData>, PathFindingData<TNodeData, TEdgeData, TDistance>>();
-    var processedNodes = new HashSet<Node<TNodeData, TEdgeData>>();
-    var frontier = new PriorityQueue<Node<TNodeData, TEdgeData>, TDistance>(comparer);
+      new Dictionary<OldNode<,,>, PathFindingData<TNodeData, TEdgeData, TDistance>>();
+    var processedNodes = new HashSet<OldNode<,,>>();
+    var frontier = new PriorityQueue<OldNode<,,>, TDistance>(comparer);
 
     pathFindingData.Add(
       start,
       new PathFindingData<TNodeData, TEdgeData, TDistance>(
-        Array.Empty<Edge<TNodeData, TEdgeData>>(),
-        initialDistance
+        Array.Empty < OldEdge <,,  >> (),
+    initialDistance
       )
-    );
+      );
     frontier.Enqueue(start, initialDistance);
 
     while (frontier.Count > 0)
@@ -58,7 +58,7 @@ public static class Pathfinding
     // if the frontier is empty and we have not yet found a path, there is no path
     return null;
 
-    void ProcessNode(Node<TNodeData, TEdgeData> nodeBeingProcessed)
+    void ProcessNode(OldNode<,,> nodeBeingProcessed)
     {
       foreach (var edge in nodeBeingProcessed.OutgoingEdges)
         ProcessEdge(edge);
@@ -66,7 +66,7 @@ public static class Pathfinding
       processedNodes.Add(nodeBeingProcessed);
     }
 
-    void ProcessEdge(Edge<TNodeData, TEdgeData> edge)
+    void ProcessEdge(OldEdge<,,> edge)
     {
       var distanceToNextNode = calculateDistance(pathFindingData[edge.Start].Distance, edge.Data);
       var nextNode = edge.End;
@@ -82,19 +82,19 @@ public static class Pathfinding
     }
   }
 
-  private static int? EdgeDistance<TNodeData, TEdgeData>(Node<TNodeData, TEdgeData> start,
-    Node<TNodeData, TEdgeData> end)
+  private static int? EdgeDistance<TNodeData, TEdgeData>(OldNode<,,> start,
+    OldNode<,,> end)
   {
     if (!start.IsValid) throw new ArgumentException("start node is invalid");
     if (!end.IsValid) throw new ArgumentException("end node is invalid");
     if (!start.IsInSameGraphAs(end))
       throw new InvalidOperationException("start and end node are not part of the same graph");
 
-    var pathTo = new Dictionary<Node<TNodeData, TEdgeData>, Edge<TNodeData, TEdgeData>[]>();
-    var processedNodes = new HashSet<Node<TNodeData, TEdgeData>>();
-    var frontier = new PriorityQueue<Node<TNodeData, TEdgeData>, int>();
+    var pathTo = new Dictionary<OldNode<,,>, OldEdge<,,>[]>();
+    var processedNodes = new HashSet<OldNode<,,>>();
+    var frontier = new PriorityQueue<OldNode<,,>, int>();
 
-    pathTo.Add(start, Array.Empty<Edge<TNodeData, TEdgeData>>());
+    pathTo.Add(start, Array.Empty < OldEdge <,,  >> ());
     frontier.Enqueue(start, 0);
 
     while (frontier.Count > 0)
@@ -114,14 +114,14 @@ public static class Pathfinding
     // if the frontier is empty and we have not yet found a path, there is no path
     return null;
 
-    void ProcessNode(Node<TNodeData, TEdgeData> nodeBeingProcessed)
+    void ProcessNode(OldNode<,,> nodeBeingProcessed)
     {
       foreach (var edge in nodeBeingProcessed.OutgoingEdges)
         ProcessEdge(edge);
       processedNodes.Add(nodeBeingProcessed);
     }
 
-    void ProcessEdge(Edge<TNodeData, TEdgeData> edge)
+    void ProcessEdge(OldEdge<,,> edge)
     {
       var distanceToNextNode = pathTo[edge.Start].Length + 1;
       var nextNode = edge.End;

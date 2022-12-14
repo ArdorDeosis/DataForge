@@ -17,7 +17,7 @@ public static partial class GraphCreator
   /// <typeparam name="TNodeData">Type of the data the nodes are holding.</typeparam>
   /// <typeparam name="TEdgeData">Type of the data the edges are holding.</typeparam>
   /// <returns>The created graph.</returns>
-  public static Graph<TNodeData, TEdgeData> MakeDisk<TNodeData, TEdgeData>(
+  public static OldGraph<TNodeData, TEdgeData> MakeDisk<TNodeData, TEdgeData>(
     DiskGraphCreationOptions<TNodeData, TEdgeData> options) =>
     MakeIndexedDisk(options).ToNonIndexedGraph();
 
@@ -35,10 +35,10 @@ public static partial class GraphCreator
   /// <typeparam name="TNodeData">Type of the data the nodes are holding.</typeparam>
   /// <typeparam name="TEdgeData">Type of the data the edges are holding.</typeparam>
   /// <returns>The created graph.</returns>
-  public static IndexedGraph<DiskIndex, TNodeData, TEdgeData> MakeIndexedDisk<TNodeData, TEdgeData>(
+  public static OldIndexedGraph<DiskIndex, TNodeData, TEdgeData> MakeIndexedDisk<TNodeData, TEdgeData>(
     DiskGraphCreationOptions<TNodeData, TEdgeData> options)
   {
-    var graph = new IndexedGraph<DiskIndex, TNodeData, TEdgeData>();
+    var graph = new OldIndexedGraph<DiskIndex, TNodeData, TEdgeData>();
     var centerIndex = new DiskIndex();
     if (options.MakeCenterNode)
       graph.AddNode(centerIndex, options.CreateNodeData(centerIndex));

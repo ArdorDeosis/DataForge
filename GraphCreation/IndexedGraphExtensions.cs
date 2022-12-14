@@ -5,7 +5,7 @@ namespace GraphCreation;
 internal static class GraphConvenienceExtensions
 {
   internal static void AddEdgesForDirection<TIndex, TNodeData, TEdgeData>(
-    this IndexedGraph<TIndex, TNodeData, TEdgeData> graph,
+    this OldIndexedGraph<TIndex, TNodeData, TEdgeData> graph,
     EdgeDirection direction,
     TIndex lowerIndex,
     TIndex upperIndex,
@@ -38,10 +38,10 @@ internal static class GraphConvenienceExtensions
   }
 
   internal static void AddEdgesForDirection<TNodeData, TEdgeData>(
-    this Graph<TNodeData, TEdgeData> graph,
+    this OldGraph<TNodeData, TEdgeData> graph,
     EdgeDirection direction,
-    Node<TNodeData, TEdgeData> lowerNode,
-    Node<TNodeData, TEdgeData> upperNode,
+    OldNode<,,> lowerNode,
+    OldNode<,,> upperNode,
     Func<TNodeData, TNodeData, TEdgeData> createEdgeData
   )
   {

@@ -8,16 +8,16 @@ public class EdgeTests
   public void EdgeConstructor_NodeFromDifferentGraph_ThrowsArgumentException()
   {
     // ARRANGE
-    var graph = new Graph<object, object>();
+    var graph = new OldGraph<object, object>();
     var nodeInSameGraph = graph.AddNode(new { });
-    var nodeInOtherGraph = new Graph<object, object>().AddNode(new { });
+    var nodeInOtherGraph = new OldGraph<object, object>().AddNode(new { });
 
     // ASSERT
     Assert.Multiple(() =>
     {
-      Assert.That(() => new Edge<object, object>(graph, nodeInSameGraph, nodeInOtherGraph, new { }),
+      Assert.That(() => new OldEdge<,,>(graph, nodeInSameGraph, nodeInOtherGraph, new { }),
         Throws.ArgumentException);
-      Assert.That(() => new Edge<object, object>(graph, nodeInOtherGraph, nodeInSameGraph, new { }),
+      Assert.That(() => new OldEdge<,,>(graph, nodeInOtherGraph, nodeInSameGraph, new { }),
         Throws.ArgumentException);
     });
   }
@@ -26,7 +26,7 @@ public class EdgeTests
   public void Nodes_ContainsStartAndEndNode()
   {
     // ARRANGE
-    var graph = new Graph<object, object>();
+    var graph = new OldGraph<object, object>();
     var startNode = graph.AddNode(new { });
     var endNode = graph.AddNode(new { });
     var expectedNodes = new[] { startNode, endNode };

@@ -19,7 +19,7 @@ public static partial class GraphCreator
   /// <typeparam name="TNodeData">Type of the data the nodes are holding.</typeparam>
   /// <typeparam name="TEdgeData">Type of the data the edges are holding.</typeparam>
   /// <returns>The created graph.</returns>
-  public static Graph<TNodeData, TEdgeData> MakeGrid<TNodeData, TEdgeData>(
+  public static OldGraph<TNodeData, TEdgeData> MakeGrid<TNodeData, TEdgeData>(
     GridGraphCreationOptions<TNodeData, TEdgeData> options) =>
     MakeIndexedGrid(options).ToNonIndexedGraph();
 
@@ -41,13 +41,13 @@ public static partial class GraphCreator
   /// <remarks>
   /// The resulting graph uses a special <see cref="CoordinateHelpers.EqualityComparer"/> for coordinates.
   /// </remarks>
-  public static IndexedGraph<IReadOnlyList<int>, TNodeData, TEdgeData> MakeIndexedGrid<TNodeData, TEdgeData>(
+  public static OldIndexedGraph<IReadOnlyList<int>, TNodeData, TEdgeData> MakeIndexedGrid<TNodeData, TEdgeData>(
     GridGraphCreationOptions<TNodeData, TEdgeData> options)
   {
     var gridDefinition = options.DimensionInformation
       .Select(info => new GridDimensionInformation(info.Length) { Wrap = info.Wrap })
       .ToArray();
-    var graph = new IndexedGraph<IReadOnlyList<int>, TNodeData, TEdgeData>(new CoordinateHelpers.EqualityComparer());
+    var graph = new OldIndexedGraph<IReadOnlyList<int>, TNodeData, TEdgeData>(new CoordinateHelpers.EqualityComparer());
     foreach (var coordinate in Grid.Coordinates(gridDefinition))
       graph.AddNode(coordinate, options.CreateNodeData(coordinate));
 

@@ -9,7 +9,7 @@ public class NodeTests
   public void Predecessors_CorrectNodes()
   {
     // ARRANGE
-    var graph = new Graph<object, object>();
+    var graph = new OldGraph<object, object>();
     var startNode = graph.AddNode(new { });
     var middleNode = graph.AddNode(new { });
     var endNode = graph.AddNode(new { });
@@ -24,7 +24,7 @@ public class NodeTests
   public void Successors_CorrectNodes()
   {
     // ARRANGE
-    var graph = new Graph<object, object>();
+    var graph = new OldGraph<object, object>();
     var startNode = graph.AddNode(new { });
     var middleNode = graph.AddNode(new { });
     var endNode = graph.AddNode(new { });
@@ -39,7 +39,7 @@ public class NodeTests
   public void Neighbours_CorrectNodes()
   {
     // ARRANGE
-    var graph = new Graph<object, object>();
+    var graph = new OldGraph<object, object>();
     var startNode = graph.AddNode(new { });
     var middleNode = graph.AddNode(new { });
     var endNode = graph.AddNode(new { });
@@ -58,7 +58,7 @@ public class NodeTests
   public void Degree_CorrectValue()
   {
     // ARRANGE
-    var graph = new Graph<int, int>();
+    var graph = new OldGraph<int, int>();
     var nodes = graph.AddNodes(Enumerable.Range(0, 4)).ToArray();
     graph.AddEdge(nodes[1], nodes[2], 0);
     graph.AddEdge(nodes[2], nodes[3], 0);

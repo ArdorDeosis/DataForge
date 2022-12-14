@@ -22,7 +22,7 @@ public class GraphTransformationTests
   public void Copy_CopiesNodes()
   {
     // ARRANGE
-    var graph = new Graph<TestData, TestData>();
+    var graph = new OldGraph<TestData, TestData>();
     graph.AddNode(data1);
     graph.AddNode(data2);
 
@@ -37,7 +37,7 @@ public class GraphTransformationTests
   public void Copy_CopiesEdges()
   {
     // ARRANGE
-    var graph = new Graph<TestData, TestData>();
+    var graph = new OldGraph<TestData, TestData>();
     var startNode = graph.AddNode(data1);
     var endNode = graph.AddNode(data2);
     graph.AddEdge(startNode, endNode, data3);
@@ -55,7 +55,7 @@ public class GraphTransformationTests
   public void Copy_WithCopyLogic_NodeCopyLogicIsUsed()
   {
     // ARRANGE
-    var graph = new Graph<TestData, TestData>();
+    var graph = new OldGraph<TestData, TestData>();
     graph.AddNode(data1);
 
     // ACT
@@ -70,7 +70,7 @@ public class GraphTransformationTests
   public void Copy_WithCopyLogic_EdgeCopyLogicIsUsed()
   {
     // ARRANGE
-    var graph = new Graph<TestData, TestData>();
+    var graph = new OldGraph<TestData, TestData>();
 
     graph.AddEdge(graph.AddNode(noData), graph.AddNode(noData), data1);
 
@@ -86,7 +86,7 @@ public class GraphTransformationTests
   public void Transform_NodeDataIsTransformedCorrectly()
   {
     // ARRANGE
-    var graph = new Graph<TestData, TestData>();
+    var graph = new OldGraph<TestData, TestData>();
     var node1 = graph.AddNode(data1);
 
     // ACT
@@ -100,7 +100,7 @@ public class GraphTransformationTests
   public void Transform_EdgeDataIsTransformedCorrectly()
   {
     // ARRANGE
-    var graph = new Graph<TestData, TestData>();
+    var graph = new OldGraph<TestData, TestData>();
     graph.AddEdge(graph.AddNode(noData), graph.AddNode(noData), data1);
 
     // ACT
@@ -114,8 +114,8 @@ public class GraphTransformationTests
   public void Merge_ResultContainsAllNodes()
   {
     // ARRANGE
-    var graph1 = new Graph<TestData, TestData>();
-    var graph2 = new Graph<TestData, TestData>();
+    var graph1 = new OldGraph<TestData, TestData>();
+    var graph2 = new OldGraph<TestData, TestData>();
 
     graph1.AddNodes(data1);
     graph2.AddNodes(data2);
@@ -131,8 +131,8 @@ public class GraphTransformationTests
   public void Merge_ResultContainsAllEdges()
   {
     // ARRANGE
-    var graph1 = new Graph<TestData, TestData>();
-    var graph2 = new Graph<TestData, TestData>();
+    var graph1 = new OldGraph<TestData, TestData>();
+    var graph2 = new OldGraph<TestData, TestData>();
 
     graph1.AddEdge(graph1.AddNode(data3), graph1.AddNode(data4), data1);
     graph2.AddEdge(graph2.AddNode(data5), graph2.AddNode(data6), data2);
@@ -152,8 +152,8 @@ public class GraphTransformationTests
   public void MergeTransform_ResultContainsAllNodes()
   {
     // ARRANGE
-    var graph1 = new Graph<TestData, TestData>();
-    var graph2 = new Graph<TestData, TestData>();
+    var graph1 = new OldGraph<TestData, TestData>();
+    var graph2 = new OldGraph<TestData, TestData>();
 
     graph1.AddNodes(data1);
     graph2.AddNodes(data2);
@@ -169,8 +169,8 @@ public class GraphTransformationTests
   public void MergeTransform_NodeDataIsTransformedCorrectly()
   {
     // ARRANGE
-    var graph1 = new Graph<TestData, TestData>();
-    var graph2 = new Graph<TestData, TestData>();
+    var graph1 = new OldGraph<TestData, TestData>();
+    var graph2 = new OldGraph<TestData, TestData>();
 
     graph1.AddNodes(data1);
     graph2.AddNodes(data2);
@@ -187,8 +187,8 @@ public class GraphTransformationTests
   public void MergeTransform_ResultContainsAllEdges()
   {
     // ARRANGE
-    var graph1 = new Graph<TestData, TestData>();
-    var graph2 = new Graph<TestData, TestData>();
+    var graph1 = new OldGraph<TestData, TestData>();
+    var graph2 = new OldGraph<TestData, TestData>();
 
     graph1.AddEdge(graph1.AddNode(data3), graph1.AddNode(data4), data1);
     graph2.AddEdge(graph2.AddNode(data5), graph2.AddNode(data6), data2);
@@ -208,8 +208,8 @@ public class GraphTransformationTests
   public void MergeTransform_EdgeDataIsTransformedCorrectly()
   {
     // ARRANGE
-    var graph1 = new Graph<TestData, TestData>();
-    var graph2 = new Graph<TestData, TestData>();
+    var graph1 = new OldGraph<TestData, TestData>();
+    var graph2 = new OldGraph<TestData, TestData>();
 
     graph1.AddEdge(graph1.AddNode(noData), graph1.AddNode(noData), data1);
     graph2.AddEdge(graph2.AddNode(noData), graph2.AddNode(noData), data2);
@@ -233,21 +233,19 @@ internal class TestData
 
 internal static class TestDataExtensions
 {
-  internal static Node<TestData, TestData> WithMarker(this IEnumerable<Node<TestData, TestData>> nodes, int marker) =>
+  internal static OldNode<,,> WithMarker(this IEnumerable<OldNode<,,>> nodes, int marker) =>
     nodes.First(node => node.Data.Marker == marker);
 
-  internal static Edge<TestData, TestData> WithMarker(this IEnumerable<Edge<TestData, TestData>> edges, int marker) =>
+  internal static OldEdge<,,> WithMarker(this IEnumerable<OldEdge<,,>> edges, int marker) =>
     edges.First(edge => edge.Data.Marker == marker);
 
-  internal static IEnumerable<TestData> Data(this IEnumerable<Node<TestData, TestData>> nodes) =>
-    nodes.Select(node => node.Data);
+  internal static IEnumerable<TestData> Data(this IEnumerable<OldNode<,,>> nodes) => nodes.Select(node => node.Data);
 
-  internal static IEnumerable<TestData> Data(this IEnumerable<Edge<TestData, TestData>> edges) =>
-    edges.Select(edge => edge.Data);
+  internal static IEnumerable<TestData> Data(this IEnumerable<OldEdge<,,>> edges) => edges.Select(edge => edge.Data);
 
-  internal static IEnumerable<int> Markers(this IEnumerable<Node<TestData, TestData>> nodes) =>
+  internal static IEnumerable<int> Markers(this IEnumerable<OldNode<,,>> nodes) =>
     nodes.Select(node => node.Data.Marker);
 
-  internal static IEnumerable<int> Markers(this IEnumerable<Edge<TestData, TestData>> edges) =>
+  internal static IEnumerable<int> Markers(this IEnumerable<OldEdge<,,>> edges) =>
     edges.Select(edge => edge.Data.Marker);
 }
