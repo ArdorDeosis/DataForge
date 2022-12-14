@@ -115,12 +115,13 @@ internal sealed class InternalGraph<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData
 
     internal bool RemoveNode(TNodeIndex index)
     {
-        if (!nodes.Remove(index))
+        if (!nodes.Remove(index, out var node))
             return false;
         var edgeRemovalActions = incomingEdges[index].Concat(outgoingEdges[index])
             .Distinct().Select<TEdgeIndex, Action>(edge => () => RemoveEdge(edge));
         foreach (var action in edgeRemovalActions)
             action();
+        node.Invalidate();
         return true;
     }
 
@@ -154,6 +155,7 @@ internal sealed class InternalGraph<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData
             return false;
         outgoingEdges.RemoveFrom(edge.Origin, index);
         incomingEdges.RemoveFrom(edge.Destination, index);
+        edge.Invalidate();
         return true;
     }
 }
