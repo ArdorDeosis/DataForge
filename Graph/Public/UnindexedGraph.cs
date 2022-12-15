@@ -2,7 +2,7 @@ namespace Graph;
 
 public sealed class UnindexedGraph<TNodeData, TEdgeData> : IGraph<TNodeData, TEdgeData>
 {
-  private readonly InternalGraph<uint, TNodeData, TEdgeData> graph = new();
+  private readonly InternalGraph<uint, TNodeData, uint, TEdgeData> graph = new();
   private uint nodeIndexCounter;
 
   public IEnumerable<INode<TNodeData, TEdgeData>> Nodes => graph.Nodes;

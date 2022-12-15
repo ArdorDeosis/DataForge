@@ -1,7 +1,6 @@
 ﻿namespace Graph;
 
-public interface IGraphComponent<TNodeData, TEdgeData>
+public interface IGraphComponent
 {
-    IGraph<TNodeData, TEdgeData> Graph { get; }
-    bool IsValid { get; }
+  bool IsValid { get; }
 }

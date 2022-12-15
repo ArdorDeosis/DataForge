@@ -1,16 +1,23 @@
 ﻿namespace Graph;
 
-public sealed class OldNode<TIndex, TNodeData, TEdgeData> where TIndex : notnull
+public sealed class Node<TNodeData, TEdgeData> : INode<TNodeData, TEdgeData>
 {
-  public readonly TNodeData Data;
+  private Node<uint, TNodeData, uint, TEdgeData> node;
+  public IGraph<TNodeData, TEdgeData> Graph { get; }
+  public bool IsValid => node.IsValid;
+
+  public TNodeData Data
+  {
+    get => node.Data;
+    set => node.Data = value;
+  }
 
   private readonly InternalGraph<,,> graph;
   private readonly TIndex index;
 
-  internal OldNode(InternalGraph<,,> graph, TIndex index, TNodeData data)
+  internal Node(IGraph<TNodeData, TEdgeData> graph, Node<uint, TNodeData, uint, TEdgeData> node)
   {
-    this.graph = graph;
-    this.index = index;
-    Data = data;
+    Graph = graph;
+    this.node = node;
   }
 }
