@@ -150,8 +150,8 @@ internal sealed class InternalGraph<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData
   {
     if (!edges.Remove(index, out var edge))
       return false;
-    outgoingEdges.RemoveFrom(edge.Origin, index);
-    incomingEdges.RemoveFrom(edge.Destination, index);
+    outgoingEdges.RemoveFrom(edge.OriginIndex, index);
+    incomingEdges.RemoveFrom(edge.DestinationIndex, index);
     edge.Invalidate();
     return true;
   }

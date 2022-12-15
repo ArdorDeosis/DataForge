@@ -7,7 +7,7 @@ public abstract class GraphComponentHandle<TNodeIndex, TNodeData, TEdgeIndex, TE
 {
   public bool IsValid { get; private set; } = true;
 
-  private protected InternalGraph<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData> Graph;
+  private protected readonly InternalGraph<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData> Graph;
 
   internal void Invalidate() => IsValid = false;
 
@@ -15,7 +15,10 @@ public abstract class GraphComponentHandle<TNodeIndex, TNodeData, TEdgeIndex, TE
   {
     Graph = graph ?? throw new ArgumentNullException(nameof(graph));
   }
-  
-  protected InvalidOperationException ComponentInvalidException =>
+
+  private protected InvalidOperationException ComponentInvalidException =>
     new("This graph component has been removed from its graph.");
+
+  private protected InvalidOperationException DataImmutableException =>
+    new("This graph component has been removed from its graph, data on it can not be changed.");
 }
