@@ -1,8 +1,10 @@
-﻿namespace Graph;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Graph;
 
 public sealed class Edge<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData> :
-  GraphComponentHandle<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData>,
-  IIndexedEdge<TNodeIndex, TNodeData, TEdgeData>
+  GraphComponent<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData>,
+  ISelfAndNodeIndexedEdge<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData>
   where TNodeIndex : notnull
   where TEdgeIndex : notnull
 {
@@ -24,11 +26,14 @@ public sealed class Edge<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData> :
     }
   }
 
-  public IIndexedNode<TNodeIndex, TNodeData, TEdgeData> Origin =>
+  public ISelfIndexedNode<TNodeIndex, TNodeData, TEdgeData> Origin =>
     IsValid ? Graph.GetNode(OriginIndex) : throw ComponentInvalidException;
 
-  public IIndexedNode<TNodeIndex, TNodeData, TEdgeData> Destination =>
+  public ISelfIndexedNode<TNodeIndex, TNodeData, TEdgeData> Destination =>
     IsValid ? Graph.GetNode(DestinationIndex) : throw ComponentInvalidException;
+
+  INode<TNodeData, TEdgeData> IEdge<TNodeData, TEdgeData>.Origin => Origin;
+  INode<TNodeData, TEdgeData> IEdge<TNodeData, TEdgeData>.Destination => Destination;
 
   internal Edge(InternalGraph<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData> graph,
     TEdgeIndex index, TNodeIndex origin, TNodeIndex destination, TEdgeData data) : base(graph)
@@ -37,5 +42,12 @@ public sealed class Edge<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData> :
     DestinationIndex = destination;
     this.index = index;
     this.data = data;
+  }
+
+  [SuppressMessage("ReSharper", "ParameterHidesMember")]
+  internal bool TryGetIndex(out TEdgeIndex index)
+  {
+    index = this.index;
+    return IsValid;
   }
 }

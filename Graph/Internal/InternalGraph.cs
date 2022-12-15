@@ -29,6 +29,12 @@ internal sealed class InternalGraph<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData
   internal Node<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData> GetNode(TNodeIndex index) => nodes[index];
   internal Edge<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData> GetEdge(TEdgeIndex index) => edges[index];
 
+  internal Node<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData>? GetNodeOrNull(TNodeIndex index) =>
+    nodes.TryGetValue(index, out var node) ? node : null;
+
+  internal Edge<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData>? GetEdgeOrNull(TEdgeIndex index) =>
+    edges.TryGetValue(index, out var edge) ? edge : null;
+
   internal bool TryGetNode(TNodeIndex index,
     [NotNullWhen(true)] out Node<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData>? node) =>
     nodes.TryGetValue(index, out node);
@@ -40,7 +46,8 @@ internal sealed class InternalGraph<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData
   internal int Order => nodes.Count;
   internal int Size => edges.Count;
 
-  internal bool Contains(TNodeIndex index) => nodes.ContainsKey(index);
+  internal bool ContainsNode(TNodeIndex index) => nodes.ContainsKey(index);
+  internal bool ContainsEdge(TEdgeIndex index) => edges.ContainsKey(index);
 
   // ### CONSTRUCTORS ###
 
@@ -89,48 +96,63 @@ internal sealed class InternalGraph<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData
 
   // ### ADDITION & REMOVAL ###
 
-  internal void AddNode(TNodeIndex index, TNodeData data)
+  internal Node<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData> AddNode(TNodeIndex index,
+    TNodeData data)
   {
     if (nodes.ContainsKey(index))
       throw new InvalidOperationException($"Node with index {index} already exists.");
-    nodes.Add(index, new Node<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData>(this, index, data));
+    var node = new Node<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData>(this, index, data);
+    nodes.Add(index, node);
+    return node;
   }
 
-  internal bool TryAddNode(TNodeIndex index, TNodeData data)
+  internal bool TryAddNode(TNodeIndex index, TNodeData data,
+    [NotNullWhen(true)] out Node<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData>? node)
   {
     try
     {
-      AddNode(index, data);
+      node = AddNode(index, data);
       return true;
     }
     catch (Exception _)
     {
+      node = null;
       return false;
     }
   }
 
-  internal bool RemoveNode(TNodeIndex index)
+  internal bool RemoveNode(TNodeIndex index) => RemoveNode(index, out _);
+
+  internal bool RemoveNode(TNodeIndex index,
+    [NotNullWhen(true)] out Node<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData>? node)
   {
-    if (!nodes.Remove(index, out var node))
+    if (!nodes.Remove(index, out var retrievedNode))
+    {
+      node = null;
       return false;
+    }
+
+    node = retrievedNode;
     var edgeRemovalActions = incomingEdges[index].Concat(outgoingEdges[index])
       .Distinct().Select<TEdgeIndex, Action>(edge => () => RemoveEdge(edge));
     foreach (var action in edgeRemovalActions)
       action();
-    node.Invalidate();
+    retrievedNode.Invalidate();
     return true;
   }
 
-  internal void AddEdge(TEdgeIndex index, TNodeIndex start, TNodeIndex end, TEdgeData data)
+  internal Edge<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData> AddEdge(TEdgeIndex index,
+    TNodeIndex origin, TNodeIndex destination, TEdgeData data)
   {
-    if (!nodes.ContainsKey(start))
-      throw new KeyNotFoundException("The start node does not exist in the graph.");
-    if (!nodes.ContainsKey(end))
-      throw new KeyNotFoundException("The end node does not exist in the graph.");
-    var edge = new Edge<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData>(this, index, start, end, data);
+    if (!nodes.ContainsKey(origin))
+      throw new KeyNotFoundException("The origin node does not exist in the graph.");
+    if (!nodes.ContainsKey(destination))
+      throw new KeyNotFoundException("The destination node does not exist in the graph.");
+    var edge = new Edge<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData>(this, index, origin, destination, data);
     edges.Add(index, edge);
-    outgoingEdges.Add(start, index);
-    incomingEdges.Add(end, index);
+    outgoingEdges.Add(origin, index);
+    incomingEdges.Add(destination, index);
+    return edge;
   }
 
   internal bool TryAddEdge(TEdgeIndex index, TNodeIndex start, TNodeIndex end, TEdgeData data)
@@ -146,13 +168,21 @@ internal sealed class InternalGraph<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData
     }
   }
 
-  internal bool RemoveEdge(TEdgeIndex index)
+  internal bool RemoveEdge(TEdgeIndex index) => RemoveEdge(index, out _);
+
+  internal bool RemoveEdge(TEdgeIndex index,
+    [NotNullWhen(true)] out Edge<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData>? edge)
   {
-    if (!edges.Remove(index, out var edge))
+    if (!edges.Remove(index, out var retrievedEdge))
+    {
+      edge = null;
       return false;
-    outgoingEdges.RemoveFrom(edge.OriginIndex, index);
-    incomingEdges.RemoveFrom(edge.DestinationIndex, index);
-    edge.Invalidate();
+    }
+
+    edge = retrievedEdge;
+    outgoingEdges.RemoveFrom(retrievedEdge.OriginIndex, index);
+    incomingEdges.RemoveFrom(retrievedEdge.DestinationIndex, index);
+    retrievedEdge.Invalidate();
     return true;
   }
 }

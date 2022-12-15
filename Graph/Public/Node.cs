@@ -1,8 +1,10 @@
-﻿namespace Graph;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Graph;
 
 public sealed class Node<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData> :
-  GraphComponentHandle<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData>,
-  IIndexedNode<TNodeIndex, TNodeData, TEdgeData>
+  GraphComponent<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData>,
+  ISelfAndEdgeIndexedNode<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData>
   where TNodeIndex : notnull
   where TEdgeIndex : notnull
 {
@@ -10,6 +12,7 @@ public sealed class Node<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData> :
   private TNodeData data;
 
   public TNodeIndex Index => IsValid ? index : throw ComponentInvalidException;
+
 
   public TNodeData Data
   {
@@ -26,5 +29,12 @@ public sealed class Node<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData> :
   {
     this.index = index;
     this.data = data;
+  }
+
+  [SuppressMessage("ReSharper", "ParameterHidesMember")]
+  internal bool TryGetIndex(out TNodeIndex index)
+  {
+    index = this.index;
+    return IsValid;
   }
 }

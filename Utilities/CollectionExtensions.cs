@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace Utilities;
+﻿namespace Utilities;
 
 public static class CollectionExtensions
 {
