@@ -2,14 +2,14 @@
 
 namespace Graph;
 
-public sealed class IndexedGraph<TNodeIndex, TNodeData, TEdgeData> : IIndexedGraph<TNodeIndex, TNodeData, TEdgeData>
+public sealed class NodeIndexedGraph<TNodeIndex, TNodeData, TEdgeData> : INodeIndexedGraph<TNodeIndex, TNodeData, TEdgeData>
   where TNodeIndex : notnull
 {
   private readonly InternalGraph<TNodeIndex, TNodeData, uint, TEdgeData> graph;
   private readonly IndexedNodeModuleForUnindexedEdges<TNodeIndex, TNodeData, TEdgeData> nodeModule;
   private readonly UnindexedEdgeModuleForIndexedNodes<TNodeIndex, TNodeData, TEdgeData> edgeModule;
 
-  public IndexedGraph()
+  public NodeIndexedGraph()
   {
     graph = new InternalGraph<TNodeIndex, TNodeData, uint, TEdgeData>();
     nodeModule = new IndexedNodeModuleForUnindexedEdges<TNodeIndex, TNodeData, TEdgeData>(graph);

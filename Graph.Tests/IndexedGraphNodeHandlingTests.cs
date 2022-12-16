@@ -9,7 +9,7 @@ public class IndexedGraphNodeHandlingTests
   public void AddNode_NodeIsInGraph()
   {
     // ARRANGE
-    var graph = new IndexedGraph<int, object, object>();
+    var graph = new NodeIndexedGraph<int, object, object>();
 
     // ACT
     var node = graph.AddNode(1, new { });
@@ -22,7 +22,7 @@ public class IndexedGraphNodeHandlingTests
   public void AddNode_NodeHasData()
   {
     // ARRANGE
-    var graph = new IndexedGraph<int, object, object>();
+    var graph = new NodeIndexedGraph<int, object, object>();
     var data = new { };
 
     // ACT
@@ -36,7 +36,7 @@ public class IndexedGraphNodeHandlingTests
   public void AddNode_IndexAlreadyExists_ThrowsInvalidOperationException()
   {
     // ARRANGE
-    var graph = new IndexedGraph<int, object, object>();
+    var graph = new NodeIndexedGraph<int, object, object>();
     graph.AddNode(1, new { });
 
     // ACT + ASSERT
@@ -47,7 +47,7 @@ public class IndexedGraphNodeHandlingTests
   public void Indexer_NodeIsInGraph_GetsNode()
   {
     // ARRANGE
-    var graph = new IndexedGraph<int, object, object>();
+    var graph = new NodeIndexedGraph<int, object, object>();
 
     // ACT
     var node = graph.AddNode(1, new { });
@@ -60,7 +60,7 @@ public class IndexedGraphNodeHandlingTests
   public void Indexer_NodeIsNotInGraph_ThrowsKeyNotFoundException()
   {
     // ARRANGE
-    var graph = new IndexedGraph<int, object, object>();
+    var graph = new NodeIndexedGraph<int, object, object>();
 
     // ACT + ASSERT
     Assert.That(() => graph[1], Throws.Exception.TypeOf<KeyNotFoundException>());
@@ -70,7 +70,7 @@ public class IndexedGraphNodeHandlingTests
   public void GetNode_NodeIsInGraph_GetsNode()
   {
     // ARRANGE
-    var graph = new IndexedGraph<int, object, object>();
+    var graph = new NodeIndexedGraph<int, object, object>();
 
     // ACT
     var node = graph.AddNode(1, new { });
@@ -83,7 +83,7 @@ public class IndexedGraphNodeHandlingTests
   public void GetNode_NodeIsNotInGraph_ThrowsKeyNotFoundException()
   {
     // ARRANGE
-    var graph = new IndexedGraph<int, object, object>();
+    var graph = new NodeIndexedGraph<int, object, object>();
 
     // ACT + ASSERT
     Assert.That(() => graph.GetNode(1), Throws.Exception.TypeOf<KeyNotFoundException>());
@@ -94,7 +94,7 @@ public class IndexedGraphNodeHandlingTests
   public void TryGetNode_NodeIsInGraph_GetsNodeAndReturnsTrue()
   {
     // ARRANGE
-    var graph = new IndexedGraph<int, object, object>();
+    var graph = new NodeIndexedGraph<int, object, object>();
 
     // ACT
     var node = graph.AddNode(1, new { });
@@ -108,7 +108,7 @@ public class IndexedGraphNodeHandlingTests
   public void TryGetNode_NodeIsNotInGraph_ReturnsFalse()
   {
     // ARRANGE
-    var graph = new IndexedGraph<int, object, object>();
+    var graph = new NodeIndexedGraph<int, object, object>();
 
     // ASSERT
     Assert.That(graph.TryGetNode(1, out _), Is.False);
@@ -118,7 +118,7 @@ public class IndexedGraphNodeHandlingTests
   public void GetIndexOf_NodeIsInGraph_GetsIndex()
   {
     // ARRANGE
-    var graph = new IndexedGraph<int, object, object>();
+    var graph = new NodeIndexedGraph<int, object, object>();
 
     // ACT
     var node = graph.AddNode(1, new { });
@@ -131,8 +131,8 @@ public class IndexedGraphNodeHandlingTests
   public void GetIndexOf_NodeIsNotInGraphOrNull_ThrowsInvalidOperationException()
   {
     // ARRANGE
-    var graph = new IndexedGraph<int, object, object>();
-    var node = new IndexedGraph<int, object, object>().AddNode(1, new { });
+    var graph = new NodeIndexedGraph<int, object, object>();
+    var node = new NodeIndexedGraph<int, object, object>().AddNode(1, new { });
 
     // ACT + ASSERT
     Assert.That(() => graph.GetIndexOf(null!), Throws.InvalidOperationException);
@@ -144,7 +144,7 @@ public class IndexedGraphNodeHandlingTests
   public void TryGetIndexOf_NodeIsInGraph_GetsNodeAndReturnsTrue()
   {
     // ARRANGE
-    var graph = new IndexedGraph<int, object, object>();
+    var graph = new NodeIndexedGraph<int, object, object>();
 
     // ACT
     var node = graph.AddNode(1, new { });
@@ -158,8 +158,8 @@ public class IndexedGraphNodeHandlingTests
   public void TryGetIndexOf_NodeIsNotInGraph_ReturnsFalse()
   {
     // ARRANGE
-    var graph = new IndexedGraph<int, object, object>();
-    var node = new IndexedGraph<int, object, object>().AddNode(1, new { });
+    var graph = new NodeIndexedGraph<int, object, object>();
+    var node = new NodeIndexedGraph<int, object, object>().AddNode(1, new { });
 
     // ASSERT
     Assert.That(graph.TryGetIndexOf(node, out _), Is.False);
@@ -170,7 +170,7 @@ public class IndexedGraphNodeHandlingTests
   public void RemoveNodeByReference_ValidNode_ReturnsTrue()
   {
     // ARRANGE
-    var graph = new IndexedGraph<int, object, object>();
+    var graph = new NodeIndexedGraph<int, object, object>();
     var node = graph.AddNode(1, new { });
 
     // ASSERT
@@ -181,7 +181,7 @@ public class IndexedGraphNodeHandlingTests
   public void RemoveNodeByIndex_ValidNode_ReturnsTrue()
   {
     // ARRANGE
-    var graph = new IndexedGraph<int, object, object>();
+    var graph = new NodeIndexedGraph<int, object, object>();
     graph.AddNode(1, new { });
 
     // ASSERT
@@ -192,8 +192,8 @@ public class IndexedGraphNodeHandlingTests
   public void RemoveNodeByReference_NodeFromOtherGraph_ReturnsFalse()
   {
     // ARRANGE
-    var graph = new IndexedGraph<int, object, object>();
-    var node = new IndexedGraph<int, object, object>().AddNode(1, new { });
+    var graph = new NodeIndexedGraph<int, object, object>();
+    var node = new NodeIndexedGraph<int, object, object>().AddNode(1, new { });
 
     // ASSERT
     Assert.That(graph.RemoveNode(node), Is.False);
@@ -203,7 +203,7 @@ public class IndexedGraphNodeHandlingTests
   public void RemoveNodeByIndex_IndexDoesNotExist_ReturnsFalse()
   {
     // ARRANGE
-    var graph = new IndexedGraph<int, object, object>();
+    var graph = new NodeIndexedGraph<int, object, object>();
 
     // ASSERT
     Assert.That(graph.RemoveNode(1), Is.False);
@@ -213,7 +213,7 @@ public class IndexedGraphNodeHandlingTests
   public void RemoveNodeByReference_NodeIsNotInGraph()
   {
     // ARRANGE
-    var graph = new IndexedGraph<int, object, object>();
+    var graph = new NodeIndexedGraph<int, object, object>();
     var node = graph.AddNode(1, new { });
 
     // ACT
@@ -227,7 +227,7 @@ public class IndexedGraphNodeHandlingTests
   public void RemoveNodeByIndex_NodeIsNotInGraph()
   {
     // ARRANGE
-    var graph = new IndexedGraph<int, object, object>();
+    var graph = new NodeIndexedGraph<int, object, object>();
     var node = graph.AddNode(1, new { });
 
     // ACT
@@ -241,7 +241,7 @@ public class IndexedGraphNodeHandlingTests
   public void RemoveNodeByReference_ConnectedEdgesAreRemoved()
   {
     // ARRANGE
-    var graph = new IndexedGraph<int, object, object>();
+    var graph = new NodeIndexedGraph<int, object, object>();
     var startNode = graph.AddNode(1, new { });
     var middleNode = graph.AddNode(2, new { });
     var endNode = graph.AddNode(3, new { });
@@ -263,7 +263,7 @@ public class IndexedGraphNodeHandlingTests
   public void RemoveNodeByIndex_ConnectedEdgesAreRemoved()
   {
     // ARRANGE
-    var graph = new IndexedGraph<int, object, object>();
+    var graph = new NodeIndexedGraph<int, object, object>();
     var startNode = graph.AddNode(1, new { });
     var middleNode = graph.AddNode(2, new { });
     var endNode = graph.AddNode(3, new { });
@@ -285,7 +285,7 @@ public class IndexedGraphNodeHandlingTests
   public void RemoveNodeByReference_ConnectedNodesHaveNoReferenceToImplicitlyRemovedEdges()
   {
     // ARRANGE
-    var graph = new IndexedGraph<int, object, object>();
+    var graph = new NodeIndexedGraph<int, object, object>();
     var startNode = graph.AddNode(1, new { });
     var middleNode = graph.AddNode(2, new { });
     var endNode = graph.AddNode(3, new { });
@@ -307,7 +307,7 @@ public class IndexedGraphNodeHandlingTests
   public void RemoveNodeByIndex_ConnectedNodesHaveNoReferenceToImplicitlyRemovedEdges()
   {
     // ARRANGE
-    var graph = new IndexedGraph<int, object, object>();
+    var graph = new NodeIndexedGraph<int, object, object>();
     var startNode = graph.AddNode(1, new { });
     var middleNode = graph.AddNode(2, new { });
     var endNode = graph.AddNode(3, new { });
@@ -329,7 +329,7 @@ public class IndexedGraphNodeHandlingTests
   public void RemoveNodes_ByPredicate_NodesAreNotInGraph()
   {
     // ARRANGE
-    var graph = new IndexedGraph<int, bool, object>();
+    var graph = new NodeIndexedGraph<int, bool, object>();
     var nodeToRemove = graph.AddNode(1, true);
     var nodeToKeep = graph.AddNode(2, false);
 
@@ -348,7 +348,7 @@ public class IndexedGraphNodeHandlingTests
   public void RemoveNodes_ByPredicateIncludingIndex_NodesAreNotInGraph()
   {
     // ARRANGE
-    var graph = new IndexedGraph<int, bool, object>();
+    var graph = new NodeIndexedGraph<int, bool, object>();
     var nodeToRemove = graph.AddNode(1, true);
     var nodeToKeep = graph.AddNode(2, false);
 

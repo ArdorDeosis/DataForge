@@ -34,7 +34,7 @@ public static partial class GraphCreator
   /// <typeparam name="TNodeData">Type of the data the nodes are holding.</typeparam>
   /// <typeparam name="TEdgeData">Type of the data the edges are holding.</typeparam>
   /// <returns>The created graph.</returns>
-  public static IndexedGraph<int, TNodeData, TEdgeData> MakeIndexedRing<TNodeData, TEdgeData>(
+  public static NodeIndexedGraph<int, TNodeData, TEdgeData> MakeIndexedRing<TNodeData, TEdgeData>(
     RingGraphCreationOptions<TNodeData, TEdgeData> options)
   {
     return MakeIndexedGrid(new GridGraphCreationOptions<TNodeData, TEdgeData>

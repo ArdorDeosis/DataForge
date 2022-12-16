@@ -18,7 +18,7 @@ public class IndexedGraphTransformationTests
   public void Copy_CopiesNodes()
   {
     // ARRANGE
-    var graph = new IndexedGraph<int, TestData, TestData>();
+    var graph = new NodeIndexedGraph<int, TestData, TestData>();
     graph.AddNode(1, data1);
     graph.AddNode(2, data2);
 
@@ -33,7 +33,7 @@ public class IndexedGraphTransformationTests
   public void Copy_CopiesIndices()
   {
     // ARRANGE
-    var graph = new IndexedGraph<int, TestData, TestData>();
+    var graph = new NodeIndexedGraph<int, TestData, TestData>();
     graph.AddNode(1, noData);
     graph.AddNode(2, noData);
 
@@ -48,7 +48,7 @@ public class IndexedGraphTransformationTests
   public void Copy_CopiesEdges()
   {
     // ARRANGE
-    var graph = new IndexedGraph<int, TestData, TestData>();
+    var graph = new NodeIndexedGraph<int, TestData, TestData>();
     var startNode = graph.AddNode(1, data1);
     var endNode = graph.AddNode(2, data2);
     graph.AddEdge(startNode, endNode, data3);
@@ -66,7 +66,7 @@ public class IndexedGraphTransformationTests
   public void Copy_WithCopyLogic_NodeCopyLogicIsUsed()
   {
     // ARRANGE
-    var graph = new IndexedGraph<int, TestData, TestData>();
+    var graph = new NodeIndexedGraph<int, TestData, TestData>();
     graph.AddNode(1, data1);
 
     // ACT
@@ -81,7 +81,7 @@ public class IndexedGraphTransformationTests
   public void Copy_WithCopyLogic_EdgeCopyLogicIsUsed()
   {
     // ARRANGE
-    var graph = new IndexedGraph<int, TestData, TestData>();
+    var graph = new NodeIndexedGraph<int, TestData, TestData>();
 
     graph.AddEdge(graph.AddNode(1, noData), graph.AddNode(2, noData), data1);
 
@@ -97,7 +97,7 @@ public class IndexedGraphTransformationTests
   public void Transform_NodeDataIsTransformedCorrectly()
   {
     // ARRANGE
-    var graph = new IndexedGraph<int, TestData, TestData>();
+    var graph = new NodeIndexedGraph<int, TestData, TestData>();
     var node1 = graph.AddNode(1, data1);
 
     // ACT
@@ -111,7 +111,7 @@ public class IndexedGraphTransformationTests
   public void Transform_EdgeDataIsTransformedCorrectly()
   {
     // ARRANGE
-    var graph = new IndexedGraph<int, TestData, TestData>();
+    var graph = new NodeIndexedGraph<int, TestData, TestData>();
     graph.AddEdge(graph.AddNode(1, noData), graph.AddNode(2, noData), data1);
 
     // ACT
@@ -125,7 +125,7 @@ public class IndexedGraphTransformationTests
   public void TransformIncludingIndex_NodeDataIsTransformedCorrectly()
   {
     // ARRANGE
-    var graph = new IndexedGraph<int, TestData, TestData>();
+    var graph = new NodeIndexedGraph<int, TestData, TestData>();
     var node1 = graph.AddNode(1, data1);
 
     // ACT
@@ -139,7 +139,7 @@ public class IndexedGraphTransformationTests
   public void TransformIncludingIndex_EdgeDataIsTransformedCorrectly()
   {
     // ARRANGE
-    var graph = new IndexedGraph<int, TestData, TestData>();
+    var graph = new NodeIndexedGraph<int, TestData, TestData>();
     graph.AddEdge(graph.AddNode(1, noData), graph.AddNode(2, noData), data1);
 
     // ACT
@@ -153,7 +153,7 @@ public class IndexedGraphTransformationTests
   public void TransformIncludingIndex_IndexIsTransformedCorrectly()
   {
     // ARRANGE
-    var graph = new IndexedGraph<int, TestData, TestData>();
+    var graph = new NodeIndexedGraph<int, TestData, TestData>();
     graph.AddNode(1, data1);
 
     // ACT
@@ -167,7 +167,7 @@ public class IndexedGraphTransformationTests
   public void TransformIncludingIndex_IndexCollision_ThrowsInvalidOperationException()
   {
     // ARRANGE
-    var graph = new IndexedGraph<int, TestData, TestData>();
+    var graph = new NodeIndexedGraph<int, TestData, TestData>();
     graph.AddNode(1, data1);
     graph.AddNode(2, data1);
 
@@ -179,7 +179,7 @@ public class IndexedGraphTransformationTests
   public void ToNonIndexedGraph_ContainsAllNodes()
   {
     // ARRANGE
-    var indexedGraph = new IndexedGraph<int, TestData, TestData>();
+    var indexedGraph = new NodeIndexedGraph<int, TestData, TestData>();
     indexedGraph.AddNode(1, data1);
     indexedGraph.AddNode(2, data2);
 
@@ -194,7 +194,7 @@ public class IndexedGraphTransformationTests
   public void ToNonIndexedGraph_ContainsAllEdges()
   {
     // ARRANGE
-    var indexedGraph = new IndexedGraph<int, TestData, TestData>();
+    var indexedGraph = new NodeIndexedGraph<int, TestData, TestData>();
     indexedGraph.AddEdge(indexedGraph.AddNode(1, data1), indexedGraph.AddNode(2, data2), data3);
 
     // ACT 
@@ -210,7 +210,7 @@ public class IndexedGraphTransformationTests
   public void ToNonIndexedGraph_WithCopyLogic_NodeCopyLogicIsUsed()
   {
     // ARRANGE
-    var indexedGraph = new IndexedGraph<int, TestData, TestData>();
+    var indexedGraph = new NodeIndexedGraph<int, TestData, TestData>();
     indexedGraph.AddNode(1, data1);
 
     // ACT
@@ -225,7 +225,7 @@ public class IndexedGraphTransformationTests
   public void ToNonIndexedGraph_WithCopyLogic_EdgeCopyLogicIsUsed()
   {
     // ARRANGE
-    var graph = new IndexedGraph<int, TestData, TestData>();
+    var graph = new NodeIndexedGraph<int, TestData, TestData>();
 
     graph.AddEdge(graph.AddNode(1, noData), graph.AddNode(2, noData), data1);
 
@@ -241,7 +241,7 @@ public class IndexedGraphTransformationTests
   public void TransformToNonIndexedGraph_NodeCopyLogicIsUsed()
   {
     // ARRANGE
-    var indexedGraph = new IndexedGraph<int, TestData, TestData>();
+    var indexedGraph = new NodeIndexedGraph<int, TestData, TestData>();
     indexedGraph.AddNode(1, data1);
 
     // ACT
@@ -255,7 +255,7 @@ public class IndexedGraphTransformationTests
   public void TransformToNonIndexedGraph_EdgeCopyLogicIsUsed()
   {
     // ARRANGE
-    var indexedGraph = new IndexedGraph<int, TestData, TestData>();
+    var indexedGraph = new NodeIndexedGraph<int, TestData, TestData>();
 
     indexedGraph.AddEdge(indexedGraph.AddNode(1, noData), indexedGraph.AddNode(2, noData), data1);
 

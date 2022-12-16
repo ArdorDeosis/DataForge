@@ -41,13 +41,14 @@ public static partial class GraphCreator
   /// <remarks>
   /// The resulting graph uses a special <see cref="CoordinateHelpers.EqualityComparer"/> for coordinates.
   /// </remarks>
-  public static IndexedGraph<IReadOnlyList<int>, TNodeData, TEdgeData> MakeIndexedGrid<TNodeData, TEdgeData>(
+  public static NodeIndexedGraph<IReadOnlyList<int>, TNodeData, TEdgeData> MakeIndexedGrid<TNodeData, TEdgeData>(
     GridGraphCreationOptions<TNodeData, TEdgeData> options)
   {
     var gridDefinition = options.DimensionInformation
       .Select(info => new GridDimensionInformation(info.Length) { Wrap = info.Wrap })
       .ToArray();
-    var graph = new IndexedGraph<IReadOnlyList<int>, TNodeData, TEdgeData>(new CoordinateHelpers.EqualityComparer());
+    var graph =
+      new NodeIndexedGraph<IReadOnlyList<int>, TNodeData, TEdgeData>(new CoordinateHelpers.EqualityComparer());
     foreach (var coordinate in Grid.Coordinates(gridDefinition))
       graph.AddNode(coordinate, options.CreateNodeData(coordinate));
 
