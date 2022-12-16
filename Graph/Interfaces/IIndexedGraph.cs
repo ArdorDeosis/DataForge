@@ -1,8 +1,8 @@
 ﻿namespace Graph;
 
-public interface IIndexedGraph<TNodeIndex, TNodeData, TEdgeData> :
+public interface INodeIndexedGraph<TNodeIndex, TNodeData, TEdgeData> :
   IGraph<TNodeData, TEdgeData>,
   IReadOnlyIndexedGraph<TNodeIndex, TNodeData, TEdgeData>,
-  ISelfIndexedNodeWriteModule<TNodeIndex, TNodeData, TEdgeData>,
-  IUnindexedEdgeWriteModule<TNodeData, TEdgeData>
+  IIndexedNodeRemover<TNodeIndex, TNodeData, TEdgeData>,
+  IUnindexedEdgeCreator<TNodeData, TEdgeData>
   where TNodeIndex : notnull { }

@@ -2,8 +2,8 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Graph;
 
-public interface ISelfAndEdgeIndexedNodeWriteModule<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData> :
-  ISelfIndexedNodeWriteModule<TNodeIndex, TNodeData, TEdgeData>
+public interface IIndexedNodeRemoverForIndexedEdges<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData> :
+  IIndexedNodeRemover<TNodeIndex, TNodeData, TEdgeData>
   where TNodeIndex : notnull where TEdgeIndex : notnull
 {
   bool RemoveNode(TNodeIndex index,

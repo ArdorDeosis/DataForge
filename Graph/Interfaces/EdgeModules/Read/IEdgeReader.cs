@@ -1,6 +1,6 @@
 ﻿namespace Graph;
 
-public interface IEdgeReadModule<TNodeData, TEdgeData>
+public interface IEdgeReader<TNodeData, TEdgeData>
 {
   IEnumerable<IEdge<TNodeData, TEdgeData>> Edges { get; }
   bool Contains(IEdge<TNodeData, TEdgeData> edge);

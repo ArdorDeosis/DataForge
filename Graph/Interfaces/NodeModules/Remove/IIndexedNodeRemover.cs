@@ -2,8 +2,8 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Graph;
 
-public interface ISelfIndexedNodeWriteModule<TNodeIndex, TNodeData, TEdgeData> :
-  INodeWriteModule<TNodeData, TEdgeData>
+public interface IIndexedNodeRemover<TNodeIndex, TNodeData, TEdgeData> :
+  INodeRemover<TNodeData, TEdgeData>
   where TNodeIndex : notnull
 {
   bool RemoveNode(TNodeIndex index);

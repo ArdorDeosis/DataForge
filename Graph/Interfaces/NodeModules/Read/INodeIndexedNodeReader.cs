@@ -2,8 +2,8 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Graph;
 
-public interface ISelfIndexedNodeReadModule<TNodeIndex, TNodeData, TEdgeData> :
-  INodeReadModule<TNodeData, TEdgeData>
+public interface INodeIndexedNodeReader<TNodeIndex, TNodeData, TEdgeData> :
+  INodeReader<TNodeData, TEdgeData>
   where TNodeIndex : notnull
 {
   public new IEnumerable<ISelfIndexedNode<TNodeIndex, TNodeData, TEdgeData>> Nodes { get; }

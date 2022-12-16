@@ -2,8 +2,8 @@
 
 internal sealed class UnindexedEdgeModuleForIndexedNodes<TNodeIndex, TNodeData, TEdgeData> :
   GraphModule<TNodeIndex, TNodeData, uint, TEdgeData>,
-  INodeIndexedEdgeWriteModule<TNodeIndex, TNodeData, TEdgeData>,
-  INodeIndexedEdgeReadModule<TNodeIndex, TNodeData, TEdgeData>
+  IUnindexedEdgeCreatorForIndexedNodes<TNodeIndex, TNodeData, TEdgeData>,
+  INodeIndexedEdgeReader<TNodeIndex, TNodeData, TEdgeData>
   where TNodeIndex : notnull
 
 
@@ -12,7 +12,7 @@ internal sealed class UnindexedEdgeModuleForIndexedNodes<TNodeIndex, TNodeData, 
 
   public IEnumerable<INodeIndexedEdge<TNodeIndex, TNodeData, TEdgeData>> Edges => Graph.Edges;
 
-  IEnumerable<IEdge<TNodeData, TEdgeData>> IEdgeReadModule<TNodeData, TEdgeData>.Edges => Edges;
+  IEnumerable<IEdge<TNodeData, TEdgeData>> IEdgeReader<TNodeData, TEdgeData>.Edges => Edges;
 
   internal UnindexedEdgeModuleForIndexedNodes(InternalGraph<TNodeIndex, TNodeData, uint, TEdgeData> graph) :
     base(graph) { }
@@ -34,7 +34,7 @@ internal sealed class UnindexedEdgeModuleForIndexedNodes<TNodeIndex, TNodeData, 
     return AddEdge(originIndex, destinationIndex, data);
   }
 
-  IEdge<TNodeData, TEdgeData> IUnindexedEdgeWriteModule<TNodeData, TEdgeData>.AddEdge(
+  IEdge<TNodeData, TEdgeData> IUnindexedEdgeCreator<TNodeData, TEdgeData>.AddEdge(
     INode<TNodeData, TEdgeData> origin, INode<TNodeData, TEdgeData> destination, TEdgeData data) =>
     AddEdge(origin, destination, data);
 

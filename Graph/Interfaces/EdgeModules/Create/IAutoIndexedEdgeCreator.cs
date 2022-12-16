@@ -1,7 +1,6 @@
 namespace Graph;
 
-public interface IAutoSelfIndexedEdgeWriteModule<TNodeData, TEdgeIndex, TEdgeData> :
-  ISelfIndexedEdgeWriteModule<TNodeData, TEdgeIndex, TEdgeData>
+public interface IAutoIndexedEdgeCreator<TNodeData, TEdgeIndex, TEdgeData>
   where TEdgeIndex : notnull
 {
   TEdgeIndex AddNode(INode<TNodeData, TEdgeData> origin, INode<TNodeData, TEdgeData> destination, TEdgeData data);

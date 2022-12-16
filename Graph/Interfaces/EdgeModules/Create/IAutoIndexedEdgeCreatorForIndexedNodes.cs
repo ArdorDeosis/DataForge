@@ -1,8 +1,7 @@
 namespace Graph;
 
-public interface IAutoSelfAndNodeIndexedEdgeWriteModule<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData> :
-  IAutoSelfIndexedEdgeWriteModule<TNodeData, TEdgeIndex, TEdgeData>,
-  ISelfAndNodeIndexedEdgeWriteModule<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData>
+public interface IAutoIndexedEdgeCreatorForIndexedNodes<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData> :
+  IAutoIndexedEdgeCreator<TNodeData, TEdgeIndex, TEdgeData>
   where TNodeIndex : notnull
   where TEdgeIndex : notnull
 {

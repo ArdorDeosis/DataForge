@@ -2,8 +2,8 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Graph;
 
-public interface ISelfIndexedEdgeReadModule<TNodeData, TEdgeIndex, TEdgeData> :
-  IEdgeReadModule<TNodeData, TEdgeData>
+public interface IEdgeIndexedEdgeReader<TNodeData, TEdgeIndex, TEdgeData> :
+  IEdgeReader<TNodeData, TEdgeData>
   where TEdgeIndex : notnull
 {
   public new IEnumerable<ISelfIndexedEdge<TNodeData, TEdgeIndex, TEdgeData>> Edges { get; }

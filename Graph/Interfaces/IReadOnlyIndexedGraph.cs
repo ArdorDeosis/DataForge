@@ -2,5 +2,5 @@
 
 public interface IReadOnlyIndexedGraph<TNodeIndex, TNodeData, TEdgeData> :
   IReadOnlyGraph<TNodeData, TEdgeData>,
-  ISelfIndexedNodeReadModule<TNodeIndex, TNodeData, TEdgeData>
+  INodeIndexedNodeReader<TNodeIndex, TNodeData, TEdgeData>
   where TNodeIndex : notnull { }

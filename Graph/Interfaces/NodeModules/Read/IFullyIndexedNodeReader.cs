@@ -2,9 +2,9 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Graph;
 
-public interface ISelfAndEdgeIndexedNodeReadModule<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData> :
-  ISelfIndexedNodeReadModule<TNodeIndex, TNodeData, TEdgeData>,
-  IEdgeIndexedNodeReadModule<TNodeData, TEdgeIndex, TEdgeData>
+public interface IFullyIndexedNodeReader<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData> :
+  INodeIndexedNodeReader<TNodeIndex, TNodeData, TEdgeData>,
+  IEdgeIndexedNodeReader<TNodeData, TEdgeIndex, TEdgeData>
   where TNodeIndex : notnull
   where TEdgeIndex : notnull
 {

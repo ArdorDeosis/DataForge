@@ -2,17 +2,17 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Graph;
 
-internal sealed class IndexedNodeModuleForUnindexedEdges<TNodeIndex, TNodeData, TEdgeData> :
+internal sealed class IndexedNodeOnlyGraphForUnindexedEdges<TNodeIndex, TNodeData, TEdgeData> :
   GraphModule<TNodeIndex, TNodeData, uint, TEdgeData>,
-  IManualSelfIndexedNodeWriteModule<TNodeIndex, TNodeData, TEdgeData>,
-  ISelfIndexedNodeReadModule<TNodeIndex, TNodeData, TEdgeData> where TNodeIndex : notnull
+  IManuallyIndexedNodeCreator<TNodeIndex, TNodeData>,
+  INodeIndexedNodeReader<TNodeIndex, TNodeData, TEdgeData> where TNodeIndex : notnull
 {
   public IEnumerable<ISelfIndexedNode<TNodeIndex, TNodeData, TEdgeData>> Nodes => Graph.Nodes;
-  IEnumerable<INode<TNodeData, TEdgeData>> INodeReadModule<TNodeData, TEdgeData>.Nodes => Graph.Nodes;
+  IEnumerable<INode<TNodeData, TEdgeData>> INodeReader<TNodeData, TEdgeData>.Nodes => Graph.Nodes;
 
   public IEnumerable<TNodeIndex> NodeIndices => Graph.NodeIndices;
 
-  internal IndexedNodeModuleForUnindexedEdges(InternalGraph<TNodeIndex, TNodeData, uint, TEdgeData> graph) :
+  internal IndexedNodeOnlyGraphForUnindexedEdges(InternalGraph<TNodeIndex, TNodeData, uint, TEdgeData> graph) :
     base(graph) { }
 
   public ISelfIndexedNode<TNodeIndex, TNodeData, TEdgeData> this[TNodeIndex index] => Graph.GetNode(index);
