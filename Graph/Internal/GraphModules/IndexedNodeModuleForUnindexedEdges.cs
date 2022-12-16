@@ -2,7 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Graph;
 
-internal sealed class IndexedNodeOnlyGraphForUnindexedEdges<TNodeIndex, TNodeData, TEdgeData> :
+internal sealed class IndexedNodeModuleForUnindexedEdges<TNodeIndex, TNodeData, TEdgeData> :
   GraphModule<TNodeIndex, TNodeData, uint, TEdgeData>,
   IManuallyIndexedNodeCreator<TNodeIndex, TNodeData>,
   INodeIndexedNodeReader<TNodeIndex, TNodeData, TEdgeData> where TNodeIndex : notnull
@@ -12,7 +12,7 @@ internal sealed class IndexedNodeOnlyGraphForUnindexedEdges<TNodeIndex, TNodeDat
 
   public IEnumerable<TNodeIndex> NodeIndices => Graph.NodeIndices;
 
-  internal IndexedNodeOnlyGraphForUnindexedEdges(InternalGraph<TNodeIndex, TNodeData, uint, TEdgeData> graph) :
+  internal IndexedNodeModuleForUnindexedEdges(InternalGraph<TNodeIndex, TNodeData, uint, TEdgeData> graph) :
     base(graph) { }
 
   public ISelfIndexedNode<TNodeIndex, TNodeData, TEdgeData> this[TNodeIndex index] => Graph.GetNode(index);
@@ -53,14 +53,7 @@ internal sealed class IndexedNodeOnlyGraphForUnindexedEdges<TNodeIndex, TNodeDat
     return result;
   }
 
-  public ISelfIndexedNode<TNodeIndex, TNodeData, TEdgeData> AddNode(TNodeIndex index, TNodeData data) =>
-    Graph.AddNode(index, data);
+  public void AddNode(TNodeIndex index, TNodeData data) => Graph.AddNode(index, data);
 
-  public bool TryAddNode(TNodeIndex index, TNodeData data,
-    [NotNullWhen(true)] out ISelfIndexedNode<TNodeIndex, TNodeData, TEdgeData>? node)
-  {
-    var result = Graph.TryAddNode(index, data, out var createdNode);
-    node = createdNode;
-    return result;
-  }
+  public bool TryAddNode(TNodeIndex index, TNodeData data) => Graph.TryAddNode(index, data, out _);
 }

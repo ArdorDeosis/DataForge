@@ -3,6 +3,7 @@
 internal sealed class UnindexedEdgeModuleForUnindexedNodes<TNodeData, TEdgeData> :
   GraphModule<uint, TNodeData, uint, TEdgeData>,
   IUnindexedEdgeCreator<TNodeData, TEdgeData>,
+  IEdgeRemover<TNodeData, TEdgeData>,
   IEdgeReader<TNodeData, TEdgeData>
 {
   private uint edgeIndexCounter;

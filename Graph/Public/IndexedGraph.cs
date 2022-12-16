@@ -6,13 +6,13 @@ public sealed class IndexedGraph<TNodeIndex, TNodeData, TEdgeData> : IIndexedGra
   where TNodeIndex : notnull
 {
   private readonly InternalGraph<TNodeIndex, TNodeData, uint, TEdgeData> graph;
-  private readonly IndexedNodeOnlyGraphForUnindexedEdges<TNodeIndex, TNodeData, TEdgeData> nodeModule;
+  private readonly IndexedNodeModuleForUnindexedEdges<TNodeIndex, TNodeData, TEdgeData> nodeModule;
   private readonly UnindexedEdgeModuleForIndexedNodes<TNodeIndex, TNodeData, TEdgeData> edgeModule;
 
   public IndexedGraph()
   {
     graph = new InternalGraph<TNodeIndex, TNodeData, uint, TEdgeData>();
-    nodeModule = new IndexedNodeOnlyGraphForUnindexedEdges<TNodeIndex, TNodeData, TEdgeData>(graph);
+    nodeModule = new IndexedNodeModuleForUnindexedEdges<TNodeIndex, TNodeData, TEdgeData>(graph);
     edgeModule = new UnindexedEdgeModuleForIndexedNodes<TNodeIndex, TNodeData, TEdgeData>(graph);
   }
 
