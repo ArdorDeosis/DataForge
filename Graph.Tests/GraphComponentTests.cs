@@ -8,7 +8,7 @@ public class GraphComponentTests
 {
   public struct ComponentTestData
   {
-    internal GraphComponent<object, object> Component { get; init; }
+    internal IndexedGraphComponent<,,> Component { get; init; }
     internal OldGraph<object, object> Graph { get; init; }
     internal Action RemoveComponent { get; init; }
   }
@@ -35,7 +35,7 @@ public class GraphComponentTests
     }
   }
 
-  private static IEnumerable<GraphComponent<object, object>[]> ComponentPairsInSameGraph
+  private static IEnumerable<IndexedGraphComponent<,,>[]> ComponentPairsInSameGraph
   {
     get
     {
@@ -44,16 +44,16 @@ public class GraphComponentTests
       var node2 = graph.AddNode(new { });
       var edge1 = graph.AddEdge(graph.AddNode(new { }), graph.AddNode(new { }), new { });
       var edge2 = graph.AddEdge(graph.AddNode(new { }), graph.AddNode(new { }), new { });
-      yield return new GraphComponent<object, object>[] { node1, node2 };
-      yield return new GraphComponent<object, object>[] { node1, edge1 };
-      yield return new GraphComponent<object, object>[] { node1, edge2 };
-      yield return new GraphComponent<object, object>[] { node2, edge1 };
-      yield return new GraphComponent<object, object>[] { node2, edge2 };
-      yield return new GraphComponent<object, object>[] { edge1, edge2 };
+      yield return new IndexedGraphComponent<,,>[] { node1, node2 };
+      yield return new IndexedGraphComponent<,,>[] { node1, edge1 };
+      yield return new IndexedGraphComponent<,,>[] { node1, edge2 };
+      yield return new IndexedGraphComponent<,,>[] { node2, edge1 };
+      yield return new IndexedGraphComponent<,,>[] { node2, edge2 };
+      yield return new IndexedGraphComponent<,,>[] { edge1, edge2 };
     }
   }
 
-  private static IEnumerable<GraphComponent<object, object>[]> ComponentPairsInDifferentGraphs
+  private static IEnumerable<IndexedGraphComponent<,,>[]> ComponentPairsInDifferentGraphs
   {
     get
     {
@@ -63,10 +63,10 @@ public class GraphComponentTests
       var edge1 = graph1.AddEdge(graph1.AddNode(new { }), graph1.AddNode(new { }), new { });
       var node2 = graph2.AddNode(new { });
       var edge2 = graph2.AddEdge(graph2.AddNode(new { }), graph2.AddNode(new { }), new { });
-      yield return new GraphComponent<object, object>[] { node1, node2 };
-      yield return new GraphComponent<object, object>[] { node1, edge2 };
-      yield return new GraphComponent<object, object>[] { edge1, node2 };
-      yield return new GraphComponent<object, object>[] { edge1, edge2 };
+      yield return new IndexedGraphComponent<,,>[] { node1, node2 };
+      yield return new IndexedGraphComponent<,,>[] { node1, edge2 };
+      yield return new IndexedGraphComponent<,,>[] { edge1, node2 };
+      yield return new IndexedGraphComponent<,,>[] { edge1, edge2 };
     }
   }
 
@@ -135,8 +135,8 @@ public class GraphComponentTests
   }
 
   [TestCaseSource(nameof(ComponentPairsInSameGraph))]
-  public void IsInSameGraphAs_ComponentInSameGraph_True(GraphComponent<object, object> component,
-    GraphComponent<object, object> otherComponent)
+  public void IsInSameGraphAs_ComponentInSameGraph_True(IndexedGraphComponent<,,> component,
+    IndexedGraphComponent<,,> otherComponent)
   {
     // ASSERT
     Assert.That(component.IsInSameGraphAs(otherComponent));
@@ -144,7 +144,7 @@ public class GraphComponentTests
 
   [TestCaseSource(nameof(ComponentPairsInDifferentGraphs))]
   public void IsInSameGraphAs_ComponentInDifferentGraphs_False(
-    GraphComponent<object, object> component, GraphComponent<object, object> otherComponent)
+    IndexedGraphComponent<,,> component, IndexedGraphComponent<,,> otherComponent)
   {
     // ASSERT
     Assert.That(component.IsInSameGraphAs(otherComponent), Is.False);

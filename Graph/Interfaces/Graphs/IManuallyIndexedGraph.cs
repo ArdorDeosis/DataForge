@@ -1,7 +1,13 @@
-﻿namespace Graph;
+﻿using System.Diagnostics.CodeAnalysis;
 
-public interface IManuallyIndexedGraph<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData> :
-  INodeIndexedEdgeManuallyIndexedGraph<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData>,
-  INodeManuallyIndexedEdgeIndexedGraph<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData>
-  where TNodeIndex : notnull
-  where TEdgeIndex : notnull { }
+namespace Graph;
+
+public interface IManuallyIndexedGraph<TIndex, TNodeData, TEdgeData> :
+  IIndexedGraph<TIndex, TNodeData, TEdgeData>
+  where TIndex : notnull
+{
+  public IndexedNode<TIndex, TNodeData, TEdgeData> AddNode(TIndex index, TNodeData data);
+
+  public bool TryAddNode(TIndex index, TNodeData data,
+    [NotNullWhen(true)] out IndexedNode<TIndex, TNodeData, TEdgeData>? node);
+}

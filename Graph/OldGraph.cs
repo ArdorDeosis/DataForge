@@ -2,20 +2,14 @@
 
 namespace Graph;
 
-/// <inheritdoc cref="GraphBase{TNodeData,TEdgeData}"/>
+/// <inheritdoc cref="GraphBase{TNodeData,TEdgeData}" />
 /// <summary>
-/// A graph containing nodes and edges.
+///   A graph containing nodes and edges.
 /// </summary>
 public sealed class OldGraph<TNodeData, TEdgeData> : GraphBase<TNodeData, TEdgeData>
 {
-  private readonly List<OldNode<,,>> nodes = new();
   private readonly List<OldEdge<,,>> edges = new();
-
-  /// <inheritdoc />
-  public override bool Contains(OldNode<,,> node) => nodes.Contains(node);
-
-  /// <inheritdoc />
-  public override bool Contains(OldEdge<,,> edge) => edges.Contains(edge);
+  private readonly List<OldNode<,,>> nodes = new();
 
   /// <inheritdoc />
   public override IEnumerable<OldNode<,,>> Nodes => nodes;
@@ -29,8 +23,20 @@ public sealed class OldGraph<TNodeData, TEdgeData> : GraphBase<TNodeData, TEdgeD
   /// <inheritdoc />
   public override int Size => edges.Count;
 
+  /// <inheritdoc />
+  public override bool Contains(OldNode<,,> node)
+  {
+    return nodes.Contains(node);
+  }
+
+  /// <inheritdoc />
+  public override bool Contains(OldEdge<,,> edge)
+  {
+    return edges.Contains(edge);
+  }
+
   /// <summary>
-  /// Adds a node to this graph holding the provided data.
+  ///   Adds a node to this graph holding the provided data.
   /// </summary>
   /// <param name="data">The data the node will hold.</param>
   /// <returns>The added node.</returns>
@@ -42,32 +48,40 @@ public sealed class OldGraph<TNodeData, TEdgeData> : GraphBase<TNodeData, TEdgeD
   }
 
   /// <summary>
-  /// Adds nodes to this graph holding the provided data, one for each element in the <see cref="dataList"/> parameter.
+  ///   Adds nodes to this graph holding the provided data, one for each element in the <see cref="dataList" /> parameter.
   /// </summary>
   /// <param name="dataList">A list of data to be held by the added nodes.</param>
   /// <returns>A list of the added nodes.</returns>
   [SuppressMessage("ReSharper", "ReturnTypeCanBeEnumerable.Global")]
-  public IReadOnlyCollection<OldNode<,,>> AddNodes(IEnumerable<TNodeData> dataList) =>
-    dataList.Select(AddNode).ToList();
+  public IReadOnlyCollection<OldNode<,,>> AddNodes(IEnumerable<TNodeData> dataList)
+  {
+    return dataList.Select(AddNode).ToList();
+  }
 
-  /// <inheritdoc cref="AddNodes(System.Collections.Generic.IEnumerable{TNodeData})"/>
+  /// <inheritdoc cref="AddNodes(System.Collections.Generic.IEnumerable{TNodeData})" />
   [SuppressMessage("ReSharper", "ReturnTypeCanBeEnumerable.Global")]
-  public IReadOnlyCollection<OldNode<,,>> AddNodes(params TNodeData[] dataList) => AddNodes(dataList.AsEnumerable());
+  public IReadOnlyCollection<OldNode<,,>> AddNodes(params TNodeData[] dataList)
+  {
+    return AddNodes(dataList.AsEnumerable());
+  }
 
   /// <summary>
-  /// Removes the node from this graph. All edges coming from or going to this node are also removed.
+  ///   Removes the node from this graph. All edges coming from or going to this node are also removed.
   /// </summary>
   /// <param name="node">The node to remove.</param>
   /// <returns>
-  /// Whether the node was removed from this graph or not. A node may not get removed, if it is not part of this graph
-  /// or has been invalidated.
+  ///   Whether the node was removed from this graph or not. A node may not get removed, if it is not part of this graph
+  ///   or has been invalidated.
   /// </returns>
   /// <remarks>A successfully removed node and consequentially removed edges are invalidated.</remarks>
-  public bool RemoveNode(OldNode<,,> node) => RemoveNodeInternal(node);
+  public bool RemoveNode(OldNode<,,> node)
+  {
+    return RemoveNodeInternal(node);
+  }
 
   /// <summary>
-  /// Removes all nodes from the graph which fulfill the <paramref name="predicate"/>. All edges coming from or going to
-  /// a node that is removed are also removed.
+  ///   Removes all nodes from the graph which fulfill the <paramref name="predicate" />. All edges coming from or going to
+  ///   a node that is removed are also removed.
   /// </summary>
   /// <param name="predicate">The predicate a node has to fulfill to get removed.</param>
   /// <remarks>Successfully removed nodes and consequentially removed edges are invalidated.</remarks>
@@ -78,15 +92,15 @@ public sealed class OldGraph<TNodeData, TEdgeData> : GraphBase<TNodeData, TEdgeD
   }
 
   /// <summary>
-  /// Adds an edge with the provided data to this graph, connecting the provided nodes.
+  ///   Adds an edge with the provided data to this graph, connecting the provided nodes.
   /// </summary>
   /// <param name="start">The node the edge goes from.</param>
   /// <param name="end">The node the edge goes to.</param>
   /// <param name="data">The data the edge will hold.</param>
   /// <returns>The added edge.</returns>
   /// <exception cref="ArgumentException">
-  /// If either the <paramref name="start"/> node or the <paramref name="end"/> node are not part of this graph or are
-  /// invalidated.
+  ///   If either the <paramref name="start" /> node or the <paramref name="end" /> node are not part of this graph or are
+  ///   invalidated.
   /// </exception>
   public OldEdge<,,> AddEdge(OldNode<,,> start, OldNode<,,> end,
     TEdgeData data)
@@ -97,18 +111,21 @@ public sealed class OldGraph<TNodeData, TEdgeData> : GraphBase<TNodeData, TEdgeD
   }
 
   /// <summary>
-  /// Removes the edge from this graph.
+  ///   Removes the edge from this graph.
   /// </summary>
   /// <param name="edge">The edge to remove.</param>
   /// <returns>
-  /// Whether the edge was removed from this graph or not. An edge may not get removed, if it is not part of this graph
-  /// or has been invalidated.
+  ///   Whether the edge was removed from this graph or not. An edge may not get removed, if it is not part of this graph
+  ///   or has been invalidated.
   /// </returns>
   /// <remarks>A successfully removed edge is invalidated.</remarks>
-  public bool RemoveEdge(OldEdge<,,> edge) => RemoveEdgeInternal(edge);
+  public bool RemoveEdge(OldEdge<,,> edge)
+  {
+    return RemoveEdgeInternal(edge);
+  }
 
   /// <summary>
-  /// Removes all edges from the graph which fulfill the <paramref name="predicate"/>.
+  ///   Removes all edges from the graph which fulfill the <paramref name="predicate" />.
   /// </summary>
   /// <param name="predicate">The predicate an edge has to fulfill to get removed.</param>
   /// <remarks>Successfully removed edges are invalidated.</remarks>
@@ -119,14 +136,14 @@ public sealed class OldGraph<TNodeData, TEdgeData> : GraphBase<TNodeData, TEdgeD
   }
 
   /// <summary>
-  /// Creates a copy of this graph.
+  ///   Creates a copy of this graph.
   /// </summary>
   /// <returns>The copied graph.</returns>
   /// <remarks>
-  /// If the data types <typeparamref name="TNodeData"/> and <typeparamref name="TEdgeData"/> are reference types, the
-  /// copied graph will have references to the same data instances as the original graph. If these should be copied,
-  /// too, use <see cref="Copy(Func{TNodeData, TNodeData}, Func{TEdgeData, TEdgeData})"/> or
-  /// <see cref="Transform{TTransformedNodeData,TTransformedEdgeData}"/> to provide custom copy logic.
+  ///   If the data types <typeparamref name="TNodeData" /> and <typeparamref name="TEdgeData" /> are reference types, the
+  ///   copied graph will have references to the same data instances as the original graph. If these should be copied,
+  ///   too, use <see cref="Copy(Func{TNodeData, TNodeData}, Func{TEdgeData, TEdgeData})" /> or
+  ///   <see cref="Transform{TTransformedNodeData,TTransformedEdgeData}" /> to provide custom copy logic.
   /// </remarks>
   public OldGraph<TNodeData, TEdgeData> Copy()
   {
@@ -136,18 +153,20 @@ public sealed class OldGraph<TNodeData, TEdgeData> : GraphBase<TNodeData, TEdgeD
   }
 
   /// <summary>
-  /// Creates a copy of this graph using the provided custom copy logic for the data held by the nodes and edges.
+  ///   Creates a copy of this graph using the provided custom copy logic for the data held by the nodes and edges.
   /// </summary>
   /// <param name="copyNodeData">Custom copy function for node data.</param>
   /// <param name="copyEdgeData">Custom copy function for edge data.</param>
   /// <returns>The copied graph.</returns>
   public OldGraph<TNodeData, TEdgeData> Copy(Func<TNodeData, TNodeData> copyNodeData,
-    Func<TEdgeData, TEdgeData> copyEdgeData) =>
-    Transform(copyNodeData, copyEdgeData);
+    Func<TEdgeData, TEdgeData> copyEdgeData)
+  {
+    return Transform(copyNodeData, copyEdgeData);
+  }
 
   /// <summary>
-  /// Transforms the data on the nodes and edges and creates a new graph with the same graph structure but the
-  /// transformed data.
+  ///   Transforms the data on the nodes and edges and creates a new graph with the same graph structure but the
+  ///   transformed data.
   /// </summary>
   /// <param name="transformNodeData">Function to transform node data.</param>
   /// <param name="transformEdgeData">Function to transform edge data.</param>
@@ -164,15 +183,15 @@ public sealed class OldGraph<TNodeData, TEdgeData> : GraphBase<TNodeData, TEdgeD
   }
 
   /// <summary>
-  /// Merges this graph with other graphs into one new graph containing all nodes and edges from this and the other
-  /// graphs. 
+  ///   Merges this graph with other graphs into one new graph containing all nodes and edges from this and the other
+  ///   graphs.
   /// </summary>
   /// <param name="others">The graphs to merge this graph with.</param>
   /// <returns>The created merged graph.</returns>
   /// <remarks>
-  /// If the data types <typeparamref name="TNodeData"/> and <typeparamref name="TEdgeData"/> are reference types, the
-  /// merged graph will have references to the same data instances as the original graph. If new instances should be
-  /// created, use <see cref="MergeTransform{TNewNodeData,TNewEdgeData}"/> to provide custom copy logic.
+  ///   If the data types <typeparamref name="TNodeData" /> and <typeparamref name="TEdgeData" /> are reference types, the
+  ///   merged graph will have references to the same data instances as the original graph. If new instances should be
+  ///   created, use <see cref="MergeTransform{TNewNodeData,TNewEdgeData}" /> to provide custom copy logic.
   /// </remarks>
   public OldGraph<TNodeData, TEdgeData> Merge(params GraphBase<TNodeData, TEdgeData>[] others)
   {
@@ -184,8 +203,8 @@ public sealed class OldGraph<TNodeData, TEdgeData> : GraphBase<TNodeData, TEdgeD
   }
 
   /// <summary>
-  /// Merges this graph with other graphs into one new graph containing all nodes and edges from this and the other
-  /// graphs with transformed data.
+  ///   Merges this graph with other graphs into one new graph containing all nodes and edges from this and the other
+  ///   graphs with transformed data.
   /// </summary>
   /// <param name="transformNodeData">Function to transform node data.</param>
   /// <param name="transformEdgeData">Function to transform edge data.</param>

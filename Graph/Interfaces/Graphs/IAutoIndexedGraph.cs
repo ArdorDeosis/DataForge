@@ -1,7 +1,15 @@
-﻿namespace Graph;
+﻿using System.Diagnostics.CodeAnalysis;
 
-public interface IAutoIndexedGraph<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData> :
-  INodeIndexedEdgeAutoIndexedGraph<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData>,
-  INodeAutoIndexedEdgeIndexedGraph<TNodeIndex, TNodeData, TEdgeIndex, TEdgeData>
-  where TNodeIndex : notnull
-  where TEdgeIndex : notnull { }
+namespace Graph;
+
+public interface IAutoIndexedGraph<TIndex, TNodeData, TEdgeData> :
+  IIndexedGraph<TIndex, TNodeData, TEdgeData>
+  where TIndex : notnull
+{
+
+  public IndexedNode<TIndex, TNodeData, TEdgeData> AddNode(TNodeData data);
+
+  public bool TryAddNode(TNodeData data,
+    [NotNullWhen(true)] out IndexedNode<TIndex, TNodeData, TEdgeData>? node);
+
+}

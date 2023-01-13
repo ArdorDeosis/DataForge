@@ -1,3 +1,3 @@
 ﻿using System.Runtime.CompilerServices;
 
-[assembly:InternalsVisibleTo("Graph.Tests")]
+[assembly: InternalsVisibleTo("Graph.Tests")]

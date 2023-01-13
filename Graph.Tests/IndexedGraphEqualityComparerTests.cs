@@ -13,7 +13,7 @@ public partial class IndexedGraphTests
     IEqualityComparer<int> nullComparer = null!;
 
     // ASSERT
-    Assert.That(() => new NodeIndexedGraph<int, int, int>(nullComparer), Throws.Nothing);
+    Assert.That(() => new IndexedGraph<int, int, int>(nullComparer), Throws.Nothing);
   }
 
   [Test]
@@ -22,7 +22,7 @@ public partial class IndexedGraphTests
     // ARRANGE
     const int index = 1;
     var comparer = new TestEqualityComparer();
-    var graph = new NodeIndexedGraph<int, int, int>(comparer);
+    var graph = new IndexedGraph<int, int, int>(comparer);
 
     // ACT
     graph.AddNode(index, 0xBEEF);
@@ -39,7 +39,7 @@ public partial class IndexedGraphTests
     // ARRANGE
     const int index = 1;
     var comparer = new TestEqualityComparer();
-    var graph = new NodeIndexedGraph<int, int, int>(() => comparer);
+    var graph = new IndexedGraph<int, int, int>(() => comparer);
 
     // ACT
     graph.AddNode(index, 0xBEEF);
@@ -56,7 +56,7 @@ public partial class IndexedGraphTests
     // ARRANGE
     const int index = 1;
     var comparer = new TestEqualityComparer();
-    var graph = new NodeIndexedGraph<int, int, int>(comparer);
+    var graph = new IndexedGraph<int, int, int>(comparer);
     var copiedGraph = graph.Copy();
 
     // ACT
@@ -73,7 +73,7 @@ public partial class IndexedGraphTests
   {
     // ARRANGE
     var factory = new TestEqualityComparerFactory();
-    var graph = new NodeIndexedGraph<int, int, int>(factory.Produce);
+    var graph = new IndexedGraph<int, int, int>(factory.Produce);
 
     // ACT
     graph.Copy();
@@ -88,7 +88,7 @@ public partial class IndexedGraphTests
     // ARRANGE
     const int index = 1;
     var comparer = new TestEqualityComparer();
-    var graph = new NodeIndexedGraph<int, int, int>(comparer);
+    var graph = new IndexedGraph<int, int, int>(comparer);
 
     // ACT
     var transformedGraph = graph.Transform(n => n, n => n);
@@ -107,7 +107,7 @@ public partial class IndexedGraphTests
     const int key1 = 1;
     const int key2 = -1; // is equivalent to key1 in the test comparer
     var comparer = new TestEqualityComparer();
-    var graph = new NodeIndexedGraph<int, int, int>(comparer);
+    var graph = new IndexedGraph<int, int, int>(comparer);
 
     // ACT
     graph.AddNode(key1, 0xC0FFEE);
@@ -124,7 +124,7 @@ public partial class IndexedGraphTests
     // ARRANGE
     const int key = 1;
     var comparer = new TestEqualityComparer();
-    var graph = new NodeIndexedGraph<int, int, int>();
+    var graph = new IndexedGraph<int, int, int>();
 
     // ACT
     var transformedGraph = graph.Transform(n => n, n => n, n => n, comparer);
@@ -142,7 +142,7 @@ public partial class IndexedGraphTests
   {
     // ARRANGE
     var factory = new TestEqualityComparerFactory();
-    var graph = new NodeIndexedGraph<int, int, int>();
+    var graph = new IndexedGraph<int, int, int>();
 
     // ACT
     var transformedGraph = graph.Transform(n => n, n => n, n => n, factory.Produce);

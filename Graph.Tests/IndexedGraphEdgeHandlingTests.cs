@@ -9,7 +9,7 @@ public class IndexedGraphEdgeHandlingTests
   public void AddEdge_WithReferences_EdgeIsInGraph()
   {
     // ARRANGE
-    var graph = new NodeIndexedGraph<int, object, object>();
+    var graph = new IndexedGraph<int, object, object>();
     var startNode = graph.AddNode(1, new { });
     var endNode = graph.AddNode(2, new { });
 
@@ -24,7 +24,7 @@ public class IndexedGraphEdgeHandlingTests
   public void AddEdge_WithIndices_EdgeIsInGraph()
   {
     // ARRANGE
-    var graph = new NodeIndexedGraph<int, object, object>();
+    var graph = new IndexedGraph<int, object, object>();
     graph.AddNode(1, new { });
     graph.AddNode(2, new { });
 
@@ -39,7 +39,7 @@ public class IndexedGraphEdgeHandlingTests
   public void AddEdge_WithReferences_EdgeHasData()
   {
     // ARRANGE
-    var graph = new NodeIndexedGraph<int, object, object>();
+    var graph = new IndexedGraph<int, object, object>();
     var startNode = graph.AddNode(1, new { });
     var endNode = graph.AddNode(2, new { });
     var data = new { };
@@ -55,7 +55,7 @@ public class IndexedGraphEdgeHandlingTests
   public void AddEdge_WithIndices_EdgeHasData()
   {
     // ARRANGE
-    var graph = new NodeIndexedGraph<int, object, object>();
+    var graph = new IndexedGraph<int, object, object>();
     graph.AddNode(1, new { });
     graph.AddNode(2, new { });
     var data = new { };
@@ -71,7 +71,7 @@ public class IndexedGraphEdgeHandlingTests
   public void AddEdge_WithReferences_EdgeHasReferenceToNodes()
   {
     // ARRANGE
-    var graph = new NodeIndexedGraph<int, object, object>();
+    var graph = new IndexedGraph<int, object, object>();
     var startNode = graph.AddNode(1, new { });
     var endNode = graph.AddNode(2, new { });
 
@@ -90,7 +90,7 @@ public class IndexedGraphEdgeHandlingTests
   public void AddEdge_WithIndices_EdgeHasReferenceToNodes()
   {
     // ARRANGE
-    var graph = new NodeIndexedGraph<int, object, object>();
+    var graph = new IndexedGraph<int, object, object>();
     var startNode = graph.AddNode(1, new { });
     var endNode = graph.AddNode(2, new { });
 
@@ -109,7 +109,7 @@ public class IndexedGraphEdgeHandlingTests
   public void AddEdge_WithReferences_NodesHaveReferenceToEdge()
   {
     // ARRANGE
-    var graph = new NodeIndexedGraph<int, object, object>();
+    var graph = new IndexedGraph<int, object, object>();
     var startNode = graph.AddNode(1, new { });
     var endNode = graph.AddNode(2, new { });
 
@@ -130,7 +130,7 @@ public class IndexedGraphEdgeHandlingTests
   public void AddEdge_WithIndices_NodesHaveReferenceToEdge()
   {
     // ARRANGE
-    var graph = new NodeIndexedGraph<int, object, object>();
+    var graph = new IndexedGraph<int, object, object>();
     var startNode = graph.AddNode(1, new { });
     var endNode = graph.AddNode(2, new { });
 
@@ -151,7 +151,7 @@ public class IndexedGraphEdgeHandlingTests
   public void AddEdge_WithInvalidNode_ThrowsInvalidOperationException()
   {
     // ARRANGE
-    var graph = new NodeIndexedGraph<int, object, object>();
+    var graph = new IndexedGraph<int, object, object>();
     var validNode = graph.AddNode(1, new { });
     var invalidNode = graph.AddNode(2, new { });
     invalidNode.Invalidate();
@@ -168,7 +168,7 @@ public class IndexedGraphEdgeHandlingTests
   public void AddEdge_WithInvalidIndex_ThrowsKeyNotFoundException()
   {
     // ARRANGE
-    var graph = new NodeIndexedGraph<int, object, object>();
+    var graph = new IndexedGraph<int, object, object>();
     graph.AddNode(1, new { });
 
     // ASSERT
@@ -180,8 +180,8 @@ public class IndexedGraphEdgeHandlingTests
   public void AddEdge_WithNodeInOtherGraph_ThrowsInvalidOperationException()
   {
     // ARRANGE
-    var graph = new NodeIndexedGraph<int, object, object>();
-    var otherGraph = new NodeIndexedGraph<int, object, object>();
+    var graph = new IndexedGraph<int, object, object>();
+    var otherGraph = new IndexedGraph<int, object, object>();
     var node = graph.AddNode(1, new { });
     var otherNode = otherGraph.AddNode(2, new { });
 
@@ -197,7 +197,7 @@ public class IndexedGraphEdgeHandlingTests
   public void RemoveEdge_EdgeIsNotInGraph()
   {
     // ARRANGE
-    var graph = new NodeIndexedGraph<int, object, object>();
+    var graph = new IndexedGraph<int, object, object>();
     var startNode = graph.AddNode(1, new { });
     var endNode = graph.AddNode(2, new { });
     var edge = graph.AddEdge(startNode, endNode, new { });
@@ -213,7 +213,7 @@ public class IndexedGraphEdgeHandlingTests
   public void RemoveEdge_NodesHaveNoReferenceToEdge()
   {
     // ARRANGE
-    var graph = new NodeIndexedGraph<int, object, object>();
+    var graph = new IndexedGraph<int, object, object>();
     var startNode = graph.AddNode(1, new { });
     var endNode = graph.AddNode(2, new { });
     var edge = graph.AddEdge(startNode, endNode, new { });
@@ -233,7 +233,7 @@ public class IndexedGraphEdgeHandlingTests
   public void RemoveEdge_ValidEdge_ReturnsTrue()
   {
     // ARRANGE
-    var graph = new NodeIndexedGraph<int, object, object>();
+    var graph = new IndexedGraph<int, object, object>();
     var startNode = graph.AddNode(1, new { });
     var endNode = graph.AddNode(2, new { });
     var edge = graph.AddEdge(startNode, endNode, new { });
@@ -246,8 +246,8 @@ public class IndexedGraphEdgeHandlingTests
   public void RemoveEdge_EdgeFromDifferentGraph_ReturnsFalse()
   {
     // ARRANGE
-    var graph = new NodeIndexedGraph<int, object, object>();
-    var otherGraph = new NodeIndexedGraph<int, object, object>();
+    var graph = new IndexedGraph<int, object, object>();
+    var otherGraph = new IndexedGraph<int, object, object>();
     var edge = otherGraph.AddEdge(
       otherGraph.AddNode(1, new { }),
       otherGraph.AddNode(2, new { }),
@@ -262,7 +262,7 @@ public class IndexedGraphEdgeHandlingTests
   public void RemoveEdges_ByPredicate_MatchingEdgesAreRemoved()
   {
     // ARRANGE
-    var graph = new NodeIndexedGraph<int, object, bool>();
+    var graph = new IndexedGraph<int, object, bool>();
     var startNode = graph.AddNode(1, new { });
     var endNode = graph.AddNode(2, new { });
     var edgeToRemove = graph.AddEdge(startNode, endNode, true);
