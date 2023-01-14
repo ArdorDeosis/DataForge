@@ -1,6 +1,6 @@
 ﻿namespace Graph;
 
-public interface INode<out TNodeData, out TEdgeData> : IGraphComponent
+public interface INode<TNodeData, out TEdgeData> : IGraphComponent
 {
-  public TNodeData Data { get; }
+  public TNodeData Data { get; set; }
 }

@@ -1,40 +1,64 @@
-﻿using NUnit.Framework;
+﻿using System.Collections.Generic;
+using NUnit.Framework;
 
 namespace Graph.Tests;
 
 public class EdgeTests
 {
-  [Test]
-  public void EdgeConstructor_NodeFromDifferentGraph_ThrowsArgumentException()
+  private const int EdgeData = 0xC0FFEE; 
+  
+  private static IEnumerable<IEdge<int, int>> Edges()
   {
-    // ARRANGE
-    var graph = new OldGraph<object, object>();
-    var nodeInSameGraph = graph.AddNode(new { });
-    var nodeInOtherGraph = new OldGraph<object, object>().AddNode(new { });
-
-    // ASSERT
-    Assert.Multiple(() =>
+    var graph = new Graph<int, int>();
+    yield return graph.AddEdge(graph.AddNode(0), graph.AddNode(0), EdgeData);
+    
+    var indexedGraph = new IndexedGraph<int, int, int>();
+    indexedGraph.AddNode(0, 0);
+    indexedGraph.AddNode(1, 1);
+    yield return indexedGraph.AddEdge(0, 1, EdgeData);
+  }
+  
+  private static IEnumerable<IEdge<int, int>> InvalidEdges()
+  {
+    foreach (var edge in Edges())
     {
-      Assert.That(() => new OldEdge<,,>(graph, nodeInSameGraph, nodeInOtherGraph, new { }),
-        Throws.ArgumentException);
-      Assert.That(() => new OldEdge<,,>(graph, nodeInOtherGraph, nodeInSameGraph, new { }),
-        Throws.ArgumentException);
-    });
+      (edge as GraphComponent)?.Invalidate();
+      yield return edge;
+    }
   }
 
-  [Test]
-  public void Nodes_ContainsStartAndEndNode()
+  [TestCaseSource(nameof(Edges))]
+  public void EdgeHasExpectedData(IEdge<int, int> edge)
   {
-    // ARRANGE
-    var graph = new OldGraph<object, object>();
-    var startNode = graph.AddNode(new { });
-    var endNode = graph.AddNode(new { });
-    var expectedNodes = new[] { startNode, endNode };
-
-    // ACT
-    var edge = graph.AddEdge(startNode, endNode, new { });
-
     // ASSERT
-    Assert.That(edge.Nodes, Is.EquivalentTo(expectedNodes));
+    Assert.That(edge.Data, Is.EqualTo(EdgeData));
+  }
+
+  [TestCaseSource(nameof(InvalidEdges))]
+  public void InvalidEdge_DataIsAccessible(IEdge<int, int> edge)
+  {
+    // ASSERT
+    Assert.That(edge.Data, Is.EqualTo(EdgeData));
+  }
+  
+  [TestCaseSource(nameof(InvalidEdges))]
+  public void InvalidEdge_DataIsImmutable(IEdge<int, int> edge)
+  {
+    // ASSERT
+    Assert.That(() => edge.Data = 0, Throws.InvalidOperationException);
+  }
+  
+  [TestCaseSource(nameof(InvalidEdges))]
+  public void InvalidEdge_OriginIsNotAccessible(IEdge<int, int> edge)
+  {
+    // ASSERT
+    Assert.That(() => edge.Origin, Throws.InvalidOperationException);
+  }
+  
+  [TestCaseSource(nameof(InvalidEdges))]
+  public void InvalidEdge_DestinationIsNotAccessible(IEdge<int, int> edge)
+  {
+    // ASSERT
+    Assert.That(() => edge.Destination, Throws.InvalidOperationException);
   }
 }

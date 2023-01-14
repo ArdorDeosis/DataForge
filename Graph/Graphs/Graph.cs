@@ -21,7 +21,7 @@ public sealed class Graph<TNodeData, TEdgeData> : IUnindexedGraph<TNodeData, TEd
 
   #region Constructors
 
-  public Graph(IReadOnlyCollection<Node<TNodeData, TEdgeData>> nodes, IReadOnlyCollection<Edge<TNodeData, TEdgeData>> edges)
+  public Graph()
   {
     Nodes = nodes.InReadOnlyWrapper();
     Edges = edges.InReadOnlyWrapper();

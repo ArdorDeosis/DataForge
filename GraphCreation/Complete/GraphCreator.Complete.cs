@@ -1,6 +1,4 @@
-﻿using Graph;
-
-namespace GraphCreation;
+﻿namespace GraphCreation;
 
 public static partial class GraphCreator
 {
