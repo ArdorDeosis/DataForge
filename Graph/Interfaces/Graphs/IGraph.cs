@@ -1,10 +1,42 @@
 ﻿namespace Graph;
 
+/// <summary>
+/// An interface for a graph data structure.
+/// </summary>
+/// <typeparam name="TNodeData">The type of data stored in the graph's nodes.</typeparam>
+/// <typeparam name="TEdgeData">The type of data stored in the graph's edges.</typeparam>
 public interface IGraph<TNodeData, TEdgeData> : IReadOnlyGraph<TNodeData, TEdgeData>
-{  
-  public bool RemoveNode(INode<TNodeData, TEdgeData> node);
-  public bool RemoveEdge(IEdge<TNodeData, TEdgeData> edge);
-  public int RemoveNodeWhere(Predicate<TNodeData> predicate);
-  public int RemoveEdgeWhere(Predicate<TEdgeData> predicate);
-  public void Clear();
+{
+  /// <summary>
+  /// Removes the specified node from the graph.
+  /// </summary>
+  /// <param name="node">The node to remove from the graph.</param>
+  /// <returns>True if the node was successfully removed, false otherwise.</returns>
+  bool RemoveNode(INode<TNodeData, TEdgeData> node);
+
+  /// <summary>
+  /// Removes the specified edge from the graph.
+  /// </summary>
+  /// <param name="edge">The edge to remove from the graph.</param>
+  /// <returns>True if the edge was successfully removed, false otherwise.</returns>
+  bool RemoveEdge(IEdge<TNodeData, TEdgeData> edge);
+
+  /// <summary>
+  /// Removes all nodes from the graph that match the specified predicate.
+  /// </summary>
+  /// <param name="predicate">The predicate to match nodes against.</param>
+  /// <returns>The number of nodes removed from the graph.</returns>
+  int RemoveNodeWhere(Predicate<TNodeData> predicate);
+
+  /// <summary>
+  /// Removes all edges from the graph that match the specified predicate.
+  /// </summary>
+  /// <param name="predicate">The predicate to match edges against.</param>
+  /// <returns>The number of edges removed from the graph.</returns>
+  int RemoveEdgeWhere(Predicate<TEdgeData> predicate);
+
+  /// <summary>
+  /// Removes all nodes and edges from the graph.
+  /// </summary>
+  void Clear();
 }
