@@ -17,7 +17,7 @@ public sealed class MultiValueDictionary<TKey, TValue> where TKey : notnull
   /// <returns>A read-only hash set containing the values associated with the specified key.</returns>
   public ReadOnlyHashSet<TValue> this[TKey key] =>
     dictionary.TryGetValue(key, out var set)
-      ? set.AsReadOnly()
+      ? set.ToReadOnly()
       : ReadOnlyHashSet<TValue>.Empty;
 
   /// <summary>

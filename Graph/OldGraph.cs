@@ -35,6 +35,15 @@ public sealed class OldGraph<TNodeData, TEdgeData> : GraphBase<TNodeData, TEdgeD
     return edges.Contains(edge);
   }
 
+  public Func<int[], bool> Wrap(Func<float[], bool> function)
+  {
+    return intArray =>
+    {
+      var floatArray = intArray.Select(n => (float)n).ToArray();
+      return function(floatArray);
+    };
+  }
+
   /// <summary>
   ///   Adds a node to this graph holding the provided data.
   /// </summary>
@@ -42,6 +51,11 @@ public sealed class OldGraph<TNodeData, TEdgeData> : GraphBase<TNodeData, TEdgeD
   /// <returns>The added node.</returns>
   public OldNode<,,> AddNode(TNodeData data)
   {
+    var dict = new Dictionary<int, int> { { 1, 1 } };
+    var collection = dict.Keys;
+    dict.Clear();
+    Console.WriteLine(collection.Count);
+    
     var node = MakeNode(data);
     nodes.Add(node);
     return node;

@@ -6,9 +6,9 @@ public interface IReadOnlyIndexedGraph<TIndex, TNodeData, TEdgeData> :
   IReadOnlyGraph<TNodeData, TEdgeData>
   where TIndex : notnull
 {
-  public new IEnumerable<IndexedNode<TIndex, TNodeData, TEdgeData>> Nodes { get; }
-  public new IEnumerable<IndexedEdge<TIndex, TNodeData, TEdgeData>> Edges { get; }
-  public IEnumerable<TIndex> Indices { get; }
+  public new IReadOnlyCollection<IndexedNode<TIndex, TNodeData, TEdgeData>> Nodes { get; }
+  public new IReadOnlyCollection<IndexedEdge<TIndex, TNodeData, TEdgeData>> Edges { get; }
+  public IReadOnlyCollection<TIndex> Indices { get; }
 
   public IndexedNode<TIndex, TNodeData, TEdgeData> this[TIndex index] { get; }
   public IndexedNode<TIndex, TNodeData, TEdgeData> GetNode(TIndex index);

@@ -6,14 +6,16 @@ public sealed class AutoIndexedGraph<TIndex, TNodeData, TEdgeData> :
   IAutoIndexedGraph<TIndex, TNodeData, TEdgeData>
   where TIndex : notnull
 {
+  #region Fields
+  
   private readonly IndexedGraph<TIndex, TNodeData, TEdgeData> graph;
 
   private readonly IIndexProvider<TNodeData, TIndex> indexProvider;
 
-  // ### CONSTRUCTORS ###
+  #endregion
 
-  // TODO: constructors
-
+  #region Constructors
+  
   public AutoIndexedGraph(Func<TNodeData, TIndex> indexGeneratorFunction,
     IEqualityComparer<TIndex>? nodeIndexEqualityComparer = null)
     : this(indexGeneratorFunction, () => nodeIndexEqualityComparer) { }
@@ -34,99 +36,71 @@ public sealed class AutoIndexedGraph<TIndex, TNodeData, TEdgeData> :
     graph = new IndexedGraph<TIndex, TNodeData, TEdgeData>(nodeIndexEqualityComparerFactoryMethod);
   }
 
-  public IEnumerable<TIndex> NodeIndices => graph.NodeIndices;
+  #endregion
 
-  // TODO: should these be read-only collections?
-  public IEnumerable<IIndexedNode<TIndex, TNodeData, TEdgeData>> Nodes => graph.Nodes;
-  IEnumerable<IEdge<TNodeData, TEdgeData>> IReadOnlyGraph<TNodeData, TEdgeData>.Edges => Edges;
+  #region Data Access
 
-  public IEnumerable<TIndex> Indices { get; }
+  public IReadOnlyCollection<IndexedNode<TIndex, TNodeData, TEdgeData>> Nodes => graph.Nodes;
 
-  public IIndexedNode<TIndex, TNodeData, TEdgeData> this[TIndex index] => throw new NotImplementedException();
+  IReadOnlyCollection<INode<TNodeData, TEdgeData>> IReadOnlyGraph<TNodeData, TEdgeData>.Nodes => graph.Nodes;
 
-  public bool Contains(INode<TNodeData, TEdgeData> node)
-  {
-    graph.Contains(node);
-  }
+  public IReadOnlyCollection<IndexedEdge<TIndex, TNodeData, TEdgeData>> Edges => graph.Edges;
 
-  public bool Contains(IEdge<TNodeData, TEdgeData> edge)
-  {
-    throw new NotImplementedException();
-  }
+  IReadOnlyCollection<IEdge<TNodeData, TEdgeData>> IReadOnlyGraph<TNodeData, TEdgeData>.Edges => Edges;
 
-  IEnumerable<INode<TNodeData, TEdgeData>> IReadOnlyGraph<TNodeData, TEdgeData>.Nodes => Nodes;
+  public IReadOnlyCollection<TIndex> Indices => graph.Indices;
 
-  public IEnumerable<IIndexedEdge<TIndex, TNodeData, TEdgeData>> Edges => graph.Edges;
+  public bool Contains(INode<TNodeData, TEdgeData> node) => graph.Contains(node);
 
-  public int Order => graph.Order;
-  public int Size => graph.Size;
-
-  // TODO: should these have custom exceptions?
-  public IIndexedNode<TIndex, TNodeData, TEdgeData> GetNode(TIndex index) => graph.GetNode(index);
-
-  public IIndexedNode<TIndex, TNodeData, TEdgeData>? GetNodeOrNull(TIndex index) => graph.GetNodeOrNull(index);
-  public bool TryGetNode(TIndex index, out IIndexedNode<TIndex, TNodeData, TEdgeData>? node)
-  {
-    throw new NotImplementedException();
-  }
-
-  public bool TryGetNode(TIndex index,
-    [NotNullWhen(true)] out IndexedNode<TIndex, TNodeData, TEdgeData>? node) =>
-    graph.TryGetNode(index, out node);
+  public bool Contains(IEdge<TNodeData, TEdgeData> edge) => graph.Contains(edge);
 
   public bool Contains(TIndex index) => graph.Contains(index);
+  
+  public int Order => graph.Order;
+  public int Size => graph.Size;
+  
+  public IndexedNode<TIndex, TNodeData, TEdgeData> this[TIndex index] => graph[index];
 
-  // TODO: copy constructors
+  public IndexedNode<TIndex, TNodeData, TEdgeData> GetNode(TIndex index) => graph.GetNode(index);
 
-  // ### ADDITION & REMOVAL ###
+  public IndexedNode<TIndex, TNodeData, TEdgeData>? GetNodeOrNull(TIndex index) => graph.GetNodeOrNull(index);
+
+  public bool TryGetNode(TIndex index, [NotNullWhen(true)] out IndexedNode<TIndex, TNodeData, TEdgeData>? node) => 
+    graph.TryGetNode(index, out node);
+  
+  #endregion
+
+  #region Data Modification
 
   public IndexedNode<TIndex, TNodeData, TEdgeData> AddNode(TNodeData data) => 
     graph.AddNode(indexProvider.GetIndex(data), data);
 
-  public bool TryAddNode(TNodeData data,
-    [NotNullWhen(true)] out IndexedNode<TIndex, TNodeData, TEdgeData>? node) =>
+  public bool TryAddNode(TNodeData data, [NotNullWhen(true)] out IndexedNode<TIndex, TNodeData, TEdgeData>? node) => 
     graph.TryAddNode(indexProvider.GetIndex(data), data, out node);
 
-  public bool RemoveNode(TIndex index) => graph.RemoveNode(index);
-  public bool RemoveNode(TIndex index, out IIndexedNode<TIndex, TNodeData, TEdgeData>? node)
-  {
-    throw new NotImplementedException();
-  }
-
-  public bool RemoveNode(TIndex index,
-    [NotNullWhen(true)] out IndexedNode<TIndex, TNodeData, TEdgeData>? node) =>
-    graph.RemoveNode(index, out node);
-
-  public bool RemoveNode(IndexedNode<TIndex, TNodeData, TEdgeData> node) => graph.RemoveNode(node);
-
-  public IndexedEdge<TIndex, TNodeData, TEdgeData> AddEdge(TIndex origin, TIndex destination,
-    TEdgeData data) =>
+  public IndexedEdge<TIndex, TNodeData, TEdgeData> AddEdge(TIndex origin, TIndex destination, TEdgeData data) =>
     graph.AddEdge(origin, destination, data);
 
   public bool TryAddEdge(TIndex origin, TIndex destination, TEdgeData data,
     [NotNullWhen(true)] out IndexedEdge<TIndex, TNodeData, TEdgeData>? edge) =>
     graph.TryAddEdge(origin, destination, data, out edge);
 
-  public IndexedEdge<TIndex, TNodeData, TEdgeData> AddEdge(IndexedNode<TIndex, TNodeData, TEdgeData> origin,
-    IndexedNode<TIndex, TNodeData, TEdgeData> destination, TEdgeData data) =>
-    graph.AddEdge(origin, destination, data);
+  public bool RemoveNode(TIndex index) => graph.RemoveNode(index);
 
-  public bool TryAddEdge(IndexedNode<TIndex, TNodeData, TEdgeData> origin,
-    IndexedNode<TIndex, TNodeData, TEdgeData> destination, TEdgeData data,
-    [NotNullWhen(true)] out IndexedEdge<TIndex, TNodeData, TEdgeData>? edge) =>
-    graph.TryAddEdge(origin, destination, data, out edge);
+  public bool RemoveNode(TIndex index,
+    [NotNullWhen(true)] out IndexedNode<TIndex, TNodeData, TEdgeData>? node) => graph.RemoveNode(index, out node);
+
+  public bool RemoveNode(IndexedNode<TIndex, TNodeData, TEdgeData> node) => graph.RemoveNode(node);
+
+  bool IGraph<TNodeData, TEdgeData>.RemoveNode(INode<TNodeData, TEdgeData> node) => 
+    ((IGraph<TNodeData, TEdgeData>)graph).RemoveNode(node);
 
   public bool RemoveEdge(IndexedEdge<TIndex, TNodeData, TEdgeData> edge) => graph.RemoveEdge(edge);
 
-  public bool RemoveNode(INode<TNodeData, TEdgeData> node)
-  {
-    throw new NotImplementedException();
-  }
-
-  public bool RemoveEdge(IEdge<TNodeData, TEdgeData> edge)
-  {
-    throw new NotImplementedException();
-  }
+  bool IGraph<TNodeData, TEdgeData>.RemoveEdge(IEdge<TNodeData, TEdgeData> edge) =>
+    ((IGraph<TNodeData, TEdgeData>)graph).RemoveEdge(edge); 
 
   public void Clear() => graph.Clear();
+
+  #endregion
 }

@@ -34,6 +34,10 @@ public sealed class IndexedGraph<TIndex, TNodeData, TEdgeData> :
     nodes = new Dictionary<TIndex, IndexedNode<TIndex, TNodeData, TEdgeData>>(
       nodeIndexEqualityComparerFactoryMethod());
     edges = new HashSet<IndexedEdge<TIndex, TNodeData, TEdgeData>>();
+
+    Nodes = nodes.Values.InReadOnlyWrapper();
+    Edges = edges.InReadOnlyWrapper();
+    Indices = nodes.Keys.InReadOnlyWrapper();
   }
 
   #endregion
@@ -41,13 +45,15 @@ public sealed class IndexedGraph<TIndex, TNodeData, TEdgeData> :
   #region Data Access
   
   // TODO: should these be read-only collections?
-  public IEnumerable<IndexedNode<TIndex, TNodeData, TEdgeData>> Nodes => nodes.Values;
-  IEnumerable<INode<TNodeData, TEdgeData>> IReadOnlyGraph<TNodeData, TEdgeData>.Nodes => Nodes;
+  public IReadOnlyCollection<IndexedNode<TIndex, TNodeData, TEdgeData>> Nodes { get; }
 
-  public IEnumerable<IndexedEdge<TIndex, TNodeData, TEdgeData>> Edges => edges;
-  IEnumerable<IEdge<TNodeData, TEdgeData>> IReadOnlyGraph<TNodeData, TEdgeData>.Edges => Edges;
+  IReadOnlyCollection<INode<TNodeData, TEdgeData>> IReadOnlyGraph<TNodeData, TEdgeData>.Nodes => Nodes;
 
-  public IEnumerable<TIndex> Indices => nodes.Keys;
+  public IReadOnlyCollection<IndexedEdge<TIndex, TNodeData, TEdgeData>> Edges { get; }
+
+  IReadOnlyCollection<IEdge<TNodeData, TEdgeData>> IReadOnlyGraph<TNodeData, TEdgeData>.Edges => Edges;
+
+  public IReadOnlyCollection<TIndex> Indices { get; }
 
   public bool Contains(INode<TNodeData, TEdgeData> node) =>
     node is IndexedNode<TIndex, TNodeData, TEdgeData> indexedNode && nodes.ContainsValue(indexedNode);

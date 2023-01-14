@@ -2,6 +2,9 @@
 
 public static class CollectionExtensions
 {
+  public static IReadOnlyCollection<T> InReadOnlyWrapper<T>(this IReadOnlyCollection<T> collection) =>
+    new SafeReadOnlyCollectionWrapper<T>(collection);
+
   /// <summary>
   /// Adds an entry with the provided key and value to the <see cref="IDictionary{TKey,TValue}"/>. If an entry with the
   /// provided key already exists in the dictionary, its value is overwritten.
