@@ -172,6 +172,15 @@ public sealed class IndexedGraph<TIndex, TNodeData, TEdgeData> :
   bool IGraph<TNodeData, TEdgeData>.RemoveEdge(IEdge<TNodeData, TEdgeData> edge) => 
     edge is IndexedEdge<TIndex, TNodeData, TEdgeData> indexedEdge && RemoveEdge(indexedEdge);
 
+  public int RemoveNodeWhere(Predicate<TNodeData> predicate) => nodes.Values
+    .Where(node => predicate(node.Data))
+    .Select(node => node.Index)
+    .ToArray()
+    .Select(RemoveNode)
+    .Count();
+
+  public int RemoveEdgeWhere(Predicate<TEdgeData> predicate) => edges.RemoveWhere(edge => predicate(edge.Data));
+
   public void Clear()
   {
     foreach (var node in nodes.Values)

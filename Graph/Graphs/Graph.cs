@@ -95,6 +95,10 @@ public sealed class Graph<TNodeData, TEdgeData> : IUnindexedGraph<TNodeData, TEd
   public bool RemoveEdge(IEdge<TNodeData, TEdgeData> edge) => 
     edge is Edge<TNodeData, TEdgeData> castEdge && edges.Remove(castEdge);
 
+  public int RemoveNodeWhere(Predicate<TNodeData> predicate) => nodes.RemoveWhere(node => predicate(node.Data));
+
+  public int RemoveEdgeWhere(Predicate<TEdgeData> predicate) => edges.RemoveWhere(edge => predicate(edge.Data));
+
   public void Clear()
   {
     foreach (var node in nodes)

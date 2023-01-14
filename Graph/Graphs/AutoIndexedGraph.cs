@@ -98,7 +98,11 @@ public sealed class AutoIndexedGraph<TIndex, TNodeData, TEdgeData> :
   public bool RemoveEdge(IndexedEdge<TIndex, TNodeData, TEdgeData> edge) => graph.RemoveEdge(edge);
 
   bool IGraph<TNodeData, TEdgeData>.RemoveEdge(IEdge<TNodeData, TEdgeData> edge) =>
-    ((IGraph<TNodeData, TEdgeData>)graph).RemoveEdge(edge); 
+    ((IGraph<TNodeData, TEdgeData>)graph).RemoveEdge(edge);
+
+  public int RemoveNodeWhere(Predicate<TNodeData> predicate) => graph.RemoveNodeWhere(predicate);
+
+  public int RemoveEdgeWhere(Predicate<TEdgeData> predicate) => graph.RemoveEdgeWhere(predicate);
 
   public void Clear() => graph.Clear();
 
