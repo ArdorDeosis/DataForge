@@ -26,14 +26,14 @@ public interface IGraph<TNodeData, TEdgeData> : IReadOnlyGraph<TNodeData, TEdgeD
   /// </summary>
   /// <param name="predicate">The predicate to match nodes against.</param>
   /// <returns>The number of nodes removed from the graph.</returns>
-  int RemoveNodeWhere(Predicate<TNodeData> predicate);
+  int RemoveNodesWhere(Predicate<TNodeData> predicate);
 
   /// <summary>
   /// Removes all edges from the graph that match the specified predicate.
   /// </summary>
   /// <param name="predicate">The predicate to match edges against.</param>
   /// <returns>The number of edges removed from the graph.</returns>
-  int RemoveEdgeWhere(Predicate<TEdgeData> predicate);
+  int RemoveEdgesWhere(Predicate<TEdgeData> predicate);
 
   /// <summary>
   /// Removes all nodes and edges from the graph.

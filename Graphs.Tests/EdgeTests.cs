@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using DataForge.Graphs;
 using NUnit.Framework;
 
-namespace Graph.Tests;
+namespace DataForge.Graphs.Tests;
 
 public class EdgeTests
 {

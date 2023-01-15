@@ -9,6 +9,8 @@
         <Configurations>Debug;Release</Configurations>
 
         <Platforms>AnyCPU</Platforms>
+
+        <RootNamespace>DataForge.Graphs.Tests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -19,7 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Graph\Graph.csproj" />
+      <ProjectReference Include="..\Graphs\Graphs.csproj" />
     </ItemGroup>
 
 </Project>

@@ -11,7 +11,7 @@ public static partial class GraphCreator
   /// <see cref="CompleteGraphCreationOptions{TNodeData,TEdgeData}.EdgeDirection">edge direction</see> and a function to 
   /// <see cref="UnindexedGraphEdgeDataCreationOption{TNodeData,TEdgeData}.CreateEdgeData">generate edge data</see>.
   /// </summary>
-  /// <param name="options">Graph creation options.</param>
+  /// <param name="options">Graphs creation options.</param>
   /// <typeparam name="TNodeData">Type of the data the nodes are holding.</typeparam>
   /// <typeparam name="TEdgeData">Type of the data the edges are holding.</typeparam>
   /// <returns>The created graph.</returns>

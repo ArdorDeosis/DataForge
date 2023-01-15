@@ -172,14 +172,14 @@ public sealed class IndexedGraph<TIndex, TNodeData, TEdgeData> :
   bool IGraph<TNodeData, TEdgeData>.RemoveEdge(IEdge<TNodeData, TEdgeData> edge) =>
     edge is IndexedEdge<TIndex, TNodeData, TEdgeData> indexedEdge && RemoveEdge(indexedEdge);
 
-  public int RemoveNodeWhere(Predicate<TNodeData> predicate) => nodes.Values
+  public int RemoveNodesWhere(Predicate<TNodeData> predicate) => nodes.Values
     .Where(node => predicate(node.Data))
     .Select(node => node.Index)
     .ToArray()
     .Select(RemoveNode)
     .Count();
 
-  public int RemoveEdgeWhere(Predicate<TEdgeData> predicate) => edges.RemoveWhere(edge => predicate(edge.Data));
+  public int RemoveEdgesWhere(Predicate<TEdgeData> predicate) => edges.RemoveWhere(edge => predicate(edge.Data));
 
   public void Clear()
   {
@@ -198,25 +198,25 @@ public sealed class IndexedGraph<TIndex, TNodeData, TEdgeData> :
   #region Transformation
 
   public IndexedGraph<TIndex, TNodeData, TEdgeData> Clone() =>
-    Transform(data => data, data => data, index => index, nodeIndexEqualityComparerFactoryMethod);
+    CloneAndTransform(data => data, data => data, index => index, nodeIndexEqualityComparerFactoryMethod);
 
   public IndexedGraph<TIndex, TNodeData, TEdgeData> Clone(
-    Func<TNodeData, TNodeData> copyNodeData,
-    Func<TEdgeData, TEdgeData> copyEdgeData,
-    Func<TIndex, TIndex> copyIndex) =>
-    Transform(copyNodeData, copyEdgeData, copyIndex, nodeIndexEqualityComparerFactoryMethod);
+    Func<TNodeData, TNodeData> cloneNodeData,
+    Func<TEdgeData, TEdgeData> cloneEdgeData,
+    Func<TIndex, TIndex> cloneIndex) =>
+    CloneAndTransform(cloneNodeData, cloneEdgeData, cloneIndex, nodeIndexEqualityComparerFactoryMethod);
 
   public IndexedGraph<TIndexTransformed, TNodeDataTransformed, TEdgeDataTransformed>
-    Transform<TIndexTransformed, TNodeDataTransformed, TEdgeDataTransformed>(
+    CloneAndTransform<TIndexTransformed, TNodeDataTransformed, TEdgeDataTransformed>(
       Func<TNodeData, TNodeDataTransformed> nodeDataTransformation,
       Func<TEdgeData, TEdgeDataTransformed> edgeDataTransformation,
       Func<TIndex, TIndexTransformed> indexTransformation,
       IEqualityComparer<TIndexTransformed>? indexEqualityComparer = null
     ) where TIndexTransformed : notnull =>
-    Transform(nodeDataTransformation, edgeDataTransformation, indexTransformation, () => indexEqualityComparer);
+    CloneAndTransform(nodeDataTransformation, edgeDataTransformation, indexTransformation, () => indexEqualityComparer);
 
   public IndexedGraph<TIndexTransformed, TNodeDataTransformed, TEdgeDataTransformed>
-    Transform<TIndexTransformed, TNodeDataTransformed, TEdgeDataTransformed>(
+    CloneAndTransform<TIndexTransformed, TNodeDataTransformed, TEdgeDataTransformed>(
       Func<TNodeData, TNodeDataTransformed> nodeDataTransformation,
       Func<TEdgeData, TEdgeDataTransformed> edgeDataTransformation,
       Func<TIndex, TIndexTransformed> indexTransformation,
@@ -237,9 +237,9 @@ public sealed class IndexedGraph<TIndex, TNodeData, TEdgeData> :
   public Graph<TNodeData, TEdgeData> ToUnindexedGraph() => ToUnindexedGraph(data => data, data => data);
 
   public Graph<TNodeData, TEdgeData> ToUnindexedGraph(
-    Func<TNodeData, TNodeData> copyNodeData,
-    Func<TEdgeData, TEdgeData> copyEdgeData)
-    => TransformToUnindexedGraph(copyNodeData, copyEdgeData);
+    Func<TNodeData, TNodeData> cloneNodeData,
+    Func<TEdgeData, TEdgeData> cloneEdgeData)
+    => TransformToUnindexedGraph(cloneNodeData, cloneEdgeData);
 
   public Graph<TNodeDataTransformed, TEdgeDataTransformed> TransformToUnindexedGraph<TNodeDataTransformed,
     TEdgeDataTransformed>(

@@ -57,6 +57,6 @@ public static partial class GraphCreator
         StartNodeData = gridEdgeData.StartNodeData,
         EndNodeData = gridEdgeData.EndNodeData,
       }),
-    }).Transform(node => node, edge => edge, coordinate => coordinate[0]);
+    }).CloneAndTransform(node => node, edge => edge, coordinate => coordinate[0]);
   }
 }

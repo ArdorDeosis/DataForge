@@ -87,4 +87,13 @@ public sealed class MultiValueDictionary<TKey, TValue> where TKey : notnull
   /// Removes all keys and values from this dictionary.
   /// </summary>
   public void Clear() => dictionary.Clear();
+
+  /// <summary>
+  /// Removes all values from associated with the provided key from this dictionary.
+  /// </summary>
+  public void Clear(TKey key)
+  {
+    if(dictionary.TryGetValue(key, out var set)) 
+      set.Clear();
+  }
 }

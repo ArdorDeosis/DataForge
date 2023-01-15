@@ -1,7 +1,6 @@
-﻿using DataForge.Graphs;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
-namespace Graph.Tests;
+namespace DataForge.Graphs.Tests;
 
 public class GraphComponentTests
 {
