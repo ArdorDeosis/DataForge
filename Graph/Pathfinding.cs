@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Graph;
+namespace DataForge.Graphs;
 
 // TODO: write tests
 // just excluded it for the satisfaction of having 100% on the stuff that is actually finished.

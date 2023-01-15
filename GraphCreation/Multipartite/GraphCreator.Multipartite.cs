@@ -1,4 +1,6 @@
-﻿namespace GraphCreation;
+﻿using DataForge.Graphs;
+
+namespace GraphCreation;
 
 public static partial class GraphCreator
 {
@@ -9,10 +11,10 @@ public static partial class GraphCreator
   /// <typeparam name="TNodeData">Type of the data the nodes are holding.</typeparam>
   /// <typeparam name="TEdgeData">Type of the data the edges are holding.</typeparam>
   /// <returns>The created graph.</returns>
-  public static OldGraph<TNodeData, TEdgeData> MakeMultipartite<TNodeData, TEdgeData>(
+  public static Graph<TNodeData, TEdgeData> MakeMultipartite<TNodeData, TEdgeData>(
     MultipartiteGraphCreationOptions<TNodeData, TEdgeData> options)
   {
-    var graph = new OldGraph<TNodeData, TEdgeData>();
+    var graph = new Graph<TNodeData, TEdgeData>();
 
     var nodeSets = options.NodeDataSets
       .Select(dataSet => graph.AddNodes(dataSet))

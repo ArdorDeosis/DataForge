@@ -1,4 +1,4 @@
-﻿using Graph;
+﻿using DataForge.Graphs;
 
 namespace GraphCreation;
 
@@ -16,9 +16,9 @@ public static partial class GraphCreator
   /// <typeparam name="TNodeData">Type of the data the nodes are holding.</typeparam>
   /// <typeparam name="TEdgeData">Type of the data the edges are holding.</typeparam>
   /// <returns>The created graph.</returns>
-  public static OldGraph<TNodeData, TEdgeData> MakeLine<TNodeData, TEdgeData>(
+  public static Graph<TNodeData, TEdgeData> MakeLine<TNodeData, TEdgeData>(
     LineGraphCreationOptions<TNodeData, TEdgeData> options) =>
-    MakeIndexedLine(options).ToNonIndexedGraph();
+    MakeIndexedLine(options).ToUnindexedGraph();
 
   /// <summary>
   /// Creates a graph with a line structure. The nodes are indexed with their position in the line. The options define

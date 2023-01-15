@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DataForge.Graphs;
 using NUnit.Framework;
 
 namespace GraphCreation.Tests;
@@ -19,7 +20,7 @@ public class TreeGraphCreationTests
     TreeIndex[] expectedNodeData)
   {
     // ACT
-    var graphs = new GraphBase<TreeIndex, int>[]
+    var graphs = new IGraph<TreeIndex, int>[]
     {
       GraphCreator.MakeTree(options),
       GraphCreator.MakeIndexedTree(options),
@@ -36,7 +37,7 @@ public class TreeGraphCreationTests
     (TreeIndex, TreeIndex)[] expectedEdgeData)
   {
     // ACT
-    var graphs = new GraphBase<TreeIndex, (TreeIndex, TreeIndex)>[]
+    var graphs = new IGraph<TreeIndex, (TreeIndex, TreeIndex)>[]
     {
       GraphCreator.MakeTree(options),
       GraphCreator.MakeIndexedTree(options),
@@ -44,7 +45,7 @@ public class TreeGraphCreationTests
 
     // ASSERT
     foreach (var graph in graphs)
-      Assert.That(graph.Edges.Select(edge => (edge.Start.Data, edge.End.Data)), Is.EquivalentTo(expectedEdgeData));
+      Assert.That(graph.Edges.Select(edge => (edge.Origin.Data, edge.Destination.Data)), Is.EquivalentTo(expectedEdgeData));
   }
 
   [TestCaseSource(nameof(OptionsAndExpectedEdgeData))]
@@ -53,7 +54,7 @@ public class TreeGraphCreationTests
     (TreeIndex, TreeIndex)[] expectedEdgeData)
   {
     // ACT
-    var graphs = new GraphBase<TreeIndex, (TreeIndex, TreeIndex)>[]
+    var graphs = new IGraph<TreeIndex, (TreeIndex, TreeIndex)>[]
     {
       GraphCreator.MakeTree(options),
       GraphCreator.MakeIndexedTree(options),

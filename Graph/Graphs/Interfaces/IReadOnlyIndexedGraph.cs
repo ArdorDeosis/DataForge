@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Graph;
+namespace DataForge.Graphs;
 
 /// <summary>
 /// An interface for a read-only indexed graph data structure.

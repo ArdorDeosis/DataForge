@@ -1,4 +1,4 @@
-﻿namespace Graph;
+﻿namespace DataForge.Graphs;
 
 /// <summary>
 /// An interface for a graph data structure.

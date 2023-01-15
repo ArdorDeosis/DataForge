@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Graph;
+namespace DataForge.Graphs;
 
 /// <summary>
 /// An interface for an unindexed graph data structure.

@@ -1,4 +1,4 @@
-﻿using Graph;
+﻿using DataForge.Graphs;
 using GridUtilities;
 
 namespace GraphCreation;
@@ -19,9 +19,9 @@ public static partial class GraphCreator
   /// <typeparam name="TNodeData">Type of the data the nodes are holding.</typeparam>
   /// <typeparam name="TEdgeData">Type of the data the edges are holding.</typeparam>
   /// <returns>The created graph.</returns>
-  public static UnindexedGraph<TNodeData, TEdgeData> MakeGrid<TNodeData, TEdgeData>(
+  public static Graph<TNodeData, TEdgeData> MakeGrid<TNodeData, TEdgeData>(
     GridGraphCreationOptions<TNodeData, TEdgeData> options) =>
-    MakeIndexedGrid(options).ToNonIndexedGraph();
+    MakeIndexedGrid(options).ToUnindexedGraph();
 
   /// <summary>
   /// Creates a graph with an n-dimensional grid structure. The number of dimensions is defined by the size of the

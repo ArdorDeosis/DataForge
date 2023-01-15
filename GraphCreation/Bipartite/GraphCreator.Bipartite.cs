@@ -1,4 +1,6 @@
-﻿namespace GraphCreation;
+﻿using DataForge.Graphs;
+
+namespace GraphCreation;
 
 public static partial class GraphCreator
 {
@@ -13,7 +15,7 @@ public static partial class GraphCreator
   /// This is a special form of a multipartite graph (with exactly two sets of nodes). To create a multipartite graph
   /// with more than two sets of nodes, see <see cref="MakeMultipartite{TNodeData,TEdgeData}"/>.
   /// </remarks>
-  public static OldGraph<TNodeData, TEdgeData> MakeBipartite<TNodeData, TEdgeData>(
+  public static Graph<TNodeData, TEdgeData> MakeBipartite<TNodeData, TEdgeData>(
     BipartiteGraphCreationOptions<TNodeData, TEdgeData> options) =>
     MakeMultipartite(new MultipartiteGraphCreationOptions<TNodeData, TEdgeData>
     {

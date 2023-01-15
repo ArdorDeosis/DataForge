@@ -1,4 +1,4 @@
-﻿namespace Graph;
+﻿namespace DataForge.Graphs;
 
 public sealed class StatelessIndexProvider<TData, TIndex> : IIndexProvider<TData, TIndex>
 {

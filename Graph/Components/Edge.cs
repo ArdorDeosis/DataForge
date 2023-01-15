@@ -1,4 +1,4 @@
-﻿namespace Graph;
+﻿namespace DataForge.Graphs;
 
 public sealed class Edge<TNodeData, TEdgeData> :
   UnindexedGraphComponent<TNodeData, TEdgeData>,

@@ -1,4 +1,4 @@
-﻿namespace Graph;
+﻿namespace DataForge.Graphs;
 
 public interface INode<TNodeData, out TEdgeData> : IGraphComponent
 {

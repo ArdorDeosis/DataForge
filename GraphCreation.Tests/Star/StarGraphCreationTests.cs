@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using DataForge.Graphs;
 using NUnit.Framework;
 
 namespace GraphCreation.Tests;
@@ -27,7 +29,7 @@ public class StarGraphCreationTests
     };
 
     // ACT
-    var graphs = new GraphBase<(int, int), int>[]
+    var graphs = new IGraph<(int, int), int>[]
     {
       GraphCreator.MakeStar(options),
       GraphCreator.MakeIndexedStar(options),
@@ -62,7 +64,7 @@ public class StarGraphCreationTests
     };
 
     // ACT
-    var graphs = new GraphBase<(int ray, int distance), (int ray, int from, int to)>[]
+    var graphs = new IGraph<(int ray, int distance), (int ray, int from, int to)>[]
     {
       GraphCreator.MakeStar(options),
       GraphCreator.MakeIndexedStar(options),
@@ -87,7 +89,7 @@ public class StarGraphCreationTests
     };
 
     // ACT
-    var graphs = new GraphBase<(int ray, int distance), int>[]
+    var graphs = new IGraph<(int ray, int distance), int>[]
     {
       GraphCreator.MakeStar(options),
       GraphCreator.MakeIndexedStar(options),
@@ -98,9 +100,9 @@ public class StarGraphCreationTests
     {
       Assert.That(graph.Edges, Has.Count.EqualTo(expectedEdges.Length));
       var edges = graph.Edges.Select(edge => (
-        Math.Max(edge.Start.Data.ray, edge.End.Data.ray),
-        edge.Start.Data.distance,
-        edge.End.Data.distance
+        Math.Max(edge.Origin.Data.ray, edge.Destination.Data.ray),
+        edge.Origin.Data.distance,
+        edge.Destination.Data.distance
       ));
       Assert.That(edges, Is.EquivalentTo(expectedEdges));
     }

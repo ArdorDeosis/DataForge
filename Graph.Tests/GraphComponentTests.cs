@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using DataForge.Graphs;
+using NUnit.Framework;
 
 namespace Graph.Tests;
 

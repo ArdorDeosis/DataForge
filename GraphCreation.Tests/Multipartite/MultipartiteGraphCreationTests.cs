@@ -40,7 +40,7 @@ public class MultipartiteGraphCreationTests
     var graph = GraphCreator.MakeMultipartite(options);
 
     // ASSERT
-    Assert.That(graph.Edges.Select(edge => (edge.Start.Data, edge.End.Data)), Is.EquivalentTo(expectedEdges));
+    Assert.That(graph.Edges.Select(edge => (edge.Origin.Data, edge.Destination.Data)), Is.EquivalentTo(expectedEdges));
   }
 
   [TestCaseSource(nameof(EdgeDirectionAndExpectedEdges))]
@@ -89,7 +89,7 @@ public class MultipartiteGraphCreationTests
     var graph = GraphCreator.MakeMultipartite(options);
 
     // ASSERT
-    Assert.That(graph.Edges.Select(edge => (edge.Start.Data, edge.End.Data)), Is.EquivalentTo(expectedEdges));
+    Assert.That(graph.Edges.Select(edge => (edge.Origin.Data, edge.Destination.Data)), Is.EquivalentTo(expectedEdges));
   }
 
   private static int[][] NodeDataSets =>

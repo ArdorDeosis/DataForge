@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Graph;
+namespace DataForge.Graphs;
 
 public sealed class AutoIndexedGraph<TIndex, TNodeData, TEdgeData> :
   IAutoIndexedGraph<TIndex, TNodeData, TEdgeData>

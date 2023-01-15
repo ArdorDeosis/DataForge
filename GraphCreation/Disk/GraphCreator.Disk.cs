@@ -1,4 +1,4 @@
-﻿using Graph;
+﻿using DataForge.Graphs;
 
 namespace GraphCreation;
 
@@ -17,9 +17,9 @@ public static partial class GraphCreator
   /// <typeparam name="TNodeData">Type of the data the nodes are holding.</typeparam>
   /// <typeparam name="TEdgeData">Type of the data the edges are holding.</typeparam>
   /// <returns>The created graph.</returns>
-  public static OldGraph<TNodeData, TEdgeData> MakeDisk<TNodeData, TEdgeData>(
+  public static Graph<TNodeData, TEdgeData> MakeDisk<TNodeData, TEdgeData>(
     DiskGraphCreationOptions<TNodeData, TEdgeData> options) =>
-    MakeIndexedDisk(options).ToNonIndexedGraph();
+    MakeIndexedDisk(options).ToUnindexedGraph();
 
   /// <summary>
   /// Creates an indexed graph with a disk structure. Nodes are indexed by their position on the disk represented as a

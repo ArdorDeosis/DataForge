@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Graph;
+namespace DataForge.Graphs;
 
 public sealed class IndexedNode<TIndex, TNodeData, TEdgeData> :
   IndexedGraphComponent<TIndex, TNodeData, TEdgeData>,

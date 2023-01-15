@@ -1,4 +1,4 @@
-﻿using Graph;
+﻿using DataForge.Graphs;
 
 namespace GraphCreation;
 
@@ -16,9 +16,9 @@ public static partial class GraphCreator
   /// <typeparam name="TNodeData">Type of the data the nodes are holding.</typeparam>
   /// <typeparam name="TEdgeData">Type of the data the edges are holding.</typeparam>
   /// <returns>The created graph.</returns>
-  public static OldGraph<TNodeData, TEdgeData> MakeStar<TNodeData, TEdgeData>(
+  public static Graph<TNodeData, TEdgeData> MakeStar<TNodeData, TEdgeData>(
     StarGraphCreationOptions<TNodeData, TEdgeData> options) =>
-    MakeIndexedStar(options).ToNonIndexedGraph();
+    MakeIndexedStar(options).ToUnindexedGraph();
 
   /// <summary>
   /// Creates an indexed graph with a star structure. Nodes are indexed by their position on the star represented as a

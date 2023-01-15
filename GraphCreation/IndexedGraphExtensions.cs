@@ -1,4 +1,4 @@
-﻿using Graph;
+﻿using DataForge.Graphs;
 
 namespace GraphCreation;
 
@@ -38,10 +38,10 @@ internal static class GraphConvenienceExtensions
   }
 
   internal static void AddEdgesForDirection<TNodeData, TEdgeData>(
-    this OldGraph<TNodeData, TEdgeData> graph,
+    this Graph<TNodeData, TEdgeData> graph,
     EdgeDirection direction,
-    OldNode<,,> lowerNode,
-    OldNode<,,> upperNode,
+    Node<TNodeData,TEdgeData> lowerNode,
+    Node<TNodeData,TEdgeData> upperNode,
     Func<TNodeData, TNodeData, TEdgeData> createEdgeData
   )
   {
