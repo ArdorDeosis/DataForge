@@ -8,7 +8,7 @@ public sealed class Graph<TNodeData, TEdgeData> : IUnindexedGraph<TNodeData, TEd
   #region Fields
 
   private readonly HashSet<Node<TNodeData, TEdgeData>> nodes = new();
-  
+
   private readonly HashSet<Edge<TNodeData, TEdgeData>> edges = new();
 
   private readonly MultiValueDictionary<Node<TNodeData, TEdgeData>, Edge<TNodeData, TEdgeData>>
@@ -26,7 +26,7 @@ public sealed class Graph<TNodeData, TEdgeData> : IUnindexedGraph<TNodeData, TEd
     Nodes = nodes.InReadOnlyWrapper();
     Edges = edges.InReadOnlyWrapper();
   }
-  
+
   #endregion
 
   #region Data Access
@@ -36,20 +36,16 @@ public sealed class Graph<TNodeData, TEdgeData> : IUnindexedGraph<TNodeData, TEd
 
   public IReadOnlyCollection<Edge<TNodeData, TEdgeData>> Edges { get; }
   IReadOnlyCollection<IEdge<TNodeData, TEdgeData>> IReadOnlyGraph<TNodeData, TEdgeData>.Edges => Edges;
-  
+
   public bool Contains(INode<TNodeData, TEdgeData> node) => nodes.Contains(node);
   public bool Contains(IEdge<TNodeData, TEdgeData> edge) => edges.Contains(edge);
-  
+
   public int Order => nodes.Count;
   public int Size => edges.Count;
 
   #endregion
 
   #region Data Modification
-
-  
-
-  #endregion
 
   public Node<TNodeData, TEdgeData> AddNode(TNodeData data)
   {
@@ -89,10 +85,10 @@ public sealed class Graph<TNodeData, TEdgeData> : IUnindexedGraph<TNodeData, TEd
     }
   }
 
-  public bool RemoveNode(INode<TNodeData, TEdgeData> node) => 
+  public bool RemoveNode(INode<TNodeData, TEdgeData> node) =>
     node is Node<TNodeData, TEdgeData> castNode && nodes.Remove(castNode);
 
-  public bool RemoveEdge(IEdge<TNodeData, TEdgeData> edge) => 
+  public bool RemoveEdge(IEdge<TNodeData, TEdgeData> edge) =>
     edge is Edge<TNodeData, TEdgeData> castEdge && edges.Remove(castEdge);
 
   public int RemoveNodeWhere(Predicate<TNodeData> predicate) => nodes.RemoveWhere(node => predicate(node.Data));
@@ -110,4 +106,81 @@ public sealed class Graph<TNodeData, TEdgeData> : IUnindexedGraph<TNodeData, TEd
     incomingEdges.Clear();
     outgoingEdges.Clear();
   }
+
+  #endregion
+
+  #region Transformation
+
+  public Graph<TNodeData, TEdgeData> Clone() =>
+    Transform(data => data, data => data);
+
+  public Graph<TNodeData, TEdgeData> Clone(
+    Func<TNodeData, TNodeData> copyNodeData,
+    Func<TEdgeData, TEdgeData> copyEdgeData) =>
+    Transform(copyNodeData, copyEdgeData);
+
+  public Graph<TNodeDataTransformed, TEdgeDataTransformed>
+    Transform<TNodeDataTransformed, TEdgeDataTransformed>(
+      Func<TNodeData, TNodeDataTransformed> nodeDataTransformation,
+      Func<TEdgeData, TEdgeDataTransformed> edgeDataTransformation
+    )
+  {
+    var graph = new Graph<TNodeDataTransformed, TEdgeDataTransformed>();
+    var nodeMap = nodes.ToDictionary(node => node, node => graph.AddNode(nodeDataTransformation(node.Data)));
+    foreach (var edge in edges)
+      graph.AddEdge(nodeMap[edge.Origin], nodeMap[edge.Destination], edgeDataTransformation(edge.Data));
+    return graph;
+  }
+
+  public IndexedGraph<TIndex, TNodeData, TEdgeData> ToIndexedGraph<TIndex>(
+    IIndexProvider<TNodeData, TIndex> indexProvider, IEqualityComparer<TIndex>? indexEqualityComparer = null)
+    where TIndex : notnull
+    => ToIndexedGraph(indexProvider, data => data, data => data, indexEqualityComparer);
+
+  public IndexedGraph<TIndex, TNodeData, TEdgeData> ToIndexedGraph<TIndex>(
+    IIndexProvider<TNodeData, TIndex> indexProvider,
+    Func<IEqualityComparer<TIndex>?> indexEqualityComparerFactoryMethod) where TIndex : notnull
+    => ToIndexedGraph(indexProvider, data => data, data => data, indexEqualityComparerFactoryMethod);
+
+  public IndexedGraph<TIndex, TNodeData, TEdgeData> ToIndexedGraph<TIndex>(
+    IIndexProvider<TNodeData, TIndex> indexProvider,
+    Func<TNodeData, TNodeData> copyNodeData,
+    Func<TEdgeData, TEdgeData> copyEdgeData,
+    IEqualityComparer<TIndex>? indexEqualityComparer = null) where TIndex : notnull =>
+    TransformToIndexedGraph(indexProvider, copyNodeData, copyEdgeData, indexEqualityComparer);
+
+  public IndexedGraph<TIndex, TNodeData, TEdgeData> ToIndexedGraph<TIndex>(
+    IIndexProvider<TNodeData, TIndex> indexProvider,
+    Func<TNodeData, TNodeData> copyNodeData,
+    Func<TEdgeData, TEdgeData> copyEdgeData,
+    Func<IEqualityComparer<TIndex>?> indexEqualityComparerFactoryMethod) where TIndex : notnull =>
+    TransformToIndexedGraph(indexProvider, copyNodeData, copyEdgeData, indexEqualityComparerFactoryMethod);
+
+  public IndexedGraph<TIndex, TNodeDataTransformed, TEdgeDataTransformed> TransformToIndexedGraph<TIndex,
+    TNodeDataTransformed, TEdgeDataTransformed>(
+    IIndexProvider<TNodeData, TIndex> indexProvider,
+    Func<TNodeData, TNodeDataTransformed> nodeDataTransformation,
+    Func<TEdgeData, TEdgeDataTransformed> edgeDataTransformation,
+    IEqualityComparer<TIndex>? indexEqualityComparer = null) where TIndex : notnull =>
+    TransformToIndexedGraph(indexProvider, nodeDataTransformation, edgeDataTransformation, () => indexEqualityComparer);
+
+  public IndexedGraph<TIndex, TNodeDataTransformed, TEdgeDataTransformed> TransformToIndexedGraph<TIndex,
+    TNodeDataTransformed, TEdgeDataTransformed>(
+    IIndexProvider<TNodeData, TIndex> indexProvider,
+    Func<TNodeData, TNodeDataTransformed> nodeDataTransformation,
+    Func<TEdgeData, TEdgeDataTransformed> edgeDataTransformation,
+    Func<IEqualityComparer<TIndex>?> indexEqualityComparerFactoryMethod) where TIndex : notnull
+  {
+    var indexedGraph =
+      new IndexedGraph<TIndex, TNodeDataTransformed, TEdgeDataTransformed>(indexEqualityComparerFactoryMethod);
+    var nodeMap = nodes.ToDictionary(
+      node => node,
+      node => indexedGraph.AddNode(indexProvider.GetIndex(node.Data), nodeDataTransformation(node.Data)).Index
+    );
+    foreach (var edge in edges)
+      indexedGraph.AddEdge(nodeMap[edge.Origin], nodeMap[edge.Destination], edgeDataTransformation(edge.Data));
+    return indexedGraph;
+  }
+
+  #endregion
 }

@@ -27,9 +27,12 @@ public sealed class Edge<TNodeData, TEdgeData> :
     }
   }
 
-  public INode<TNodeData, TEdgeData> Origin =>
+  public Node<TNodeData, TEdgeData> Origin =>
     IsValid ? InternalOrigin : throw ComponentInvalidException;
 
-  public INode<TNodeData, TEdgeData> Destination =>
+  public Node<TNodeData, TEdgeData> Destination =>
     IsValid ? InternalDestination : throw ComponentInvalidException;
+
+  INode<TNodeData, TEdgeData> IEdge<TNodeData, TEdgeData>.Origin => Origin;
+  INode<TNodeData, TEdgeData> IEdge<TNodeData, TEdgeData>.Destination => Destination;
 }
