@@ -35,8 +35,7 @@ public class GraphTests
     var graph = new Graph<int, int>();
 
     // ASSERT
-    Assert.That(graph.Nodes, Is.Empty);
-    Assert.That((graph as IReadOnlyGraph<int, int>).Nodes, Is.Empty);
+    Assert.That(graph.Order, Is.Zero);
   }
 
   [Test]
@@ -46,8 +45,34 @@ public class GraphTests
     var graph = new Graph<int, int>();
 
     // ASSERT
-    Assert.That(graph.Edges, Is.Empty);
-    Assert.That((graph as IReadOnlyGraph<int, int>).Edges, Is.Empty);
+    Assert.That(graph.Size, Is.Zero);
+  }
+
+  [Test]
+  public void Order_HasExpectedValue()
+  {
+    // ARRANGE
+    var graph = new Graph<int, int>();
+    graph.AddNode(0);
+    graph.AddNode(0);
+    graph.AddNode(0);
+
+    // ASSERT
+    Assert.That(graph.Order, Is.EqualTo(3));
+  }
+
+  [Test]
+  public void Size_HasExpectedValue()
+  {
+    // ARRANGE
+    var graph = new Graph<int, int>();
+    var node = graph.AddNode(0);
+    graph.AddEdge(node, node, 0);
+    graph.AddEdge(node, node, 0);
+    graph.AddEdge(node, node, 0);
+
+    // ASSERT
+    Assert.That(graph.Size, Is.EqualTo(3));
   }
 
   [Test]
@@ -284,10 +309,8 @@ public class GraphTests
     graph.RemoveNode(node);
 
     // ASSERT
-    Assert.That(graph.Contains(edge1));
-    Assert.That(graph.Edges.Contains(edge1));
-    Assert.That(graph.Contains(edge2));
-    Assert.That(graph.Edges.Contains(edge2));
+    Assert.That(graph.Edges, Does.Not.Contain(edge1));
+    Assert.That(graph.Edges, Does.Not.Contain(edge2));
   }
 
   [Test]
@@ -549,24 +572,5 @@ public class GraphTests
       edge.Origin.Data is middleNodeData &&
       edge.Destination.Data is destinationNodeData &&
       edge.Data is secondEdgeData).ToList(), Has.Count.EqualTo(1));
-  }
-
-  [Test]
-  public void ToIndexedGraph_IndicesAreSetCorrectly()
-  {
-    // ARRANGE
-    const int index1 = 0xC0FFEE;
-    const int index2 = 0xBEEF;
-    var graph = new Graph<int, int>();
-    graph.AddNode(index1);
-    graph.AddNode(index2);
-
-    // ACT
-    var indexedGraph = graph.ToIndexedGraph(data => data);
-
-    // ASSERT
-    Assert.That(indexedGraph.Indices, Is.EquivalentTo(new[] { index1, index2 }));
-    Assert.That(indexedGraph[index1].Data, Is.EqualTo(index1));
-    Assert.That(indexedGraph[index2].Data, Is.EqualTo(index2));
   }
 }

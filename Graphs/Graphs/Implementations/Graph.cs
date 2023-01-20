@@ -54,7 +54,8 @@ public sealed class Graph<TNodeData, TEdgeData> : IUnindexedGraph<TNodeData, TEd
     return node;
   }
 
-  public IEnumerable<Node<TNodeData, TEdgeData>> AddNodes(IEnumerable<TNodeData> data) => data.Select(AddNode);
+  public IEnumerable<Node<TNodeData, TEdgeData>> AddNodes(IEnumerable<TNodeData> data) =>
+    data.Select(AddNode).ToArray();
 
   public Edge<TNodeData, TEdgeData> AddEdge(Node<TNodeData, TEdgeData> origin, Node<TNodeData, TEdgeData> destination,
     TEdgeData data)
@@ -87,9 +88,9 @@ public sealed class Graph<TNodeData, TEdgeData> : IUnindexedGraph<TNodeData, TEd
 
   public bool RemoveNode(INode<TNodeData, TEdgeData> node)
   {
-    if (node is not Node<TNodeData, TEdgeData> castNode || !nodes.Remove(castNode)) 
+    if (node is not Node<TNodeData, TEdgeData> castNode || !nodes.Remove(castNode))
       return false;
-    foreach (var edge in outgoingEdges[castNode].Concat(incomingEdges[castNode]).ToArray()) 
+    foreach (var edge in outgoingEdges[castNode].Concat(incomingEdges[castNode]).ToArray())
       RemoveEdge(edge);
     outgoingEdges.Clear(castNode);
     incomingEdges.Clear(castNode);
@@ -99,13 +100,12 @@ public sealed class Graph<TNodeData, TEdgeData> : IUnindexedGraph<TNodeData, TEd
 
   public bool RemoveEdge(IEdge<TNodeData, TEdgeData> edge)
   {
-    if (edge is not Edge<TNodeData, TEdgeData> castEdge || !edges.Remove(castEdge)) 
+    if (edge is not Edge<TNodeData, TEdgeData> castEdge || !edges.Remove(castEdge))
       return false;
     outgoingEdges.RemoveFrom(castEdge.Origin, castEdge);
     incomingEdges.RemoveFrom(castEdge.Destination, castEdge);
     castEdge.Invalidate();
     return true;
-
   }
 
   public int RemoveNodesWhere(Predicate<TNodeData> predicate) => nodes.RemoveWhere(node => predicate(node.Data));
@@ -128,8 +128,7 @@ public sealed class Graph<TNodeData, TEdgeData> : IUnindexedGraph<TNodeData, TEd
 
   #region Transformation
 
-  public Graph<TNodeData, TEdgeData> Clone() =>
-    CloneAndTransform(data => data, data => data);
+  public Graph<TNodeData, TEdgeData> Clone() => CloneAndTransform(data => data, data => data);
 
   public Graph<TNodeData, TEdgeData> Clone(
     Func<TNodeData, TNodeData> cloneNodeData,
@@ -151,8 +150,8 @@ public sealed class Graph<TNodeData, TEdgeData> : IUnindexedGraph<TNodeData, TEd
 
   public IndexedGraph<TIndex, TNodeData, TEdgeData> ToIndexedGraph<TIndex>(
     Func<TNodeData, TIndex> indexGeneratorFunction, IEqualityComparer<TIndex>? indexEqualityComparer = null)
-    where TIndex : notnull
-    => ToIndexedGraph(
+    where TIndex : notnull =>
+    ToIndexedGraph(
       new StatelessIndexProvider<TNodeData, TIndex>(indexGeneratorFunction),
       data => data,
       data => data,
@@ -161,8 +160,8 @@ public sealed class Graph<TNodeData, TEdgeData> : IUnindexedGraph<TNodeData, TEd
 
   public IndexedGraph<TIndex, TNodeData, TEdgeData> ToIndexedGraph<TIndex>(
     IIndexProvider<TNodeData, TIndex> indexProvider, IEqualityComparer<TIndex>? indexEqualityComparer = null)
-    where TIndex : notnull
-    => ToIndexedGraph(
+    where TIndex : notnull =>
+    ToIndexedGraph(
       indexProvider,
       data => data,
       data => data,
@@ -171,8 +170,8 @@ public sealed class Graph<TNodeData, TEdgeData> : IUnindexedGraph<TNodeData, TEd
 
   public IndexedGraph<TIndex, TNodeData, TEdgeData> ToIndexedGraph<TIndex>(
     Func<TNodeData, TIndex> indexGeneratorFunction,
-    Func<IEqualityComparer<TIndex>?> indexEqualityComparerFactoryMethod) where TIndex : notnull
-    => ToIndexedGraph(
+    Func<IEqualityComparer<TIndex>?> indexEqualityComparerFactoryMethod) where TIndex : notnull =>
+    ToIndexedGraph(
       new StatelessIndexProvider<TNodeData, TIndex>(indexGeneratorFunction),
       data => data,
       data => data,
@@ -181,8 +180,13 @@ public sealed class Graph<TNodeData, TEdgeData> : IUnindexedGraph<TNodeData, TEd
 
   public IndexedGraph<TIndex, TNodeData, TEdgeData> ToIndexedGraph<TIndex>(
     IIndexProvider<TNodeData, TIndex> indexProvider,
-    Func<IEqualityComparer<TIndex>?> indexEqualityComparerFactoryMethod) where TIndex : notnull
-    => ToIndexedGraph(indexProvider, data => data, data => data, indexEqualityComparerFactoryMethod);
+    Func<IEqualityComparer<TIndex>?> indexEqualityComparerFactoryMethod) where TIndex : notnull =>
+    ToIndexedGraph(
+      indexProvider,
+      data => data,
+      data => data,
+      indexEqualityComparerFactoryMethod
+    );
 
   public IndexedGraph<TIndex, TNodeData, TEdgeData> ToIndexedGraph<TIndex>(
     Func<TNodeData, TIndex> indexGeneratorFunction,
