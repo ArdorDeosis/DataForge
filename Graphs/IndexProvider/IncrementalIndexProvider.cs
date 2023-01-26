@@ -1,6 +1,4 @@
-﻿using System.Numerics;
-
-namespace DataForge.Graphs;
+﻿namespace DataForge.Graphs;
 
 internal sealed class IncrementalIndexProvider<TData> : IIndexProvider<TData, int>
 {

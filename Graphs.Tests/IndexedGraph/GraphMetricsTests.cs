@@ -3,7 +3,7 @@
 namespace DataForge.Graphs.Tests.IndexedGraph;
 
 [TestFixture]
-public class GraphMetricTests
+public class GraphMetricsTests
 {
   [Test]
   public void Order_HasExpectedValue()

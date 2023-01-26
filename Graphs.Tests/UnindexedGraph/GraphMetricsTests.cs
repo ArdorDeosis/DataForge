@@ -2,7 +2,7 @@
 
 namespace DataForge.Graphs.Tests.UnindexedGraph;
 
-public class GraphMetricTests
+public class GraphMetricsTests
 {
   [Test]
   public void Order_HasExpectedValue()

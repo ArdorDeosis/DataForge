@@ -201,25 +201,25 @@ public sealed class IndexedGraph<TIndex, TNodeData, TEdgeData> :
   #region Transformation
 
   public IndexedGraph<TIndex, TNodeData, TEdgeData> Clone() =>
-    CloneAndTransform(data => data, data => data, index => index, nodeIndexEqualityComparerFactoryMethod);
+    Transform(data => data, data => data, index => index, nodeIndexEqualityComparerFactoryMethod);
 
   public IndexedGraph<TIndex, TNodeData, TEdgeData> Clone(
     Func<TNodeData, TNodeData> cloneNodeData,
     Func<TEdgeData, TEdgeData> cloneEdgeData,
     Func<TIndex, TIndex> cloneIndex) =>
-    CloneAndTransform(cloneNodeData, cloneEdgeData, cloneIndex, nodeIndexEqualityComparerFactoryMethod);
+    Transform(cloneNodeData, cloneEdgeData, cloneIndex, nodeIndexEqualityComparerFactoryMethod);
 
   public IndexedGraph<TIndexTransformed, TNodeDataTransformed, TEdgeDataTransformed>
-    CloneAndTransform<TIndexTransformed, TNodeDataTransformed, TEdgeDataTransformed>(
+    Transform<TIndexTransformed, TNodeDataTransformed, TEdgeDataTransformed>(
       Func<TNodeData, TNodeDataTransformed> nodeDataTransformation,
       Func<TEdgeData, TEdgeDataTransformed> edgeDataTransformation,
       Func<TIndex, TIndexTransformed> indexTransformation,
       IEqualityComparer<TIndexTransformed>? indexEqualityComparer = null
     ) where TIndexTransformed : notnull =>
-    CloneAndTransform(nodeDataTransformation, edgeDataTransformation, indexTransformation, () => indexEqualityComparer);
+    Transform(nodeDataTransformation, edgeDataTransformation, indexTransformation, () => indexEqualityComparer);
 
   public IndexedGraph<TIndexTransformed, TNodeDataTransformed, TEdgeDataTransformed>
-    CloneAndTransform<TIndexTransformed, TNodeDataTransformed, TEdgeDataTransformed>(
+    Transform<TIndexTransformed, TNodeDataTransformed, TEdgeDataTransformed>(
       Func<TNodeData, TNodeDataTransformed> nodeDataTransformation,
       Func<TEdgeData, TEdgeDataTransformed> edgeDataTransformation,
       Func<TIndex, TIndexTransformed> indexTransformation,
