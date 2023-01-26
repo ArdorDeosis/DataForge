@@ -210,9 +210,8 @@ public sealed class IndexedGraph<TIndex, TNodeData, TEdgeData> :
 
   public IndexedGraph<TIndex, TNodeData, TEdgeData> Clone(
     Func<TNodeData, TNodeData> cloneNodeData,
-    Func<TEdgeData, TEdgeData> cloneEdgeData,
-    Func<TIndex, TIndex> cloneIndex) =>
-    Transform(cloneNodeData, cloneEdgeData, cloneIndex, nodeIndexEqualityComparerFactoryMethod);
+    Func<TEdgeData, TEdgeData> cloneEdgeData) =>
+    Transform(cloneNodeData, cloneEdgeData, index => index, nodeIndexEqualityComparerFactoryMethod);
 
   public IndexedGraph<TIndexTransformed, TNodeDataTransformed, TEdgeDataTransformed>
     Transform<TIndexTransformed, TNodeDataTransformed, TEdgeDataTransformed>(
@@ -237,7 +236,7 @@ public sealed class IndexedGraph<TIndex, TNodeData, TEdgeData> :
     foreach (var indexPair in indexMap)
       transformedGraph.AddNode(indexPair.Value, nodeDataTransformation(nodes[indexPair.Key].Data));
     foreach (var edge in edges)
-      transformedGraph.AddEdge(indexMap[edge.Origin.Index], indexMap[edge.Origin.Index],
+      transformedGraph.AddEdge(indexMap[edge.Origin.Index], indexMap[edge.Destination.Index],
         edgeDataTransformation(edge.Data));
     return transformedGraph;
   }

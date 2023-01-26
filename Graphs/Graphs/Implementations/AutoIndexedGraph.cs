@@ -115,9 +115,8 @@ public sealed class AutoIndexedGraph<TIndex, TNodeData, TEdgeData> :
 
   public IndexedGraph<TIndex, TNodeData, TEdgeData> ToIndexedGraph(
     Func<TNodeData, TNodeData> cloneNodeData,
-    Func<TEdgeData, TEdgeData> cloneEdgeData,
-    Func<TIndex, TIndex> cloneIndex) =>
-    graph.Clone(cloneNodeData, cloneEdgeData, cloneIndex);
+    Func<TEdgeData, TEdgeData> cloneEdgeData) =>
+    graph.Clone(cloneNodeData, cloneEdgeData);
 
   public IndexedGraph<TIndexTransformed, TNodeDataTransformed, TEdgeDataTransformed>
     TransformToIndexedGraph<TIndexTransformed, TNodeDataTransformed, TEdgeDataTransformed>(

@@ -7,18 +7,11 @@ namespace DataForge.Graphs.Tests.UnindexedGraph;
 [TestFixture]
 public class TransformToIndexedGraphTests
 {
-  /// <remarks>Generates collisions for even numbers and their directly following odd numbers.</remarks>
-  private class TestEqualityComparer : IEqualityComparer<int>
-  {
-    public bool Equals(int x, int y) => x / 2 == y / 2;
-    public int GetHashCode(int obj) => obj / 2;
-  }
-
   [Test]
   public void TransformToIndexedGraph_IndexEqualityComparer_EqualityComparerIsUsed()
   {
     // ARRANGE
-    var indices = new[] { 0, 1 };
+    var indices = TestEqualityComparer.EquivalentIndexArray;
     var graph = new Graph<int, int>();
     graph.AddNodes(indices);
     var equalityComparer = new TestEqualityComparer();
