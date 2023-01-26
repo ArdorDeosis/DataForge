@@ -150,12 +150,12 @@ public class RemoveEdgeTests
     var indices = new[] { 0xC0FFEE, 0xBEEF };
     graph.AddNode(indices[0], indices[0]);
     graph.AddNode(indices[1], indices[1]);
-    var edge2 = graph.AddEdge(indices[0], indices[1], 1);
+    var edge = graph.AddEdge(indices[0], indices[1], 1);
 
     // ACT
     graph.RemoveEdgesWhere(data => data > 0);
 
     // ASSERT
-    Assert.That(edge2.IsValid, Is.False);
+    Assert.That(edge.IsValid, Is.False);
   }
 }

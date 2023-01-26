@@ -182,7 +182,12 @@ public sealed class IndexedGraph<TIndex, TNodeData, TEdgeData> :
       .Select(RemoveNode)
       .Count();
 
-  public int RemoveEdgesWhere(Predicate<TEdgeData> predicate) => edges.RemoveWhere(edge => predicate(edge.Data));
+  public int RemoveEdgesWhere(Predicate<TEdgeData> predicate) =>
+    edges
+      .Where(edge => predicate(edge.Data))
+      .ToArray()
+      .Select(RemoveEdge)
+      .Count();
 
   public void Clear()
   {
