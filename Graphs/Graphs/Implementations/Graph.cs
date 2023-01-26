@@ -128,15 +128,15 @@ public sealed class Graph<TNodeData, TEdgeData> : IUnindexedGraph<TNodeData, TEd
 
   #region Transformation
 
-  public Graph<TNodeData, TEdgeData> Clone() => CloneAndTransform(data => data, data => data);
+  public Graph<TNodeData, TEdgeData> Clone() => Transform(data => data, data => data);
 
   public Graph<TNodeData, TEdgeData> Clone(
     Func<TNodeData, TNodeData> cloneNodeData,
     Func<TEdgeData, TEdgeData> cloneEdgeData) =>
-    CloneAndTransform(cloneNodeData, cloneEdgeData);
+    Transform(cloneNodeData, cloneEdgeData);
 
   public Graph<TNodeDataTransformed, TEdgeDataTransformed>
-    CloneAndTransform<TNodeDataTransformed, TEdgeDataTransformed>(
+    Transform<TNodeDataTransformed, TEdgeDataTransformed>(
       Func<TNodeData, TNodeDataTransformed> nodeDataTransformation,
       Func<TEdgeData, TEdgeDataTransformed> edgeDataTransformation
     )

@@ -2,10 +2,10 @@
 using System.Linq;
 using NUnit.Framework;
 
-namespace DataForge.Graphs.Tests;
+namespace DataForge.Graphs.Tests.UnindexedGraph;
 
 [TestFixture]
-public class GraphTransformTransformToIndexedGraphTests
+public class TransformToIndexedGraphTests
 {
   /// <remarks>Generates collisions for even numbers and their directly following odd numbers.</remarks>
   private class TestEqualityComparer : IEqualityComparer<int>

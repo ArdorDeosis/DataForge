@@ -44,7 +44,6 @@ public sealed class IndexedGraph<TIndex, TNodeData, TEdgeData> :
 
   #region Data Access
 
-  // TODO: should these be read-only collections?
   public IReadOnlyCollection<IndexedNode<TIndex, TNodeData, TEdgeData>> Nodes { get; }
 
   IReadOnlyCollection<INode<TNodeData, TEdgeData>> IReadOnlyGraph<TNodeData, TEdgeData>.Nodes => Nodes;
@@ -148,7 +147,10 @@ public sealed class IndexedGraph<TIndex, TNodeData, TEdgeData> :
     node = retrievedNode;
 
     foreach (var edge in incomingEdges[index].Concat(outgoingEdges[index]).Distinct())
+    {
       edges.Remove(edge);
+      edge.Invalidate();
+    }
 
     retrievedNode.Invalidate();
     return true;
@@ -172,12 +174,13 @@ public sealed class IndexedGraph<TIndex, TNodeData, TEdgeData> :
   bool IGraph<TNodeData, TEdgeData>.RemoveEdge(IEdge<TNodeData, TEdgeData> edge) =>
     edge is IndexedEdge<TIndex, TNodeData, TEdgeData> indexedEdge && RemoveEdge(indexedEdge);
 
-  public int RemoveNodesWhere(Predicate<TNodeData> predicate) => nodes.Values
-    .Where(node => predicate(node.Data))
-    .Select(node => node.Index)
-    .ToArray()
-    .Select(RemoveNode)
-    .Count();
+  public int RemoveNodesWhere(Predicate<TNodeData> predicate) =>
+    nodes.Values
+      .Where(node => predicate(node.Data))
+      .Select(node => node.Index)
+      .ToArray()
+      .Select(RemoveNode)
+      .Count();
 
   public int RemoveEdgesWhere(Predicate<TEdgeData> predicate) => edges.RemoveWhere(edge => predicate(edge.Data));
 
@@ -233,13 +236,13 @@ public sealed class IndexedGraph<TIndex, TNodeData, TEdgeData> :
         edgeDataTransformation(edge.Data));
     return transformedGraph;
   }
-  
+
   public Graph<TNodeData, TEdgeData> ToUnindexedGraph() => ToUnindexedGraph(data => data, data => data);
 
   public Graph<TNodeData, TEdgeData> ToUnindexedGraph(
     Func<TNodeData, TNodeData> cloneNodeData,
-    Func<TEdgeData, TEdgeData> cloneEdgeData)
-    => TransformToUnindexedGraph(cloneNodeData, cloneEdgeData);
+    Func<TEdgeData, TEdgeData> cloneEdgeData) =>
+    TransformToUnindexedGraph(cloneNodeData, cloneEdgeData);
 
   public Graph<TNodeDataTransformed, TEdgeDataTransformed> TransformToUnindexedGraph<TNodeDataTransformed,
     TEdgeDataTransformed>(
