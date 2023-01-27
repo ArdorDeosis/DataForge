@@ -1,4 +1,4 @@
-﻿using Graph;
+﻿using DataForge.Graphs;
 
 namespace GraphCreation;
 
@@ -18,7 +18,7 @@ public static partial class GraphCreator
   /// <returns>The created graph.</returns>
   public static Graph<TNodeData, TEdgeData> MakeRing<TNodeData, TEdgeData>(
     RingGraphCreationOptions<TNodeData, TEdgeData> options) =>
-    MakeIndexedRing(options).ToNonIndexedGraph();
+    MakeIndexedRing(options).ToUnindexedGraph();
 
   /// <summary>
   /// Creates a graph with a ring structure. The nodes are indexed with their position in the ring. The options define

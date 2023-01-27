@@ -40,7 +40,7 @@ public class CompleteGraphCreationTest
     var graph = GraphCreator.MakeComplete(options);
 
     // ASSERT
-    Assert.That(graph.Edges.Select(edge => (edge.Start.Data, edge.End.Data)), Is.EquivalentTo(expectedEdges));
+    Assert.That(graph.Edges.Select(edge => (edge.Origin.Data, edge.Destination.Data)), Is.EquivalentTo(expectedEdges));
   }
 
   [Test]

@@ -5,7 +5,7 @@ using NUnit.Framework;
 
 namespace GraphCreation.Tests;
 
-public class BipartiteGraphCreationTests
+internal class BipartiteGraphCreationTests
 {
   [Test]
   public void BipartiteGraph_HasExpectedNodeData()
@@ -42,7 +42,7 @@ public class BipartiteGraphCreationTests
     var graph = GraphCreator.MakeBipartite(options);
 
     // ASSERT
-    Assert.That(graph.Edges.Select(edge => (edge.Start.Data, edge.End.Data)), Is.EquivalentTo(expectedEdges));
+    Assert.That(graph.Edges.Select(edge => (edge.Origin.Data, edge.Destination.Data)), Is.EquivalentTo(expectedEdges));
   }
 
   [TestCaseSource(nameof(EdgeDirectionAndExpectedEdges))]
@@ -86,7 +86,7 @@ public class BipartiteGraphCreationTests
     var graph = GraphCreator.MakeBipartite(options);
 
     // ASSERT
-    Assert.That(graph.Edges.Select(edge => (edge.Start.Data, edge.End.Data)), Is.EquivalentTo(expectedEdges));
+    Assert.That(graph.Edges.Select(edge => (edge.Origin.Data, edge.Destination.Data)), Is.EquivalentTo(expectedEdges));
   }
 
   private static IEnumerable<int> NodeDataSetA => new[] { 0xC0FFEE, 0xBEEF };

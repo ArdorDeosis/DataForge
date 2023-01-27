@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graph", "Graph\Graph.csproj", "{73CE719B-E139-41A6-A037-6435B7787009}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graphs", "Graphs\Graphs.csproj", "{73CE719B-E139-41A6-A037-6435B7787009}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graph.Tests", "Graph.Tests\Graph.Tests.csproj", "{49E4D771-7613-4044-8C7E-A324CAF9FA68}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graphs.Tests", "Graphs.Tests\Graphs.Tests.csproj", "{49E4D771-7613-4044-8C7E-A324CAF9FA68}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "Utilities\Utilities.csproj", "{45F0718C-3CB2-458E-A42A-43EBDCF2E464}"
 EndProject

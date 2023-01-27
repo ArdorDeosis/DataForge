@@ -2,7 +2,7 @@
 
 namespace GraphCreation.Tests;
 
-public class DiskGraphCreationOptionTests
+internal class DiskGraphCreationOptionTests
 {
   [TestCase(0)]
   [TestCase(-1)]

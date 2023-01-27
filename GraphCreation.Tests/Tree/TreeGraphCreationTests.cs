@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Graph;
+using DataForge.Graphs;
 using NUnit.Framework;
 
 namespace GraphCreation.Tests;
@@ -12,7 +12,7 @@ internal static class TreeIndexHelper
     childIndices.Aggregate(new TreeIndex(), (lastIndex, childIndex) => new TreeIndex(lastIndex, childIndex));
 }
 
-public class TreeGraphCreationTests
+internal class TreeGraphCreationTests
 {
   [TestCaseSource(nameof(OptionsAndExpectedNodeIndicesOrData))]
   // this tests the node data creation the node child count calculation and the max depth parameter
@@ -20,7 +20,7 @@ public class TreeGraphCreationTests
     TreeIndex[] expectedNodeData)
   {
     // ACT
-    var graphs = new GraphBase<TreeIndex, int>[]
+    var graphs = new IGraph<TreeIndex, int>[]
     {
       GraphCreator.MakeTree(options),
       GraphCreator.MakeIndexedTree(options),
@@ -37,7 +37,7 @@ public class TreeGraphCreationTests
     (TreeIndex, TreeIndex)[] expectedEdgeData)
   {
     // ACT
-    var graphs = new GraphBase<TreeIndex, (TreeIndex, TreeIndex)>[]
+    var graphs = new IGraph<TreeIndex, (TreeIndex, TreeIndex)>[]
     {
       GraphCreator.MakeTree(options),
       GraphCreator.MakeIndexedTree(options),
@@ -45,7 +45,8 @@ public class TreeGraphCreationTests
 
     // ASSERT
     foreach (var graph in graphs)
-      Assert.That(graph.Edges.Select(edge => (edge.Start.Data, edge.End.Data)), Is.EquivalentTo(expectedEdgeData));
+      Assert.That(graph.Edges.Select(edge => (edge.Origin.Data, edge.Destination.Data)),
+        Is.EquivalentTo(expectedEdgeData));
   }
 
   [TestCaseSource(nameof(OptionsAndExpectedEdgeData))]
@@ -54,7 +55,7 @@ public class TreeGraphCreationTests
     (TreeIndex, TreeIndex)[] expectedEdgeData)
   {
     // ACT
-    var graphs = new GraphBase<TreeIndex, (TreeIndex, TreeIndex)>[]
+    var graphs = new IGraph<TreeIndex, (TreeIndex, TreeIndex)>[]
     {
       GraphCreator.MakeTree(options),
       GraphCreator.MakeIndexedTree(options),

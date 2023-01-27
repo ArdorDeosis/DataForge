@@ -2,7 +2,7 @@
 
 namespace GraphCreation.Tests;
 
-public class MultipartiteGraphCreationOptionsTests
+internal class MultipartiteGraphCreationOptionsTests
 {
   [TestCase(EdgeDirection.Forward, true)]
   [TestCase(EdgeDirection.Backward, false)]

@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace GraphCreation.Tests;
 
-public class StarIndexTests
+internal class StarIndexTests
 {
   [Test]
   public void TestDefaultValues()

@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace GridUtilities.Tests;
 
-public class GridUtilityCoordinateTests
+internal class GridUtilityCoordinateTests
 {
   [TestCaseSource(typeof(TestData.FunctionOverloads), nameof(TestData.FunctionOverloads.CoordinateFunctions))]
   public void Coordinates_SizeArrayIsEmpty_ThrowsArgumentException(Func<int[], int[][]> function) =>

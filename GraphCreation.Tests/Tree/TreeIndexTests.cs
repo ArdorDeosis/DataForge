@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace GraphCreation.Tests;
 
-public class TreeIndexTests
+internal class TreeIndexTests
 {
   [Test]
   public void TestDefaultValues()

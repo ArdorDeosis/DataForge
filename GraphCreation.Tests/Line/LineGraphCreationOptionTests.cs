@@ -2,7 +2,7 @@
 
 namespace GraphCreation.Tests;
 
-public class LineGraphCreationOptionTests
+internal class LineGraphCreationOptionTests
 {
   [TestCase(0)]
   [TestCase(-1)]

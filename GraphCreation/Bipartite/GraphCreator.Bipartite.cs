@@ -1,4 +1,4 @@
-﻿using Graph;
+﻿using DataForge.Graphs;
 
 namespace GraphCreation;
 

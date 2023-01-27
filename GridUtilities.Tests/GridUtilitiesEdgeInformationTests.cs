@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace GridUtilities.Tests;
 
-public class GridUtilitiesEdgeInformationTests
+internal class GridUtilitiesEdgeInformationTests
 {
   [TestCaseSource(typeof(TestData.FunctionOverloads), nameof(TestData.FunctionOverloads.EdgeInformationFunctions))]
   public void EdgeInformation_DimensionArrayIsEmpty_ThrowsArgumentException(

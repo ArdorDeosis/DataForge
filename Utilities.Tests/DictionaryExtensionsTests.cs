@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace Utilities.Tests;
 
-public class DictionaryExtensionsTests
+internal class DictionaryExtensionsTests
 {
   [Test]
   public void ForceAdd_KeyDoesNotExist_EntryIsAdded()

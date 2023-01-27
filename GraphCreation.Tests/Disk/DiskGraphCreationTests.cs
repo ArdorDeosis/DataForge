@@ -1,10 +1,10 @@
 using System.Linq;
-using Graph;
+using DataForge.Graphs;
 using NUnit.Framework;
 
 namespace GraphCreation.Tests;
 
-public class DiskGraphCreationTests
+internal class DiskGraphCreationTests
 {
   [Test]
   public void DiskGraph_HasExpectedNodeData()
@@ -26,7 +26,7 @@ public class DiskGraphCreationTests
     };
 
     // ACT
-    var graphs = new GraphBase<(int, int), int>[]
+    var graphs = new IGraph<(int, int), int>[]
     {
       GraphCreator.MakeDisk(options),
       GraphCreator.MakeIndexedDisk(options),
@@ -77,7 +77,7 @@ public class DiskGraphCreationTests
     };
 
     // ACT
-    var graphs = new GraphBase<DiskIndex, (DiskIndex, DiskIndex)>[]
+    var graphs = new IGraph<DiskIndex, (DiskIndex, DiskIndex)>[]
     {
       GraphCreator.MakeDisk(options),
       GraphCreator.MakeIndexedDisk(options),
@@ -118,7 +118,7 @@ public class DiskGraphCreationTests
     };
 
     // ACT
-    var graphs = new GraphBase<DiskIndex, int>[]
+    var graphs = new IGraph<DiskIndex, int>[]
     {
       GraphCreator.MakeDisk(options),
       GraphCreator.MakeIndexedDisk(options),
@@ -128,7 +128,8 @@ public class DiskGraphCreationTests
     foreach (var graph in graphs)
     {
       Assert.That(graph.Edges, Has.Count.EqualTo(expectedEdges.Length));
-      Assert.That(graph.Edges.Select(edge => (edge.Start.Data, edge.End.Data)), Is.EquivalentTo(expectedEdges));
+      Assert.That(graph.Edges.Select(edge => (edge.Origin.Data, edge.Destination.Data)),
+        Is.EquivalentTo(expectedEdges));
     }
   }
 

@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Graph;
+using DataForge.Graphs;
 using NUnit.Framework;
 
 namespace GraphCreation.Tests;
 
-public class LineGraphCreationTests
+internal class LineGraphCreationTests
 {
   [Test]
   public void LineGraph_HasExpectedNodeData()
@@ -20,7 +20,7 @@ public class LineGraphCreationTests
     };
 
     // ACT
-    var graphs = new GraphBase<int, int>[]
+    var graphs = new IGraph<int, int>[]
     {
       GraphCreator.MakeLine(options),
       GraphCreator.MakeIndexedLine(options),
@@ -45,7 +45,7 @@ public class LineGraphCreationTests
     var expectedEdges = new[] { (0, 1), (1, 2), (2, 3), (3, 2), (2, 1), (1, 0) };
 
     // ACT
-    var graphs = new GraphBase<int, (int, int)>[]
+    var graphs = new IGraph<int, (int, int)>[]
     {
       GraphCreator.MakeLine(options),
       GraphCreator.MakeIndexedLine(options),
@@ -69,7 +69,7 @@ public class LineGraphCreationTests
     };
 
     // ACT
-    var graphs = new GraphBase<int, int>[]
+    var graphs = new IGraph<int, int>[]
     {
       GraphCreator.MakeLine(options),
       GraphCreator.MakeIndexedLine(options),
@@ -79,7 +79,7 @@ public class LineGraphCreationTests
     foreach (var graph in graphs)
     {
       Assert.That(graph.Edges, Has.Count.EqualTo(edges.Length));
-      Assert.That(graph.Edges.Select(edge => (edge.Start.Data, edge.End.Data)), Is.EquivalentTo(edges));
+      Assert.That(graph.Edges.Select(edge => (edge.Origin.Data, edge.Destination.Data)), Is.EquivalentTo(edges));
     }
   }
 

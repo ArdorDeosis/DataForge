@@ -1,4 +1,4 @@
-﻿using Graph;
+﻿using DataForge.Graphs;
 
 namespace GraphCreation;
 
@@ -20,7 +20,7 @@ public static partial class GraphCreator
   /// <returns>The created graph.</returns>
   public static Graph<TNodeData, TEdgeData> MakeTree<TNodeData, TEdgeData>(
     TreeGraphCreationOptions<TNodeData, TEdgeData> options) =>
-    MakeIndexedTree(options).ToNonIndexedGraph();
+    MakeIndexedTree(options).ToUnindexedGraph();
 
   /// <summary>
   /// Creates an indexed graph with a tree structure. Nodes are indexed by their position on the star represented as a
