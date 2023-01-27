@@ -10,7 +10,4 @@ public sealed class StatelessIndexProvider<TData, TIndex> : IIndexProvider<TData
   }
 
   public TIndex GetIndex(TData data) => generatorFunction(data);
-
-  public static implicit operator StatelessIndexProvider<TData, TIndex>(Func<TData, TIndex> generatorFunction) =>
-    new(generatorFunction);
 }
