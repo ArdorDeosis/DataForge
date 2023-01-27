@@ -12,7 +12,7 @@ internal static class TreeIndexHelper
     childIndices.Aggregate(new TreeIndex(), (lastIndex, childIndex) => new TreeIndex(lastIndex, childIndex));
 }
 
-public class TreeGraphCreationTests
+internal class TreeGraphCreationTests
 {
   [TestCaseSource(nameof(OptionsAndExpectedNodeIndicesOrData))]
   // this tests the node data creation the node child count calculation and the max depth parameter
@@ -45,7 +45,8 @@ public class TreeGraphCreationTests
 
     // ASSERT
     foreach (var graph in graphs)
-      Assert.That(graph.Edges.Select(edge => (edge.Origin.Data, edge.Destination.Data)), Is.EquivalentTo(expectedEdgeData));
+      Assert.That(graph.Edges.Select(edge => (edge.Origin.Data, edge.Destination.Data)),
+        Is.EquivalentTo(expectedEdgeData));
   }
 
   [TestCaseSource(nameof(OptionsAndExpectedEdgeData))]

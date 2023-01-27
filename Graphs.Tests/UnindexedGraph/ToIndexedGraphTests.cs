@@ -4,8 +4,7 @@ using NUnit.Framework;
 
 namespace DataForge.Graphs.Tests.UnindexedGraph;
 
-[TestFixture]
-public class ToIndexedGraphTests
+internal class ToIndexedGraphTests
 {
   [Test]
   public void ToIndexedGraph_IndexEqualityComparer_EqualityComparerIsUsed()

@@ -6,7 +6,7 @@ using NUnit.Framework;
 
 namespace GraphCreation.Tests;
 
-public class GridGraphCreationTests
+internal class GridGraphCreationTests
 {
   [Test]
   public void GridGraph_HasExpectedNodeData()

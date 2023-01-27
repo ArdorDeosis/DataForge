@@ -6,7 +6,7 @@ using NUnit.Framework;
 
 namespace GraphCreation.Tests;
 
-public class StarGraphCreationTests
+internal class StarGraphCreationTests
 {
   [Test]
   public void StarGraph_HasExpectedNodeData()

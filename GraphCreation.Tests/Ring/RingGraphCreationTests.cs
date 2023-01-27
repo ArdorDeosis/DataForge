@@ -6,7 +6,7 @@ using NUnit.Framework;
 
 namespace GraphCreation.Tests;
 
-public class RingGraphCreationTests
+internal class RingGraphCreationTests
 {
   [Test]
   public void RingGraph_HasExpectedNodeData()

@@ -3,8 +3,7 @@ using NUnit.Framework;
 
 namespace DataForge.Graphs.Tests.IndexedGraph;
 
-[TestFixture]
-public class GetNodeTests
+internal class GetNodeTests
 {
   [Test]
   public void Indexer_ExistingNode_IsReturned()

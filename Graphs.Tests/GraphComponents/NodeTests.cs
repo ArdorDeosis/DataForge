@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace DataForge.Graphs.Tests.GraphComponents;
 
-public class NodeTests
+internal class NodeTests
 {
   private const int NodeData = 0xC0FFEE;
 

@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace DataForge.Graphs.Tests.GraphComponents;
 
-public class EdgeTests
+internal class EdgeTests
 {
   private const int EdgeData = 0xC0FFEE;
 

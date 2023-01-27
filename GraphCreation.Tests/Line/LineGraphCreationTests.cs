@@ -6,7 +6,7 @@ using NUnit.Framework;
 
 namespace GraphCreation.Tests;
 
-public class LineGraphCreationTests
+internal class LineGraphCreationTests
 {
   [Test]
   public void LineGraph_HasExpectedNodeData()

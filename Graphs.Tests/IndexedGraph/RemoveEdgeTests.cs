@@ -3,8 +3,7 @@ using NUnit.Framework;
 
 namespace DataForge.Graphs.Tests.IndexedGraph;
 
-[TestFixture]
-public class RemoveEdgeTests
+internal class RemoveEdgeTests
 {
   private (IndexedGraph<int, int, int> graph,
     IndexedEdge<int, int, int> edge,

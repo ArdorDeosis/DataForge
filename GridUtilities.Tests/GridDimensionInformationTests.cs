@@ -2,7 +2,7 @@
 
 namespace GridUtilities.Tests;
 
-public class GridDimensionInformationTests
+internal class GridDimensionInformationTests
 {
   [TestCase(0)]
   [TestCase(-1)]

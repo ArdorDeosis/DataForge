@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace DataForge.Graphs.Tests.UnindexedGraph;
 
-public class RemoveEdgeTests
+internal class RemoveEdgeTests
 {
   [Test]
   public void RemoveEdge_EdgeInGraph_ReturnsTrue()

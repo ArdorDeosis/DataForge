@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace DataForge.Graphs.Tests.UnindexedGraph;
 
-public class AddEdgeTests
+internal class AddEdgeTests
 {
   [Test]
   public void AddEdge_Edge_HasExpectedData()

@@ -2,7 +2,7 @@
 
 namespace DataForge.Graphs.Tests.GraphComponents;
 
-public class GraphComponentTests
+internal class GraphComponentTests
 {
   [Test]
   public void NewComponent_IsValid()

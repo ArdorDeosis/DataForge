@@ -2,8 +2,7 @@
 
 namespace DataForge.Graphs.Tests.IndexedGraph;
 
-[TestFixture]
-public class EqualityComparerTests
+internal class EqualityComparerTests
 {
   [Test]
   public void EqualityComparerInstance_IsUsed()

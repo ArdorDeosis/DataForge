@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace DataForge.Graphs.Tests.UnindexedGraph;
 
-public class CloneGraphTests
+internal class CloneGraphTests
 {
   [Test]
   public void Clone_DataIsEqual()

@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace GraphCreation.Tests;
 
-public class DiskIndexTests
+internal class DiskIndexTests
 {
   [Test]
   public void TestDefaultValues()

@@ -3,8 +3,7 @@ using NUnit.Framework;
 
 namespace DataForge.Graphs.Tests.IndexedGraph;
 
-[TestFixture]
-public class AddNodeTests
+internal class AddNodeTests
 {
   [Test]
   public void AddNode_Node_HasExpectedData()

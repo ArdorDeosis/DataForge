@@ -5,7 +5,7 @@ using NUnit.Framework;
 
 namespace GraphCreation.Tests;
 
-public class MultipartiteGraphCreationTests
+internal class MultipartiteGraphCreationTests
 {
   [Test]
   public void MultipartiteGraph_HasExpectedNodeData()

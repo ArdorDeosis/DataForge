@@ -2,7 +2,7 @@
 
 namespace DataForge.Graphs.Tests.UnindexedGraph;
 
-public class EmptyGraphTests
+internal class EmptyGraphTests
 {
   [Test]
   public void EmptyGraph_HasNoNodes()

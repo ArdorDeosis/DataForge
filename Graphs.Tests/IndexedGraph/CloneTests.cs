@@ -3,8 +3,7 @@ using NUnit.Framework;
 
 namespace DataForge.Graphs.Tests.IndexedGraph;
 
-[TestFixture]
-public class CloneTests
+internal class CloneTests
 {
   [Test]
   public void Clone_IndicesAreEqual()

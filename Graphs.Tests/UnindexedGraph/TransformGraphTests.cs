@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace DataForge.Graphs.Tests.UnindexedGraph;
 
-public class TransformGraphTests
+internal class TransformGraphTests
 {
   [Test]
   public void Transform_DataTransformationFunctions_WorkAsExpected()

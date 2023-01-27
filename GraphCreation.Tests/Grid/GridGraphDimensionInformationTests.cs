@@ -2,7 +2,7 @@
 
 namespace GraphCreation.Tests;
 
-public class GridGraphDimensionInformationTests
+internal class GridGraphDimensionInformationTests
 {
   [TestCase(0)]
   [TestCase(-1)]

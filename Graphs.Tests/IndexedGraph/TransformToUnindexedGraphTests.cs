@@ -3,8 +3,7 @@ using NUnit.Framework;
 
 namespace DataForge.Graphs.Tests.IndexedGraph;
 
-[TestFixture]
-public class TransformToUnindexedGraph
+internal class TransformToUnindexedGraphTests
 {
   [Test]
   public void TransformToUnindexedGraph_NodeDataIsTransformedCorrectly()

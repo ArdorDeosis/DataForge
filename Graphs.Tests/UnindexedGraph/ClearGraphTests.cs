@@ -2,7 +2,7 @@
 
 namespace DataForge.Graphs.Tests.UnindexedGraph;
 
-public class ClearGraphTests
+internal class ClearGraphTests
 {
   [Test]
   public void Clear_RemovesNodes()

@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace GridUtilities.Tests;
 
-public class GridEdgeInformationTests
+internal class GridEdgeInformationTests
 {
   [Test]
   public void Constructor_EmptyLowerCoordinate_ThrowsArgumentException()

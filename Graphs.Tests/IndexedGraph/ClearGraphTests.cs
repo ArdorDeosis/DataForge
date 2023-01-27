@@ -2,8 +2,7 @@
 
 namespace DataForge.Graphs.Tests.IndexedGraph;
 
-[TestFixture]
-public class ClearGraphTests
+internal class ClearGraphTests
 {
   [Test]
   public void Clear_RemovesNodes()

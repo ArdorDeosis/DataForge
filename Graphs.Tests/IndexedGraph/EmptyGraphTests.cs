@@ -2,8 +2,7 @@
 
 namespace DataForge.Graphs.Tests.IndexedGraph;
 
-[TestFixture]
-public class EmptyGraphTests
+internal class EmptyGraphTests
 {
   [Test]
   public void EmptyGraph_HasNoNodes()

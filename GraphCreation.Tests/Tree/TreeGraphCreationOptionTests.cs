@@ -2,7 +2,7 @@
 
 namespace GraphCreation.Tests;
 
-public class TreeGraphCreationOptionTests
+internal class TreeGraphCreationOptionTests
 {
   [Test]
   public void Initializer_InvalidMaxDepth_ThrowsArgumentException() =>

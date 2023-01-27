@@ -2,7 +2,7 @@
 
 namespace GraphCreation.Tests;
 
-public class StarGraphCreationOptionTests
+internal class StarGraphCreationOptionTests
 {
   [TestCase(-1)]
   public void Initializer_InvalidRayCount_ThrowsArgumentException(int invalidRayCount) =>

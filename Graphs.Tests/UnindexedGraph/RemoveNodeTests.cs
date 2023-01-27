@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace DataForge.Graphs.Tests.UnindexedGraph;
 
-public class RemoveNodeTests
+internal class RemoveNodeTests
 {
   [Test]
   public void RemoveNode_NodeInGraph_ReturnsTrue()

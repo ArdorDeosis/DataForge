@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace GraphCreation.Tests;
 
-public class DiskGraphCreationTests
+internal class DiskGraphCreationTests
 {
   [Test]
   public void DiskGraph_HasExpectedNodeData()
@@ -128,7 +128,8 @@ public class DiskGraphCreationTests
     foreach (var graph in graphs)
     {
       Assert.That(graph.Edges, Has.Count.EqualTo(expectedEdges.Length));
-      Assert.That(graph.Edges.Select(edge => (edge.Origin.Data, edge.Destination.Data)), Is.EquivalentTo(expectedEdges));
+      Assert.That(graph.Edges.Select(edge => (edge.Origin.Data, edge.Destination.Data)),
+        Is.EquivalentTo(expectedEdges));
     }
   }
 

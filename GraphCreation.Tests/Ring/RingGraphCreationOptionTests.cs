@@ -2,7 +2,7 @@
 
 namespace GraphCreation.Tests;
 
-public class RingGraphCreationOptionTests
+internal class RingGraphCreationOptionTests
 {
   [TestCase(0)]
   [TestCase(-1)]

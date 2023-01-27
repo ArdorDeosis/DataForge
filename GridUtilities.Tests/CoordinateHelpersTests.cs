@@ -3,8 +3,7 @@ using NUnit.Framework;
 
 namespace GridUtilities.Tests;
 
-[TestFixture]
-public class CoordinateHelpersTests
+internal class CoordinateHelpersTests
 {
   [TestCase(null, new[] { 0 })]
   [TestCase(new[] { 0 }, null)]

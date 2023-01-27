@@ -3,8 +3,7 @@ using NUnit.Framework;
 
 namespace DataForge.Graphs.Tests.IndexedGraph;
 
-[TestFixture]
-public class ToUnindexedGraph
+internal class ToUnindexedGraphTests
 {
   [Test]
   public void ToUnindexedGraph_NodeDataIsEquivalent()
