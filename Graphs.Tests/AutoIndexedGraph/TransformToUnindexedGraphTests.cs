@@ -11,8 +11,9 @@ internal class TransformToUnindexedGraphTests
     // ARRANGE
     var graph = new AutoIndexedGraph<int, int, int>(new IncrementalIndexProvider<int, int>(0));
     var nodeData = new[] { 0xC0FFEE, 0xBEEF, 0xF00D };
-    for (var index = 0; index < nodeData.Length; index++)
-      graph.AddNode(index, nodeData[index]);
+    foreach (var datum in nodeData)
+      graph.AddNode(datum);
+
     string TransformData(int data) => data.ToString();
 
     // ACT
@@ -28,12 +29,10 @@ internal class TransformToUnindexedGraphTests
     // ARRANGE
     var graph = new AutoIndexedGraph<int, int, int>(new IncrementalIndexProvider<int, int>(0));
     var edgeData = new[] { 0xC0FFEE, 0xBEEF, 0xF00D };
-    var indices = new[] { 0, 1 };
-    graph.AddNode(indices[0], 0);
-    graph.AddNode(indices[1], 0);
-    graph.AddEdge(indices[0], indices[1], edgeData[0]);
-    graph.AddEdge(indices[0], indices[1], edgeData[1]);
-    graph.AddEdge(indices[0], indices[1], edgeData[2]);
+    var index = graph.AddNode(default).Index;
+    graph.AddEdge(index, index, edgeData[0]);
+    graph.AddEdge(index, index, edgeData[1]);
+    graph.AddEdge(index, index, edgeData[2]);
     string TransformData(int data) => data.ToString();
 
     // ACT
@@ -48,16 +47,17 @@ internal class TransformToUnindexedGraphTests
   public void TransformToUnindexedGraph_StructureIsEquivalent()
   {
     // ARRANGE
-    var graph = new AutoIndexedGraph<int, int, int>(new IncrementalIndexProvider<int, int>(0));
-    var nodeData = new[] { 0xC0FFEE, 0xBEEF };
+    var graph = new AutoIndexedGraph<int, int, int>(new StatelessIndexProvider<int, int>(n => n));
+    const int nodeData1 = 0xC0FFEE;
+    const int nodeData2 = 0xBEEF;
+    var index1 = graph.AddNode(nodeData1).Index;
+    var index2 = graph.AddNode(nodeData2).Index;
     var edgeConnections = new[]
     {
-      (nodeData[0], nodeData[0]),
-      (nodeData[0], nodeData[1]),
-      (nodeData[1], nodeData[0]),
+      (index1, index1),
+      (index1, index2),
+      (index2, index1),
     };
-    graph.AddNode(nodeData[0], nodeData[0]);
-    graph.AddNode(nodeData[1], nodeData[1]);
     for (var index = 0; index < edgeConnections.Length; index++)
       graph.AddEdge(edgeConnections[index].Item1, edgeConnections[index].Item2, index);
 

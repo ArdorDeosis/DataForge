@@ -11,8 +11,8 @@ internal class ToUnindexedGraphTests
     // ARRANGE
     var graph = new AutoIndexedGraph<int, int, int>(new IncrementalIndexProvider<int, int>(0));
     var data = new[] { 0xC0FFEE, 0xBEEF, 0xF00D };
-    for (var index = 0; index < data.Length; index++)
-      graph.AddNode(index, data[index]);
+    foreach (var datum in data)
+      graph.AddNode(datum);
 
     // ACT
     var unindexedGraphs = new[]
@@ -33,12 +33,9 @@ internal class ToUnindexedGraphTests
     // ARRANGE
     var graph = new AutoIndexedGraph<int, int, int>(new IncrementalIndexProvider<int, int>(0));
     var data = new[] { 0xC0FFEE, 0xBEEF, 0xF00D };
-    var indices = new[] { 0, 1 };
-    graph.AddNode(indices[0], 0);
-    graph.AddNode(indices[1], 0);
-    graph.AddEdge(indices[0], indices[1], data[0]);
-    graph.AddEdge(indices[0], indices[1], data[1]);
-    graph.AddEdge(indices[0], indices[1], data[2]);
+    var index = graph.AddNode(default).Index;
+    foreach (var datum in data) 
+      graph.AddEdge(index, index, datum);
 
     // ACT
     var unindexedGraphs = new[]
@@ -59,7 +56,7 @@ internal class ToUnindexedGraphTests
     var graph = new AutoIndexedGraph<int, int, int>(new IncrementalIndexProvider<int, int>(0));
     var data = new[] { 0xC0FFEE, 0xBEEF, 0xF00D };
     foreach (var datum in data)
-      graph.AddNode(datum, datum);
+      graph.AddNode(datum);
     int CopyData(int input) => -input;
 
     // ACT
@@ -76,13 +73,9 @@ internal class ToUnindexedGraphTests
     // ARRANGE
     var graph = new AutoIndexedGraph<int, int, int>(new IncrementalIndexProvider<int, int>(0));
     var data = new[] { 0xC0FFEE, 0xBEEF, 0xF00D };
-    const int index1 = 0;
-    const int index2 = 1;
-    graph.AddNode(index1, 0);
-    graph.AddNode(index2, 0);
-    graph.AddEdge(index1, index1, data[0]);
-    graph.AddEdge(index1, index2, data[1]);
-    graph.AddEdge(index2, index1, data[2]);
+    var index = graph.AddNode(default).Index;
+    foreach (var datum in data)
+      graph.AddEdge(index, index, datum);
     int CopyData(int input) => -input;
 
     // ACT
@@ -97,17 +90,17 @@ internal class ToUnindexedGraphTests
   public void ToUnindexedGraph_StructureIsEquivalent()
   {
     // ARRANGE
-    var graph = new AutoIndexedGraph<int, int, int>(new IncrementalIndexProvider<int, int>(0));
+    var graph = new AutoIndexedGraph<int, int, int>(new StatelessIndexProvider<int, int>(n => n));
     const int nodeData1 = 0xC0FFEE;
     const int nodeData2 = 0xBEEF;
+    var index1 = graph.AddNode(nodeData1).Index;
+    var index2 = graph.AddNode(nodeData2).Index;
     var edgeConnections = new[]
     {
-      (nodeData1, nodeData1),
-      (nodeData1, nodeData2),
-      (nodeData2, nodeData1),
+      (index1, index1),
+      (index1, index2),
+      (index2, index1),
     };
-    graph.AddNode(nodeData1, nodeData1);
-    graph.AddNode(nodeData2, nodeData2);
     int MakeEdgeData(int origin, int destination) => origin + 2 * destination;
     foreach (var edgeConnection in edgeConnections)
       graph.AddEdge(edgeConnection.Item1, edgeConnection.Item2,

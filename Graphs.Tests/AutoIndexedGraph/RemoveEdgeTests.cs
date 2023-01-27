@@ -126,10 +126,10 @@ internal class RemoveEdgeTests
   {
     // ARRANGE
     var graph = new AutoIndexedGraph<int, int, int>(new IncrementalIndexProvider<int, int>(0));
-    graph.AddNode(indices[0], indices[0]);
-    graph.AddNode(indices[1], indices[1]);
-    var edge1 = graph.AddEdge(indices[0], indices[1], -1);
-    var edge2 = graph.AddEdge(indices[0], indices[1], 1);
+    var index1 = graph.AddNode(default).Index;
+    var index2 = graph.AddNode(default).Index;
+    var edge1 = graph.AddEdge(index1, index2, -1);
+    var edge2 = graph.AddEdge(index1, index2, 1);
 
     // ACT
     graph.RemoveEdgesWhere(data => data > 0);
@@ -145,10 +145,7 @@ internal class RemoveEdgeTests
   {
     // ARRANGE
     var graph = new AutoIndexedGraph<int, int, int>(new IncrementalIndexProvider<int, int>(0));
-    var indices = new[] { 0xC0FFEE, 0xBEEF };
-    graph.AddNode(indices[0], indices[0]);
-    graph.AddNode(indices[1], indices[1]);
-    var edge = graph.AddEdge(indices[0], indices[1], 1);
+    var edge = graph.AddEdge(graph.AddNode(default).Index, graph.AddNode(default).Index, 1);
 
     // ACT
     graph.RemoveEdgesWhere(data => data > 0);

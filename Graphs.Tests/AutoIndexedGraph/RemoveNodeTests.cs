@@ -5,26 +5,23 @@ namespace DataForge.Graphs.Tests.AutoIndexedGraph;
 
 internal class RemoveNodeTests
 {
-  private (IndexedGraph<int, int, int> graph, int index, IndexedNode<int, int, int> node) SetupSingleNode()
+  private static (AutoIndexedGraph<int, int, int> graph, int index, IndexedNode<int, int, int> node) SetupSingleNode()
   {
-    var graph = new AutoIndexedGraph<int, int, int>(new IncrementalIndexProvider<int, int>(0));
     const int index = 0xC0FFEE;
-    var node = graph.AddNode(index, 0);
+    var graph = new AutoIndexedGraph<int, int, int>(new IncrementalIndexProvider<int, int>(index));
+    var node = graph.AddNode(default);
     return (graph, index, node);
   }
 
-  private (IndexedGraph<int, int, int> graph,
+  private static (AutoIndexedGraph<int, int, int> graph,
     IndexedNode<int, int, int> invalidNode,
     IndexedNode<int, int, int> removedNode) SetupInvalidNodes()
   {
     var graph = new AutoIndexedGraph<int, int, int>(new IncrementalIndexProvider<int, int>(0));
     var otherGraph = new AutoIndexedGraph<int, int, int>(new IncrementalIndexProvider<int, int>(0));
-    const int index = 0xC0FFEE;
-    const int removedIndex = 0xBEEF;
-    const int invalidIndex = 0xF00D;
-    var removedNode = graph.AddNode(removedIndex, 0);
+    var removedNode = graph.AddNode(default);
     graph.RemoveNode(removedNode);
-    var invalidNode = otherGraph.AddNode(index, 0);
+    var invalidNode = otherGraph.AddNode(default);
     return (graph, invalidNode, removedNode);
   }
 
@@ -218,16 +215,13 @@ internal class RemoveNodeTests
   {
     // ARRANGE
     var graph = new AutoIndexedGraph<int, int, int>(new IncrementalIndexProvider<int, int>(0));
-    var indices = new[] { 0xC0FFEE, 0xBEEF, 0xF00D };
 
-    graph.AddNode(indices[0], 0);
-    graph.AddNode(indices[1], 0);
-    graph.AddNode(indices[2], 0);
-    var edge1 = graph.AddEdge(indices[0], indices[1], 0);
-    var edge2 = graph.AddEdge(indices[1], indices[2], 0);
+    var middleNode = graph.AddNode(default);
+    var edge1 = graph.AddEdge(graph.AddNode(default).Index, middleNode.Index, 0);
+    var edge2 = graph.AddEdge(middleNode.Index, graph.AddNode(default).Index, 0);
 
     // ACT
-    graph.RemoveNode(indices[1]);
+    graph.RemoveNode(middleNode);
 
     // ASSERT
     Assert.That(graph.Edges, Does.Not.Contain(edge1));
@@ -239,16 +233,13 @@ internal class RemoveNodeTests
   {
     // ARRANGE
     var graph = new AutoIndexedGraph<int, int, int>(new IncrementalIndexProvider<int, int>(0));
-    var indices = new[] { 0xC0FFEE, 0xBEEF, 0xF00D };
 
-    graph.AddNode(indices[0], 0);
-    graph.AddNode(indices[1], 0);
-    graph.AddNode(indices[2], 0);
-    var edge1 = graph.AddEdge(indices[0], indices[1], 0);
-    var edge2 = graph.AddEdge(indices[1], indices[2], 0);
+    var middleNode = graph.AddNode(default);
+    var edge1 = graph.AddEdge(graph.AddNode(default).Index, middleNode.Index, 0);
+    var edge2 = graph.AddEdge(middleNode.Index, graph.AddNode(default).Index, 0);
 
     // ACT
-    graph.RemoveNode(indices[1]);
+    graph.RemoveNode(middleNode);
 
     // ASSERT
     Assert.That(edge1.IsValid, Is.False);
@@ -260,8 +251,8 @@ internal class RemoveNodeTests
   {
     // ARRANGE
     var graph = new AutoIndexedGraph<int, int, int>(new IncrementalIndexProvider<int, int>(0));
-    var node1 = graph.AddNode(-1, -1);
-    var node2 = graph.AddNode(1, 1);
+    var node1 = graph.AddNode(-1);
+    var node2 = graph.AddNode(1);
 
     // ACT
     graph.RemoveNodesWhere(data => data > 0);
@@ -276,7 +267,7 @@ internal class RemoveNodeTests
   {
     // ARRANGE
     var graph = new AutoIndexedGraph<int, int, int>(new IncrementalIndexProvider<int, int>(0));
-    var node = graph.AddNode(1, 1);
+    var node = graph.AddNode(1);
 
     // ACT
     graph.RemoveNodesWhere(data => data > 0);
