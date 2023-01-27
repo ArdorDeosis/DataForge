@@ -54,6 +54,29 @@ internal class RemoveNodeTests
     // ASSERT
     Assert.That(graph.RemoveNode(index), Is.True);
   }
+  
+  [Test]
+  public void RemoveNodeOutNode_IndexInGraph_ReturnsTrue()
+  {
+    // ARRANGE
+    var (graph, index, _) = SetupSingleNode();
+
+    // ASSERT
+    Assert.That(graph.RemoveNode(index, out _), Is.True);
+  }
+  
+  [Test]
+  public void RemoveNodeOutNode_IndexInGraph_OutputsNode()
+  {
+    // ARRANGE
+    var (graph, index, node) = SetupSingleNode();
+
+    // ACT
+    graph.RemoveNode(index, out var retrievedNode);
+      
+    // ASSERT
+    Assert.That(retrievedNode, Is.EqualTo(node));
+  }
 
   [Test]
   public void RemoveNode_NodeInGraph_NodeIsInvalid()
@@ -208,6 +231,7 @@ internal class RemoveNodeTests
 
     // ASSERT
     Assert.That(graph.RemoveNode(0), Is.False);
+    Assert.That(graph.RemoveNode(0, out _), Is.False);
   }
 
   [Test]
@@ -245,7 +269,7 @@ internal class RemoveNodeTests
     Assert.That(edge1.IsValid, Is.False);
     Assert.That(edge2.IsValid, Is.False);
   }
-
+  
   [Test]
   public void RemoveNodesWhere_ExpectedNodesAreRemoved()
   {

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 
 namespace DataForge.Graphs.Tests.AutoIndexedGraph;
@@ -24,13 +25,20 @@ internal class AddNodeTests
   {
     // ARRANGE
     const int index = 0xC0FFEE;
-    var graph = new AutoIndexedGraph<int, int, int>(new IncrementalIndexProvider<int, int>(index));
+    var graphs = new[]
+    {
+      new AutoIndexedGraph<int, int, int>(new IncrementalIndexProvider<int, int>(index)),
+      new AutoIndexedGraph<int, int, int>(_ => index),
+      new AutoIndexedGraph<int, int, int>(new IncrementalIndexProvider<int, int>(index), () => EqualityComparer<int>.Default),
+      new AutoIndexedGraph<int, int, int>(_ => index, () => EqualityComparer<int>.Default)
+    };
 
     // ACT
-    var node = graph.AddNode(0);
+      var nodes = graphs.Select(graph => graph.AddNode(0));
 
     // ASSERT
-    Assert.That(node.Index, Is.EqualTo(index));
+    foreach (var node in nodes)
+      Assert.That(node.Index, Is.EqualTo(index));
   }
 
   [Test]
