@@ -29,7 +29,6 @@ internal class ToUnindexedGraphTests
   [Test]
   public void ToUnindexedGraph_EdgeDataIsEquivalent()
   {
-    // TODO
     // ARRANGE
     var graph = new AutoIndexedGraph<int, int, int>(new IncrementalIndexProvider<int, int>(0));
     var data = new[] { 0xC0FFEE, 0xBEEF, 0xF00D };
