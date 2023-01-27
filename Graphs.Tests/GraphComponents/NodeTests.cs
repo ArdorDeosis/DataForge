@@ -53,4 +53,69 @@ internal class NodeTests
     // ASSERT
     Assert.That(() => node.Data = 0, Throws.InvalidOperationException);
   }
+
+  [Test]
+  public void IndexedNode_IndexIsCorrect()
+  {
+    // ARRANGE
+    var graph = new IndexedGraph<int, int, int>();
+    const int index = 0xC0FFEE;
+    var node = graph.AddNode(index, 0);
+
+    // ASSERT
+    Assert.That(node.Index, Is.EqualTo(index));
+  }
+
+  [Test]
+  public void InvalidIndexedNode_GettingIndex_Throws()
+  {
+    // ARRANGE
+    var graph = new IndexedGraph<int, int, int>();
+    const int index = 0xC0FFEE;
+    var node = graph.AddNode(index, 0);
+    graph.RemoveNode(index);
+
+    // ASSERT
+    Assert.That(() => node.Index, Throws.Exception);
+  }
+
+  [Test]
+  public void IndexedNode_TryGetIndex_ReturnsTrue()
+  {
+    // ARRANGE
+    var graph = new IndexedGraph<int, int, int>();
+    const int index = 0xC0FFEE;
+    var node = graph.AddNode(index, 0);
+
+    // ASSERT
+    Assert.That(node.TryGetIndex(out _), Is.True);
+  }
+
+  [Test]
+  public void IndexedNode_TryGetIndex_OutputsIndex()
+  {
+    // ARRANGE
+    var graph = new IndexedGraph<int, int, int>();
+    const int index = 0xC0FFEE;
+    var node = graph.AddNode(index, 0);
+
+    // ACT
+    node.TryGetIndex(out var retrievedIndex);
+
+    // ASSERT
+    Assert.That(retrievedIndex, Is.EqualTo(index));
+  }
+
+  [Test]
+  public void InvalidIndexedNode_TryGetIndex_ReturnsFalse()
+  {
+    // ARRANGE
+    var graph = new IndexedGraph<int, int, int>();
+    const int index = 0xC0FFEE;
+    var node = graph.AddNode(index, 0);
+    graph.RemoveNode(index);
+
+    // ASSERT
+    Assert.That(node.TryGetIndex(out _), Is.False);
+  }
 }
