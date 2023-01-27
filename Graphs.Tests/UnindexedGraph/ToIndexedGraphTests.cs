@@ -17,22 +17,22 @@ internal class ToIndexedGraphTests
 
     // ASSERT
     Assert.That(() => graph.ToIndexedGraph(data => data, equalityComparer), Throws.Exception);
-    Assert.That(() => graph.ToIndexedGraph(new IncrementalIntegerIndexProvider<int>(), equalityComparer),
+    Assert.That(() => graph.ToIndexedGraph(new IncrementalIndexProvider<int, int>(0), equalityComparer),
       Throws.Exception);
     Assert.That(() => graph.ToIndexedGraph(data => data, () => new TestEqualityComparer()), Throws.Exception);
     Assert.That(
-      () => graph.ToIndexedGraph(new IncrementalIntegerIndexProvider<int>(), () => new TestEqualityComparer()),
+      () => graph.ToIndexedGraph(new IncrementalIndexProvider<int, int>(0), () => new TestEqualityComparer()),
       Throws.Exception);
     Assert.That(() => graph.ToIndexedGraph(data => data, data => data, data => data, equalityComparer),
       Throws.Exception);
     Assert.That(
-      () => graph.ToIndexedGraph(new IncrementalIntegerIndexProvider<int>(), data => data, data => data,
+      () => graph.ToIndexedGraph(new IncrementalIndexProvider<int, int>(0), data => data, data => data,
         equalityComparer),
       Throws.Exception);
     Assert.That(() => graph.ToIndexedGraph(data => data, data => data, data => data, () => new TestEqualityComparer()),
       Throws.Exception);
     Assert.That(
-      () => graph.ToIndexedGraph(new IncrementalIntegerIndexProvider<int>(), data => data, data => data,
+      () => graph.ToIndexedGraph(new IncrementalIndexProvider<int, int>(0), data => data, data => data,
         () => new TestEqualityComparer()), Throws.Exception);
   }
 
@@ -73,10 +73,10 @@ internal class ToIndexedGraphTests
     // ACT
     var indexedGraphs = new[]
     {
-      graph.ToIndexedGraph(new IncrementalIntegerIndexProvider<int>()),
-      graph.ToIndexedGraph(new IncrementalIntegerIndexProvider<int>(), () => EqualityComparer<int>.Default),
-      graph.ToIndexedGraph(new IncrementalIntegerIndexProvider<int>(), data => data, data => data),
-      graph.ToIndexedGraph(new IncrementalIntegerIndexProvider<int>(), data => data, data => data,
+      graph.ToIndexedGraph(new IncrementalIndexProvider<int, int>(0)),
+      graph.ToIndexedGraph(new IncrementalIndexProvider<int, int>(0), () => EqualityComparer<int>.Default),
+      graph.ToIndexedGraph(new IncrementalIndexProvider<int, int>(0), data => data, data => data),
+      graph.ToIndexedGraph(new IncrementalIndexProvider<int, int>(0), data => data, data => data,
         () => EqualityComparer<int>.Default),
     };
 
@@ -168,8 +168,8 @@ internal class ToIndexedGraphTests
     {
       graph.ToIndexedGraph(data => data),
       graph.ToIndexedGraph(data => data, () => EqualityComparer<int>.Default),
-      graph.ToIndexedGraph(new IncrementalIntegerIndexProvider<int>()),
-      graph.ToIndexedGraph(new IncrementalIntegerIndexProvider<int>(), () => EqualityComparer<int>.Default),
+      graph.ToIndexedGraph(new IncrementalIndexProvider<int, int>(0)),
+      graph.ToIndexedGraph(new IncrementalIndexProvider<int, int>(0), () => EqualityComparer<int>.Default),
     };
 
     // ASSERT
@@ -203,8 +203,8 @@ internal class ToIndexedGraphTests
     {
       graph.ToIndexedGraph(data => data, CloneData, CloneData),
       graph.ToIndexedGraph(data => data, CloneData, CloneData, () => EqualityComparer<int>.Default),
-      graph.ToIndexedGraph(new IncrementalIntegerIndexProvider<int>(), CloneData, CloneData),
-      graph.ToIndexedGraph(new IncrementalIntegerIndexProvider<int>(), CloneData, CloneData,
+      graph.ToIndexedGraph(new IncrementalIndexProvider<int, int>(0), CloneData, CloneData),
+      graph.ToIndexedGraph(new IncrementalIndexProvider<int, int>(0), CloneData, CloneData,
         () => EqualityComparer<int>.Default),
     };
 

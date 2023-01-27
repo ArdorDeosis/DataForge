@@ -20,13 +20,13 @@ internal class TransformToIndexedGraphTests
       () => graph.TransformToIndexedGraph(data => data, data => data, data => data, equalityComparer),
       Throws.Exception);
     Assert.That(
-      () => graph.TransformToIndexedGraph(new IncrementalIntegerIndexProvider<int>(), data => data, data => data,
+      () => graph.TransformToIndexedGraph(new IncrementalIndexProvider<int, int>(0), data => data, data => data,
         equalityComparer), Throws.Exception);
     Assert.That(
       () => graph.TransformToIndexedGraph(data => data, data => data, data => data, () => new TestEqualityComparer()),
       Throws.Exception);
     Assert.That(
-      () => graph.TransformToIndexedGraph(new IncrementalIntegerIndexProvider<int>(), data => data, data => data,
+      () => graph.TransformToIndexedGraph(new IncrementalIndexProvider<int, int>(0), data => data, data => data,
         () => new TestEqualityComparer()), Throws.Exception);
   }
 
@@ -136,8 +136,8 @@ internal class TransformToIndexedGraphTests
     {
       graph.TransformToIndexedGraph(data => data, TransformData, TransformData),
       graph.TransformToIndexedGraph(data => data, TransformData, TransformData, () => EqualityComparer<int>.Default),
-      graph.TransformToIndexedGraph(new IncrementalIntegerIndexProvider<int>(), TransformData, TransformData),
-      graph.TransformToIndexedGraph(new IncrementalIntegerIndexProvider<int>(), TransformData, TransformData,
+      graph.TransformToIndexedGraph(new IncrementalIndexProvider<int, int>(0), TransformData, TransformData),
+      graph.TransformToIndexedGraph(new IncrementalIndexProvider<int, int>(0), TransformData, TransformData,
         () => EqualityComparer<int>.Default),
     };
 

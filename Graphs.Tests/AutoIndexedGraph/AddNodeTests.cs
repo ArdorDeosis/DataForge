@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using NUnit.Framework;
 
-namespace DataForge.Graphs.Tests.IndexedGraph;
+namespace DataForge.Graphs.Tests.AutoIndexedGraph;
 
 internal class AddNodeTests
 {
@@ -10,10 +10,10 @@ internal class AddNodeTests
   {
     // ARRANGE
     const int data = 0xC0FFEE;
-    var graph = new IndexedGraph<int, int, int>();
+    var graph = new AutoIndexedGraph<int, int, int>(new IncrementalIndexProvider<int, int>(0));
 
     // ACT
-    var node = graph.AddNode(0, data);
+    var node = graph.AddNode(data);
 
     // ASSERT
     Assert.That(node.Data, Is.EqualTo(data));
@@ -24,10 +24,10 @@ internal class AddNodeTests
   {
     // ARRANGE
     const int index = 0xC0FFEE;
-    var graph = new IndexedGraph<int, int, int>();
+    var graph = new AutoIndexedGraph<int, int, int>(new IncrementalIndexProvider<int, int>(index));
 
     // ACT
-    var node = graph.AddNode(index, 0);
+    var node = graph.AddNode(0);
 
     // ASSERT
     Assert.That(node.Index, Is.EqualTo(index));
@@ -37,10 +37,10 @@ internal class AddNodeTests
   public void AddNode_Graph_ContainsAddedNode()
   {
     // ARRANGE
-    var graph = new IndexedGraph<int, int, int>();
+    var graph = new AutoIndexedGraph<int, int, int>(new IncrementalIndexProvider<int, int>(0));
 
     // ACT
-    var node = graph.AddNode(0, 0);
+    var node = graph.AddNode(0);
 
     // ASSERT
     Assert.That(graph.Contains(node));
@@ -52,10 +52,10 @@ internal class AddNodeTests
   {
     // ARRANGE
     const int index = 0xC0FFEE;
-    var graph = new IndexedGraph<int, int, int>();
+    var graph = new AutoIndexedGraph<int, int, int>(new IncrementalIndexProvider<int, int>(index));
 
     // ACT
-    graph.AddNode(index, 0);
+    graph.AddNode(0);
 
     // ASSERT
     Assert.That(graph.Contains(index));
@@ -66,35 +66,33 @@ internal class AddNodeTests
   public void AddNode_InvalidIndex_ThrowsInvalidOperationException()
   {
     // ARRANGE
-    const int index = 0xC0FFEE;
-    var graph = new IndexedGraph<int, int, int>();
-    graph.AddNode(index, 0);
+    const int data = 0xC0FFEE;
+    var graph = new AutoIndexedGraph<int, int, int>(new StatelessIndexProvider<int, int>(data => data));
+    graph.AddNode(data);
 
     // ASSERT
-    Assert.That(() => graph.AddNode(index, 0), Throws.InvalidOperationException);
+    Assert.That(() => graph.AddNode(data), Throws.InvalidOperationException);
   }
 
   [Test]
   public void TryAddNode_ValidIndex_ReturnsTrue()
   {
     // ARRANGE
-    const int index = 0xC0FFEE;
-    var graph = new IndexedGraph<int, int, int>();
+    var graph = new AutoIndexedGraph<int, int, int>(new IncrementalIndexProvider<int, int>(0));
 
     // ASSERT
-    Assert.That(graph.TryAddNode(index, 0, out _), Is.True);
+    Assert.That(graph.TryAddNode(0, out _), Is.True);
   }
 
   [Test]
   public void TryAddNode_ValidIndex_OutputsNode()
   {
     // ARRANGE
-    const int index = 0xC0FFEE;
-    const int data = 0xBEEF;
-    var graph = new IndexedGraph<int, int, int>();
+    const int data = 0xC0FFEE;
+    var graph = new AutoIndexedGraph<int, int, int>(new IncrementalIndexProvider<int, int>(0));
 
     // ACT
-    graph.TryAddNode(index, data, out var node);
+    graph.TryAddNode(data, out var node);
 
     // ASSERT
     Assert.That(node, Is.Not.Null);
@@ -105,11 +103,11 @@ internal class AddNodeTests
   public void TryAddNode_InvalidIndex_ReturnsFalse()
   {
     // ARRANGE
-    const int index = 0xC0FFEE;
-    var graph = new IndexedGraph<int, int, int>();
-    graph.AddNode(index, 0);
+    const int data = 0xC0FFEE;
+    var graph = new AutoIndexedGraph<int, int, int>(new StatelessIndexProvider<int, int>(data => data));
+    graph.AddNode(data);
 
     // ASSERT
-    Assert.That(graph.TryAddNode(index, 0, out _), Is.False);
+    Assert.That(graph.TryAddNode(data, out _), Is.False);
   }
 }

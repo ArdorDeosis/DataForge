@@ -23,9 +23,9 @@ internal class IndexProviderTests
   public void IncrementalIndexProvider_Increments_Correctly()
   {
     // ARRANGE
-    var integerProvider = new IncrementalIndexProvider<int>(0);
-    var ulongProvider = new IncrementalIndexProvider<ulong>(0);
-    var byteProvider = new IncrementalIndexProvider<byte>(0);
+    var integerProvider = new IncrementalIndexProvider<object, int>(0);
+    var ulongProvider = new IncrementalIndexProvider<object, ulong>(0);
+    var byteProvider = new IncrementalIndexProvider<object, byte>(0);
 
     // ASSERT
     for (var expectedIndex = 0; expectedIndex < 5; expectedIndex++)
@@ -43,9 +43,9 @@ internal class IndexProviderTests
     const int intIndex = int.MinValue;
     const int ulongIndex = 0xC0FFEE;
     const byte byteIndex = byte.MinValue;
-    var integerProvider = new IncrementalIndexProvider<int>(intIndex);
-    var ulongProvider = new IncrementalIndexProvider<ulong>(ulongIndex);
-    var byteProvider = new IncrementalIndexProvider<byte>(byteIndex);
+    var integerProvider = new IncrementalIndexProvider<object, int>(intIndex);
+    var ulongProvider = new IncrementalIndexProvider<object, ulong>(ulongIndex);
+    var byteProvider = new IncrementalIndexProvider<object, byte>(byteIndex);
 
     // ASSERT
     Assert.That(integerProvider.GetIndex(new { }), Is.EqualTo(intIndex));
