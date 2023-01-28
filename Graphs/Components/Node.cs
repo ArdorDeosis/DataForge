@@ -21,5 +21,5 @@ public sealed class Node<TNodeData, TEdgeData> :
     }
   }
 
-  public bool RemoveFromGraph() => IsValid && Graph.RemoveNode(this);
+  public override bool RemoveFromGraph() => IsValid && Graph.RemoveNode(this);
 }
