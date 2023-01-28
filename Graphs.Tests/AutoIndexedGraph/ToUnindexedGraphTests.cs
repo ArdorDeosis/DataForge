@@ -33,7 +33,7 @@ internal class ToUnindexedGraphTests
     var graph = new AutoIndexedGraph<int, int, int>(new IncrementalIndexProvider<int, int>(0));
     var data = new[] { 0xC0FFEE, 0xBEEF, 0xF00D };
     var index = graph.AddNode(default).Index;
-    foreach (var datum in data) 
+    foreach (var datum in data)
       graph.AddEdge(index, index, datum);
 
     // ACT

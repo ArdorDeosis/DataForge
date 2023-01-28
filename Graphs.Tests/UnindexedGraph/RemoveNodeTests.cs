@@ -108,4 +108,39 @@ internal class RemoveNodeTests
     Assert.That(graph.Nodes, Does.Contain(node1));
     Assert.That(graph.Nodes, Does.Not.Contain(node2));
   }
+
+  [Test]
+  public void RemoveNodesWhere_RemovedNodesAreInvalidated()
+  {
+    // ARRANGE
+    var graph = new Graph<int, int>();
+    var node = graph.AddNode(1);
+
+    // ACT
+    graph.RemoveNodesWhere(data => data > 0);
+
+    // ASSERT
+    Assert.That(node.IsValid, Is.False);
+  }
+  
+  [Test]
+  public void RemoveNodesWhere_AdjacentEdgesAreRemovedAndInvalidated()
+  {
+    // ARRANGE
+    var graph = new Graph<int, int>();
+    var node1 = graph.AddNode(-1);
+    var node2 = graph.AddNode(1);
+    var edge1 = graph.AddEdge(node1, node2, default);
+    var edge2 = graph.AddEdge(node2, node1, default);
+
+    // ACT
+    graph.RemoveNodesWhere(data => data > 0);
+
+    // ASSERT
+    Assert.That(graph.Edges, Does.Not.Contain(edge1));
+    Assert.That(graph.Edges, Does.Not.Contain(edge2));
+    Assert.That(edge1.IsValid, Is.False);
+    Assert.That(edge2.IsValid, Is.False);
+  }
+  
 }

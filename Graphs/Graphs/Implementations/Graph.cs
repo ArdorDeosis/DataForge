@@ -108,9 +108,19 @@ public sealed class Graph<TNodeData, TEdgeData> : IUnindexedGraph<TNodeData, TEd
     return true;
   }
 
-  public int RemoveNodesWhere(Predicate<TNodeData> predicate) => nodes.RemoveWhere(node => predicate(node.Data));
+  public int RemoveNodesWhere(Predicate<TNodeData> predicate) =>
+    nodes
+      .Where(node => predicate(node.Data))
+      .ToArray()
+      .Select(RemoveNode)
+      .Count();
 
-  public int RemoveEdgesWhere(Predicate<TEdgeData> predicate) => edges.RemoveWhere(edge => predicate(edge.Data));
+  public int RemoveEdgesWhere(Predicate<TEdgeData> predicate) =>
+    edges
+      .Where(edge => predicate(edge.Data))
+      .ToArray()
+      .Select(RemoveEdge)
+      .Count();
 
   public void Clear()
   {

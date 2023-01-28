@@ -76,4 +76,18 @@ internal class RemoveEdgeTests
     Assert.That(graph.Edges, Does.Contain(edge1));
     Assert.That(graph.Edges, Does.Not.Contain(edge2));
   }
+  
+  [Test]
+  public void RemoveEdgesWhere_RemovedEdgesAreInvalidated()
+  {
+    // ARRANGE
+    var graph = new Graph<int, int>();
+    var edge = graph.AddEdge(graph.AddNode(0), graph.AddNode(0), 1);
+
+    // ACT
+    graph.RemoveEdgesWhere(data => data > 0);
+
+    // ASSERT
+    Assert.That(edge.IsValid, Is.False);
+  }
 }
