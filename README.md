@@ -5,9 +5,9 @@ A toolset for working with data in a procedural generation context.
 
 ## What is this?
 
-I've worked with a lot of procedural generation in the past years. I've implemented what feels like a dozen graph structures, noise functions, height map operations and formal grammars. Instead of always re-implementing the stuff, I decided to write a library containig some generic data structures for procedural content generation.
+I've worked with a lot of procedural generation in the past decade. I've implemented what feels like a dozen graph structures, noise functions, height map operations and formal grammars. Instead of always re-implementing the stuff, I decided to write a library containig some generic data structures for procedural content generation.
 
-I've started with Graph module for now, but I plan on writing other modules, too. This is a list of things I may or may not implement in the future:
+I've started with a graph module for now, but I plan on writing other modules, too. This is a list of things I may or may not implement in the future:
 * Grammars (text-only and generic)
 * Height Maps
 * Custom Random Number Generation (based on [this GDC talk](https://www.youtube.com/watch?v=LWFzPP8ZbdU))
