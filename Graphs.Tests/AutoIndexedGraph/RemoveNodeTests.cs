@@ -321,4 +321,10 @@ internal class RemoveNodeTests
     Assert.That(edge1.IsValid, Is.False);
     Assert.That(edge2.IsValid, Is.False);
   }
+
+  [Test]
+  public void RemoveNodesWhere_ReturnedNumber_IsCorrect()
+  {
+    // TODO
+  }
 }

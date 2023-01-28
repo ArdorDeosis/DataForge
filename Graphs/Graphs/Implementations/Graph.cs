@@ -112,14 +112,14 @@ public sealed class Graph<TNodeData, TEdgeData> : IUnindexedGraph<TNodeData, TEd
     nodes
       .Where(node => predicate(node.Data))
       .ToArray()
-      .Select(RemoveNode)
+      .Where(RemoveNode)
       .Count();
 
   public int RemoveEdgesWhere(Predicate<TEdgeData> predicate) =>
     edges
       .Where(edge => predicate(edge.Data))
       .ToArray()
-      .Select(RemoveEdge)
+      .Where(RemoveEdge)
       .Count();
 
   public void Clear()

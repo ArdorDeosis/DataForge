@@ -179,14 +179,14 @@ public sealed class IndexedGraph<TIndex, TNodeData, TEdgeData> :
       .Where(node => predicate(node.Data))
       .Select(node => node.Index)
       .ToArray()
-      .Select(RemoveNode)
+      .Where(RemoveNode)
       .Count();
 
   public int RemoveEdgesWhere(Predicate<TEdgeData> predicate) =>
     edges
       .Where(edge => predicate(edge.Data))
       .ToArray()
-      .Select(RemoveEdge)
+      .Where(RemoveEdge)
       .Count();
 
   public void Clear()

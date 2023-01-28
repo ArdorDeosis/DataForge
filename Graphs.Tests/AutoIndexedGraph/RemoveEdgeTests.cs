@@ -153,4 +153,11 @@ internal class RemoveEdgeTests
     // ASSERT
     Assert.That(edge.IsValid, Is.False);
   }
+  
+
+  [Test]
+  public void RemoveEdgesWhere_ReturnedNumber_IsCorrect()
+  {
+    // TODO
+  }
 }
