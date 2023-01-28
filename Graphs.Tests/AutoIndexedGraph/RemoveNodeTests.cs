@@ -299,4 +299,26 @@ internal class RemoveNodeTests
     // ASSERT
     Assert.That(node.IsValid, Is.False);
   }
+  
+  [Test]
+  public void RemoveNodesWhere_AdjacentEdgesAreRemovedAndInvalidated()
+  {
+    // ARRANGE
+    var graph = new AutoIndexedGraph<int, int, int>(n => n);
+    const int index1 = -1;
+    const int index2 = 1;
+    graph.AddNode(index1);
+    graph.AddNode(index2);
+    var edge1 = graph.AddEdge(index2, index1, default);
+    var edge2 = graph.AddEdge(index1, index2, default);
+
+    // ACT
+    graph.RemoveNodesWhere(data => data > 0);
+
+    // ASSERT
+    Assert.That(graph.Edges, Does.Not.Contain(edge1));
+    Assert.That(graph.Edges, Does.Not.Contain(edge2));
+    Assert.That(edge1.IsValid, Is.False);
+    Assert.That(edge2.IsValid, Is.False);
+  }
 }

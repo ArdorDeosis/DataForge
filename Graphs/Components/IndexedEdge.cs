@@ -36,4 +36,6 @@ public sealed class IndexedEdge<TIndex, TNodeData, TEdgeData> :
 
   INode<TNodeData, TEdgeData> IEdge<TNodeData, TEdgeData>.Origin => Origin;
   INode<TNodeData, TEdgeData> IEdge<TNodeData, TEdgeData>.Destination => Destination;
+
+  public bool RemoveFromGraph() => IsValid && Graph.RemoveEdge(this);
 }
