@@ -118,46 +118,47 @@ internal class NodeTests
     // ASSERT
     Assert.That(node.TryGetIndex(out _), Is.False);
   }
-  
-  
+
+
   [Test]
   public void RemoveFromGraph_NodeInGraph_ReturnsTrue()
   {
     // ARRANGE
     var graph = new Graph<int, int>();
     var node = graph.AddNode(default);
-    
+
     // ASSERT
     Assert.That(node.RemoveFromGraph(), Is.True);
   }
-  
+
   [Test]
   public void RemoveFromGraph_NodeInGraph_NodeIsRemoved()
   {
     // ARRANGE
     var graph = new Graph<int, int>();
     var node = graph.AddNode(default);
-    
+
     // ACT
     node.RemoveFromGraph();
-    
+
     // ASSERT
     Assert.That(graph.Nodes, Does.Not.Contain(node));
   }
-  
+
   [Test]
   public void RemoveFromGraph_NodeInGraph_NodeIsInvalid()
   {
     // ARRANGE
     var graph = new Graph<int, int>();
     var node = graph.AddNode(default);
-    
+
     // ACT
     node.RemoveFromGraph();
-    
+
     // ASSERT
     Assert.That(node.IsValid, Is.False);
   }
+
   [Test]
   public void RemoveFromGraph_IndexedNodeInGraph_ReturnsTrue()
   {
@@ -165,11 +166,11 @@ internal class NodeTests
     var graph = new IndexedGraph<int, int, int>();
     const int index = 0xC0FFEE;
     var node = graph.AddNode(index, default);
-    
+
     // ASSERT
     Assert.That(node.RemoveFromGraph(), Is.True);
   }
-  
+
   [Test]
   public void RemoveFromGraph_IndexedNodeInGraph_NodeIsRemoved()
   {
@@ -177,15 +178,15 @@ internal class NodeTests
     var graph = new IndexedGraph<int, int, int>();
     const int index = 0xC0FFEE;
     var node = graph.AddNode(index, default);
-    
+
     // ACT
     node.RemoveFromGraph();
-    
+
     // ASSERT
     Assert.That(graph.Nodes, Does.Not.Contain(node));
     Assert.That(graph.Indices, Does.Not.Contain(index));
   }
-  
+
   [Test]
   public void RemoveFromGraph_IndexedNodeInGraph_NodeIsInvalid()
   {
@@ -193,10 +194,10 @@ internal class NodeTests
     var graph = new IndexedGraph<int, int, int>();
     const int index = 0xC0FFEE;
     var node = graph.AddNode(index, default);
-    
+
     // ACT
     node.RemoveFromGraph();
-    
+
     // ASSERT
     Assert.That(node.IsValid, Is.False);
   }
@@ -208,11 +209,11 @@ internal class NodeTests
     var graph = new Graph<int, int>();
     var node = graph.AddNode(default);
     graph.RemoveNode(node);
-    
+
     // ASSERT
     Assert.That(node.RemoveFromGraph(), Is.False);
   }
-  
+
   [Test]
   public void RemoveFromGraph_IndexedNodeNotInGraph_ReturnsFalse()
   {
@@ -221,7 +222,7 @@ internal class NodeTests
     const int index = 0xC0FFEE;
     var node = graph.AddNode(index, default);
     graph.RemoveNode(index);
-    
+
     // ASSERT
     Assert.That(node.RemoveFromGraph(), Is.False);
   }

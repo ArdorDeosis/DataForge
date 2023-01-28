@@ -29,12 +29,13 @@ internal class AddNodeTests
     {
       new AutoIndexedGraph<int, int, int>(new IncrementalIndexProvider<int, int>(index)),
       new AutoIndexedGraph<int, int, int>(_ => index),
-      new AutoIndexedGraph<int, int, int>(new IncrementalIndexProvider<int, int>(index), () => EqualityComparer<int>.Default),
+      new AutoIndexedGraph<int, int, int>(new IncrementalIndexProvider<int, int>(index),
+        () => EqualityComparer<int>.Default),
       new AutoIndexedGraph<int, int, int>(_ => index, () => EqualityComparer<int>.Default)
     };
 
     // ACT
-      var nodes = graphs.Select(graph => graph.AddNode(0));
+    var nodes = graphs.Select(graph => graph.AddNode(0));
 
     // ASSERT
     foreach (var node in nodes)

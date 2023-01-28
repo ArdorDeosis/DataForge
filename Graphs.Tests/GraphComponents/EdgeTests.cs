@@ -80,11 +80,11 @@ internal class EdgeTests
     var graph = new Graph<int, int>();
     var node = graph.AddNode(default);
     var edge = graph.AddEdge(node, node, default);
-    
+
     // ASSERT
     Assert.That(edge.RemoveFromGraph(), Is.True);
   }
-  
+
   [Test]
   public void RemoveFromGraph_EdgeInGraph_EdgeIsRemoved()
   {
@@ -92,14 +92,14 @@ internal class EdgeTests
     var graph = new Graph<int, int>();
     var node = graph.AddNode(default);
     var edge = graph.AddEdge(node, node, default);
-    
+
     // ACT
     edge.RemoveFromGraph();
-    
+
     // ASSERT
     Assert.That(graph.Edges, Does.Not.Contain(edge));
   }
-  
+
   [Test]
   public void RemoveFromGraph_EdgeInGraph_EdgeIsInvalid()
   {
@@ -107,13 +107,14 @@ internal class EdgeTests
     var graph = new Graph<int, int>();
     var node = graph.AddNode(default);
     var edge = graph.AddEdge(node, node, default);
-    
+
     // ACT
     edge.RemoveFromGraph();
-    
+
     // ASSERT
     Assert.That(edge.IsValid, Is.False);
   }
+
   [Test]
   public void RemoveFromGraph_IndexedEdgeInGraph_ReturnsTrue()
   {
@@ -122,11 +123,11 @@ internal class EdgeTests
     const int index = 0xC0FFEE;
     graph.AddNode(index, default);
     var edge = graph.AddEdge(index, index, default);
-    
+
     // ASSERT
     Assert.That(edge.RemoveFromGraph(), Is.True);
   }
-  
+
   [Test]
   public void RemoveFromGraph_IndexedEdgeInGraph_EdgeIsRemoved()
   {
@@ -135,14 +136,14 @@ internal class EdgeTests
     const int index = 0xC0FFEE;
     graph.AddNode(index, default);
     var edge = graph.AddEdge(index, index, default);
-    
+
     // ACT
     edge.RemoveFromGraph();
-    
+
     // ASSERT
     Assert.That(graph.Edges, Does.Not.Contain(edge));
   }
-  
+
   [Test]
   public void RemoveFromGraph_IndexedEdgeInGraph_EdgeIsInvalid()
   {
@@ -151,10 +152,10 @@ internal class EdgeTests
     const int index = 0xC0FFEE;
     graph.AddNode(index, default);
     var edge = graph.AddEdge(index, index, default);
-    
+
     // ACT
     edge.RemoveFromGraph();
-    
+
     // ASSERT
     Assert.That(edge.IsValid, Is.False);
   }
@@ -167,11 +168,11 @@ internal class EdgeTests
     var node = graph.AddNode(default);
     var edge = graph.AddEdge(node, node, default);
     graph.RemoveEdge(edge);
-    
+
     // ASSERT
     Assert.That(edge.RemoveFromGraph(), Is.False);
   }
-  
+
   [Test]
   public void RemoveFromGraph_IndexedEdgeNotInGraph_ReturnsFalse()
   {
@@ -181,7 +182,7 @@ internal class EdgeTests
     graph.AddNode(index, default);
     var edge = graph.AddEdge(index, index, default);
     graph.RemoveEdge(edge);
-    
+
     // ASSERT
     Assert.That(edge.RemoveFromGraph(), Is.False);
   }
