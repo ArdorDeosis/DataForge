@@ -2,7 +2,7 @@
 using Ardalis.GuardClauses;
 using JetBrains.Annotations;
 
-namespace GraphCreation;
+namespace DataForge.GraphCreation;
 
 /// <summary>
 /// Information about one dimension in a grid graph.

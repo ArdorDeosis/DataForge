@@ -1,6 +1,6 @@
 ﻿using Ardalis.GuardClauses;
 
-namespace GridUtilities;
+namespace DataForge.GridUtilities;
 
 /// <summary>
 /// Helper functions to produce or iterate grid information. 

@@ -2,7 +2,7 @@
 using Ardalis.GuardClauses;
 using JetBrains.Annotations;
 
-namespace GraphCreation;
+namespace DataForge.GraphCreation;
 
 /// <summary>
 /// An index for a node in a tree graph.

@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 
-namespace GraphCreation;
+namespace DataForge.GraphCreation;
 
 /// <summary>
 /// A collection of graph creation methods.

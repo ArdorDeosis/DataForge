@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
 
-namespace GraphCreation.Tests;
+namespace DataForge.GraphCreation.Tests.Disk;
 
 internal class DiskIndexTests
 {

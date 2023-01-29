@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
 
-namespace GridUtilities.Tests;
+namespace DataForge.GridUtilities.Tests;
 
 internal class CoordinateHelpersTests
 {

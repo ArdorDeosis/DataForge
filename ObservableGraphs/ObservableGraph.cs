@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using DataForge.Graphs;
 
-namespace ObservableGraphs;
+namespace DataForge.ObservableGraphs;
 
 public sealed class ObservableGraph<TNodeData, TEdgeData> : IObservableUnindexedGraph<TNodeData, TEdgeData>
 {
@@ -9,9 +9,9 @@ public sealed class ObservableGraph<TNodeData, TEdgeData> : IObservableUnindexed
 
   IReadOnlyCollection<INode<TNodeData, TEdgeData>> IReadOnlyGraph<TNodeData, TEdgeData>.Nodes => graph.Nodes;
 
-  IReadOnlyCollection<Edge<TNodeData, TEdgeData>> IReadOnlyUnindexedGraph<TNodeData, TEdgeData>.Edges => graph.Edges;
+  public IReadOnlyCollection<Edge<TNodeData, TEdgeData>> Edges => graph.Edges;
 
-  IReadOnlyCollection<Node<TNodeData, TEdgeData>> IReadOnlyUnindexedGraph<TNodeData, TEdgeData>.Nodes => graph.Nodes;
+  public IReadOnlyCollection<Node<TNodeData, TEdgeData>> Nodes => graph.Nodes;
 
   IReadOnlyCollection<IEdge<TNodeData, TEdgeData>> IReadOnlyGraph<TNodeData, TEdgeData>.Edges => graph.Edges;
 

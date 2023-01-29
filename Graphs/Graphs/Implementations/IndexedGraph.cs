@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Utilities;
+using DataForge.Utilities;
 
 namespace DataForge.Graphs;
 

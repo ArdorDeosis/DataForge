@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace GraphCreation.Tests;
+namespace DataForge.GraphCreation.Tests.Disk;
 
 internal class DiskGraphCreationOptionTests
 {

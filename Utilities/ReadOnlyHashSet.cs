@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Runtime.Serialization;
 
-namespace Utilities;
+namespace DataForge.Utilities;
 
 public sealed class ReadOnlyHashSet<T> : IReadOnlySet<T>, ISerializable, IDeserializationCallback
 {

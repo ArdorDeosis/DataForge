@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace GridUtilities.Tests;
+namespace DataForge.GridUtilities.Tests;
 
 internal static partial class TestData
 {

@@ -94,6 +94,15 @@ internal class RemoveEdgeTests
   [Test]
   public void RemoveEdgesWhere_ReturnedNumber_IsCorrect()
   {
-    // TODO
+    // ARRANGE
+    var graph = new Graph<int, int>();
+    graph.AddEdge(graph.AddNode(0), graph.AddNode(0), -1);
+    graph.AddEdge(graph.AddNode(0), graph.AddNode(0), 1);
+
+    // ACT
+    var removedEdges = graph.RemoveEdgesWhere(data => data > 0);
+
+    // ASSERT
+    Assert.That(removedEdges, Is.EqualTo(1));
   }
 }

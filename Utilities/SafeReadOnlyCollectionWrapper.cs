@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace Utilities;
+namespace DataForge.Utilities;
 
 internal sealed class SafeReadOnlyCollectionWrapper<T> : IReadOnlyCollection<T>
 {

@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using DataForge.Graphs;
 
-namespace ObservableGraphs;
+namespace DataForge.ObservableGraphs;
 
 public sealed class ObservableIndexedGraph<TIndex, TNodeData, TEdgeData> : 
   IObservableIndexedGraph<TIndex, TNodeData, TEdgeData>,
@@ -20,7 +20,7 @@ public sealed class ObservableIndexedGraph<TIndex, TNodeData, TEdgeData> :
 
   IReadOnlyCollection<INode<TNodeData, TEdgeData>> IReadOnlyGraph<TNodeData, TEdgeData>.Nodes => graph.Nodes;
 
-  IReadOnlyCollection<IndexedEdge<TIndex, TNodeData, TEdgeData>> IReadOnlyIndexedGraph<TIndex, TNodeData, TEdgeData>.Edges => graph.Edges;
+  public IReadOnlyCollection<IndexedEdge<TIndex, TNodeData, TEdgeData>> Edges => graph.Edges;
 
   public IReadOnlyCollection<TIndex> Indices => graph.Indices;
 
@@ -35,7 +35,7 @@ public sealed class ObservableIndexedGraph<TIndex, TNodeData, TEdgeData> :
 
   public bool Contains(TIndex index) => graph.Contains(index);
 
-  IReadOnlyCollection<IndexedNode<TIndex, TNodeData, TEdgeData>> IReadOnlyIndexedGraph<TIndex, TNodeData, TEdgeData>.Nodes => graph.Nodes;
+  public IReadOnlyCollection<IndexedNode<TIndex, TNodeData, TEdgeData>> Nodes => graph.Nodes;
 
   IReadOnlyCollection<IEdge<TNodeData, TEdgeData>> IReadOnlyGraph<TNodeData, TEdgeData>.Edges => graph.Edges;
 

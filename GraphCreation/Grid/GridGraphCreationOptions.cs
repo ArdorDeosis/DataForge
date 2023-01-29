@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 
-namespace GraphCreation;
+namespace DataForge.GraphCreation;
 
 /// <summary>
 /// Options for the creation of a graph with a grid structure.

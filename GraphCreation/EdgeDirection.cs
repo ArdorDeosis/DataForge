@@ -1,4 +1,4 @@
-﻿namespace GraphCreation;
+﻿namespace DataForge.GraphCreation;
 
 [Flags]
 public enum EdgeDirection

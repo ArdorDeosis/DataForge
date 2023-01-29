@@ -2,7 +2,7 @@ using System.Linq;
 using DataForge.Graphs;
 using NUnit.Framework;
 
-namespace GraphCreation.Tests;
+namespace DataForge.GraphCreation.Tests.Disk;
 
 internal class DiskGraphCreationTests
 {

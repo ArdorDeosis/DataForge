@@ -161,6 +161,18 @@ internal class RemoveEdgeTests
   [Test]
   public void RemoveEdgesWhere_ReturnedNumber_IsCorrect()
   {
-    // TODO
+    // ARRANGE
+    var graph = new IndexedGraph<int, int, int>();
+    const int index = 0xC0FFEE;
+    graph.AddNode(index, index);
+    graph.AddNode(index, index);
+    graph.AddEdge(index, index, -1);
+    graph.AddEdge(index, index, 1);
+
+    // ACT
+    var removedEdges = graph.RemoveEdgesWhere(data => data > 0);
+
+    // ASSERT
+    Assert.That(removedEdges, Is.EqualTo(1));
   }
 }

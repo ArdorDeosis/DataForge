@@ -1,7 +1,7 @@
 ﻿using Ardalis.GuardClauses;
 using JetBrains.Annotations;
 
-namespace GraphCreation;
+namespace DataForge.GraphCreation;
 
 /// <summary>
 /// Creation options for a tree graph.

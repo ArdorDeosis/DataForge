@@ -325,6 +325,17 @@ internal class RemoveNodeTests
   [Test]
   public void RemoveNodesWhere_ReturnedNumber_IsCorrect()
   {
-    // TODO
+    // ARRANGE
+    var graph = new AutoIndexedGraph<int, int, int>(n => n);
+    const int index1 = -1;
+    const int index2 = 1;
+    graph.AddNode(index1);
+    graph.AddNode(index2);
+    
+    // ACT
+    var removedNodeCount = graph.RemoveNodesWhere(n => n > 0);
+    
+    // ASSERT
+    Assert.That(removedNodeCount, Is.EqualTo(1));
   }
 }

@@ -1,4 +1,4 @@
-namespace Utilities;
+namespace DataForge.Utilities;
 
 /// <summary>
 /// Represents a generic dictionary that maps keys to a collection of values.

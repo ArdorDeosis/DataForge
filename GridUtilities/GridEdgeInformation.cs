@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Ardalis.GuardClauses;
 
-namespace GridUtilities;
+namespace DataForge.GridUtilities;
 
 /// <summary>
 /// Information about an edge in a cartesian grid. The lower and upper coordinates are equal in all dimensions except

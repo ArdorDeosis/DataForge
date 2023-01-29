@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using Ardalis.GuardClauses;
 
-namespace GridUtilities;
+namespace DataForge.GridUtilities;
 
 /// <summary>
 /// Custom guard clauses for <see cref="GridUtilities"/>.

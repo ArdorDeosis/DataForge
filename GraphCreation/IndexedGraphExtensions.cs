@@ -1,6 +1,6 @@
 ﻿using DataForge.Graphs;
 
-namespace GraphCreation;
+namespace DataForge.GraphCreation;
 
 internal static class GraphConvenienceExtensions
 {

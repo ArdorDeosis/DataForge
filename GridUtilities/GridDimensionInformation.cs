@@ -1,6 +1,6 @@
 ﻿using Ardalis.GuardClauses;
 
-namespace GridUtilities;
+namespace DataForge.GridUtilities;
 
 /// <summary>
 /// Information about one dimension in a grid containing the grid size in that dimension an its coordinate offset.

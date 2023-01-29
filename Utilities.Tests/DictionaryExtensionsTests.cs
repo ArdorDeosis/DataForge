@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using NUnit.Framework;
 
-namespace Utilities.Tests;
+namespace DataForge.Utilities.Tests;
 
 internal class DictionaryExtensionsTests
 {

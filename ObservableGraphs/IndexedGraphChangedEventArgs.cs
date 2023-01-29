@@ -1,7 +1,7 @@
 ﻿using DataForge.Graphs;
 using JetBrains.Annotations;
 
-namespace ObservableGraphs;
+namespace DataForge.ObservableGraphs;
 
 [PublicAPI]
 public sealed class IndexedGraphChangedEventArgs<TIndex, TNodeData, TEdgeData> : EventArgs where TIndex : notnull

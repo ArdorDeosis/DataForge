@@ -1,7 +1,7 @@
 ﻿using DataForge.Graphs;
-using GridUtilities;
+using DataForge.GridUtilities;
 
-namespace GraphCreation;
+namespace DataForge.GraphCreation;
 
 public static partial class GraphCreator
 {
