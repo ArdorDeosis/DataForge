@@ -66,7 +66,7 @@ public sealed class ObservableIndexedGraph<TIndex, TNodeData, TEdgeData> :
     var removedNodes = graph.Nodes
       .Where(node => predicate(node.Data))
       .ToArray()
-      .Where(node => graph.RemoveNode(node))
+      .Where(node => graph.RemoveNode(node.Index))
       .ToArray();
     InvokeGraphChanged(IndexedGraphChangedEventArgs<TIndex, TNodeData, TEdgeData>.NodesRemoved(removedNodes));
     return removedNodes.Length;
