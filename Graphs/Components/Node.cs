@@ -20,6 +20,4 @@ public sealed class Node<TNodeData, TEdgeData> :
       data = value;
     }
   }
-
-  public override bool RemoveFromGraph() => IsValid && Graph.RemoveNode(this);
 }

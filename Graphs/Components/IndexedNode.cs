@@ -36,6 +36,4 @@ public sealed class IndexedNode<TIndex, TNodeData, TEdgeData> :
     index = this.index;
     return IsValid;
   }
-
-  public override bool RemoveFromGraph() => IsValid && Graph.RemoveNode(Index);
 }
