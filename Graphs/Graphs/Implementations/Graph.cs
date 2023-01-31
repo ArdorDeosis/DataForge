@@ -57,6 +57,9 @@ public sealed class Graph<TNodeData, TEdgeData> : IUnindexedGraph<TNodeData, TEd
   public IEnumerable<Node<TNodeData, TEdgeData>> AddNodes(IEnumerable<TNodeData> data) =>
     data.Select(AddNode).ToArray();
 
+  public IEnumerable<Node<TNodeData, TEdgeData>> AddNodes(params TNodeData[] data) =>
+    AddNodes(data.AsEnumerable());
+
   public Edge<TNodeData, TEdgeData> AddEdge(Node<TNodeData, TEdgeData> origin, Node<TNodeData, TEdgeData> destination,
     TEdgeData data)
   {

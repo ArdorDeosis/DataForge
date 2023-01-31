@@ -1,7 +1,48 @@
 ﻿using System.Linq;
+using DataForge.ObservableGraphs;
 using NUnit.Framework;
 
 namespace DataForge.Graphs.Tests.UnindexedGraph;
+
+
+[TestFixture(typeof(Graph<int,int>))]
+[TestFixture(typeof(ObservableGraph<int,int>))]
+internal class TestTests<TGraph> where TGraph : IUnindexedGraph<int, int>, new()
+{
+  [Test]
+  public void AddNode_Node_HasExpectedData()
+  {
+    // ARRANGE
+    const int data = 0xC0FFEE;
+    var graph = new TGraph();
+
+    // ACT
+    var node = graph.AddNode(data);
+
+    // ASSERT
+    Assert.That(node.Data, Is.EqualTo(data));
+  }
+}
+
+
+[TestFixture(typeof(Graph<int,int>))]
+[TestFixture(typeof(ObservableGraph<int,int>))]
+internal abstract class BaseTests<TGraph> where TGraph : IUnindexedGraph<int, int>, new()
+{
+  [Test]
+  public void AddNode_Node_HasExpectedData()
+  {
+    // ARRANGE
+    const int data = 0xC0FFEE;
+    var graph = new TGraph();
+
+    // ACT
+    var node = graph.AddNode(data);
+
+    // ASSERT
+    Assert.That(node.Data, Is.EqualTo(data));
+  }
+}
 
 internal class AddNodeTests
 {

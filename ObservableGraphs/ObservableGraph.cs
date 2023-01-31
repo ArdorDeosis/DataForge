@@ -85,6 +85,8 @@ public sealed class ObservableGraph<TNodeData, TEdgeData> : IObservableUnindexed
     return nodes;
   }
 
+  public IEnumerable<Node<TNodeData, TEdgeData>> AddNodes(params TNodeData[] data) => AddNodes(data.AsEnumerable());
+
   public Edge<TNodeData, TEdgeData> AddEdge(Node<TNodeData, TEdgeData> origin, Node<TNodeData, TEdgeData> destination,
     TEdgeData data)
   {
