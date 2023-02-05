@@ -1,5 +1,4 @@
-﻿using DataForge.Graphs;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace DataForge.ObservableGraphs.Tests.UnindexedGraph;
 
@@ -122,7 +121,7 @@ internal class RemoveNodeTests
     // ASSERT
     Assert.That(node.IsValid, Is.False);
   }
-  
+
   [Test]
   public void RemoveNodesWhere_AdjacentEdgesAreRemovedAndInvalidated()
   {

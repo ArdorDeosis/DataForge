@@ -1,5 +1,4 @@
-﻿using DataForge.Graphs;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace DataForge.ObservableGraphs.Tests.UnindexedGraph;
 

@@ -23,7 +23,7 @@ public interface IUnindexedGraph<TNodeData, TEdgeData> : IReadOnlyUnindexedGraph
   /// <param name="data">The data to store in the new nodes.</param>
   /// <returns>An enumerable containing the newly added nodes.</returns>
   IEnumerable<Node<TNodeData, TEdgeData>> AddNodes(IEnumerable<TNodeData> data);
-  
+
   /// <inheritdoc cref="AddNodes(System.Collections.Generic.IEnumerable{TNodeData})"/>
   IEnumerable<Node<TNodeData, TEdgeData>> AddNodes(params TNodeData[] data);
 
@@ -33,6 +33,7 @@ public interface IUnindexedGraph<TNodeData, TEdgeData> : IReadOnlyUnindexedGraph
   /// <param name="origin">The origin node of the new edge.</param>
   /// <param name="destination">The destination node of the new edge.</param>
   /// <param name="data">The data to store in the new edge.</param>
+  /// <exception cref="ArgumentException">If the origin or destination node are not in the graph.</exception>
   /// <returns>The newly added edge.</returns>
   Edge<TNodeData, TEdgeData> AddEdge(Node<TNodeData, TEdgeData> origin, Node<TNodeData, TEdgeData> destination,
     TEdgeData data);

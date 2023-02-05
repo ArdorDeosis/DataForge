@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.Design;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace DataForge.Graphs.Tests.Interfaces;
 
@@ -9,22 +8,22 @@ public abstract class IReadOnlyGraphTests<TGraph> where TGraph : IReadOnlyGraph<
 {
   /// <summary> An empty graph. </summary>
   protected abstract TGraph GetEmptyGraph { get; }
-  
+
   /// <summary> A graph and the nodes expected to be in the graph. </summary>
   protected abstract (TGraph graph, INode<int, int>[] expectedNodes) GraphWithNodes { get; }
-  
+
   /// <summary> A graph and the edges expected to be in the graph. </summary>
   protected abstract (TGraph graph, IEdge<int, int>[] expectedEdges) GraphWithEdges { get; }
-  
+
   /// <summary> An empty graph and a node that has been in the graph but was removed. </summary>
   protected abstract (TGraph graph, INode<int, int> removedNode) EmptyGraphWithRemovedNode { get; }
-  
+
   /// <summary> A graph without edges and an edge that was in the graph but has been removed. </summary>
   protected abstract (TGraph graph, IEdge<int, int> removedEdge) EmptyGraphWithRemovedEdge { get; }
-  
+
   /// <summary> A single node inside a graph not obtainable by other setup methods. </summary>
   protected abstract INode<int, int> NodeFromOtherGraph { get; }
-  
+
   /// <summary> A single edge inside a graph not obtainable by other setup methods. </summary>
   protected abstract IEdge<int, int> EdgeFromOtherGraph { get; }
 
@@ -79,7 +78,7 @@ public abstract class IReadOnlyGraphTests<TGraph> where TGraph : IReadOnlyGraph<
     // ASSERT
     Assert.That(graph.Edges, Is.EquivalentTo(expectedEdges));
   }
-  
+
   [Test]
   public void Edges_DoesNotContainUnexpectedNodes()
   {
@@ -187,7 +186,7 @@ public abstract class IReadOnlyGraphTests<TGraph> where TGraph : IReadOnlyGraph<
     // ASSERT
     Assert.That(graph.Size, Is.EqualTo(expectedEdges.Length));
   }
-  
+
   [Test]
   public void Size_RemovedEdge_IsZero()
   {

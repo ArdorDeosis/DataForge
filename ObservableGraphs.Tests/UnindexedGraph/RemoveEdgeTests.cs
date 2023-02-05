@@ -1,5 +1,4 @@
-﻿using DataForge.Graphs;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace DataForge.ObservableGraphs.Tests.UnindexedGraph;
 
@@ -76,7 +75,7 @@ internal class RemoveEdgeTests
     Assert.That(graph.Edges, Does.Contain(edge1));
     Assert.That(graph.Edges, Does.Not.Contain(edge2));
   }
-  
+
   [Test]
   public void RemoveEdgesWhere_RemovedEdgesAreInvalidated()
   {
@@ -90,7 +89,7 @@ internal class RemoveEdgeTests
     // ASSERT
     Assert.That(edge.IsValid, Is.False);
   }
-  
+
   [Test]
   public void RemoveEdgesWhere_ReturnedNumber_IsCorrect()
   {
