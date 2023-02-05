@@ -6,6 +6,9 @@ namespace DataForge.ObservableGraphs;
 [PublicAPI]
 public sealed class IndexedGraphChangedEventArgs<TIndex, TNodeData, TEdgeData> : EventArgs where TIndex : notnull
 {
+  // TODO: remove builder methods and add default values to the properties instead
+  internal IndexedGraphChangedEventArgs(){}
+  
   internal IndexedGraphChangedEventArgs(
     IReadOnlyCollection<IndexedNode<TIndex, TNodeData, TEdgeData>> addedNodes,
     IReadOnlyCollection<IndexedNode<TIndex, TNodeData, TEdgeData>> removedNodes,
@@ -19,10 +22,10 @@ public sealed class IndexedGraphChangedEventArgs<TIndex, TNodeData, TEdgeData> :
     RemovedEdges = removedEdges;
   }
 
-  public IReadOnlyCollection<IndexedNode<TIndex, TNodeData, TEdgeData>> AddedNodes { get; }
-  public IReadOnlyCollection<IndexedNode<TIndex, TNodeData, TEdgeData>> RemovedNodes { get; }
-  public IReadOnlyCollection<IndexedEdge<TIndex, TNodeData, TEdgeData>> AddedEdges { get; }
-  public IReadOnlyCollection<IndexedEdge<TIndex, TNodeData, TEdgeData>> RemovedEdges { get; }
+  public IReadOnlyCollection<IndexedNode<TIndex, TNodeData, TEdgeData>> AddedNodes { get; init; }
+  public IReadOnlyCollection<IndexedNode<TIndex, TNodeData, TEdgeData>> RemovedNodes { get; init; }
+  public IReadOnlyCollection<IndexedEdge<TIndex, TNodeData, TEdgeData>> AddedEdges { get; init; }
+  public IReadOnlyCollection<IndexedEdge<TIndex, TNodeData, TEdgeData>> RemovedEdges { get; init; }
 
   internal static IndexedGraphChangedEventArgs<TIndex, TNodeData, TEdgeData> NodesAdded(
     params IndexedNode<TIndex, TNodeData, TEdgeData>[] nodes) =>

@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Graphs.Tests\Graphs.Tests.csproj"/>
+      <ProjectReference Include="..\Graphs.Tests\Graphs.Tests.csproj" />
       <ProjectReference Include="..\Graphs\Graphs.csproj" />
       <ProjectReference Include="..\ObservableGraphs\ObservableGraphs.csproj" />
     </ItemGroup>
@@ -18,9 +18,9 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1"/>
-        <PackageReference Include="NUnit" Version="3.13.3"/>
-        <PackageReference Include="NUnit3TestAdapter" Version="4.3.1"/>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1" />
+        <PackageReference Include="NUnit" Version="3.13.3" />
+        <PackageReference Include="NUnit3TestAdapter" Version="4.3.1" />
     </ItemGroup>
 
 </Project>
