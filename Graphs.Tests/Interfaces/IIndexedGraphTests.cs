@@ -94,6 +94,16 @@ public abstract class IIndexedGraphTests<TGraph> where TGraph : IIndexedGraph<in
   }
 
   [Test]
+  public void RemoveNodeByIndexWithOutParameter_ExistingNode_ReturnsTrue()
+  {
+    // ARRANGE
+    var (graph, node) = GraphWithNode;
+
+    // ASSERT
+    Assert.That(graph.RemoveNode(node.Index, out _), Is.True);
+  }
+
+  [Test]
   public void RemoveNodeByIndex_ExistingNode_OutputsNode()
   {
     // ARRANGE
@@ -122,6 +132,21 @@ public abstract class IIndexedGraphTests<TGraph> where TGraph : IIndexedGraph<in
   }
 
   [Test]
+  public void RemoveNodeByIndexWithOutParameter_ExistingNode_NodeIsRemoved()
+  {
+    // ARRANGE
+    var (graph, node) = GraphWithNode;
+    var index = node.Index;
+
+    // ACT
+    graph.RemoveNode(node.Index, out _);
+
+    // ASSERT
+    Assert.That(graph.Contains(index), Is.False);
+    Assert.That(graph.Indices, Does.Not.Contain(index));
+  }
+
+  [Test]
   public void RemoveNodeByIndex_ExistingNode_AdjacentEdgesAreRemoved()
   {
     // ARRANGE
@@ -136,6 +161,20 @@ public abstract class IIndexedGraphTests<TGraph> where TGraph : IIndexedGraph<in
   }
 
   [Test]
+  public void RemoveNodeByIndexWithOutParameter_ExistingNode_AdjacentEdgesAreRemoved()
+  {
+    // ARRANGE
+    var (graph, edge) = GraphWithEdge;
+
+    // ACT
+    graph.RemoveNode(edge.Origin.Index, out _);
+
+    // ASSERT
+    Assert.That(graph.Edges, Does.Not.Contain(edge));
+    Assert.That(edge, Is.Invalid);
+  }
+
+  [Test]
   public void RemoveNodeByIndex_UnexpectedNode_ReturnsFalse()
   {
     // ARRANGE
@@ -143,6 +182,7 @@ public abstract class IIndexedGraphTests<TGraph> where TGraph : IIndexedGraph<in
 
     // ASSERT
     Assert.That(graph.RemoveNode(UnrelatedIndex), Is.False);
+    Assert.That(graph.RemoveNode(UnrelatedIndex, out _), Is.False);
   }
 
 
