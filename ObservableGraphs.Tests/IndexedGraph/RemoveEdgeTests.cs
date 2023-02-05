@@ -1,5 +1,6 @@
 ﻿using DataForge.Graphs;
 using NUnit.Framework;
+using Is = DataForge.Graphs.Tests.Is;
 
 namespace DataForge.ObservableGraphs.Tests.IndexedGraph;
 
@@ -55,7 +56,7 @@ internal class RemoveEdgeTests
     graph.RemoveEdge(edge);
 
     // ASSERT
-    Assert.That(edge.IsValid, Is.False);
+    Assert.That(edge, Is.Invalid);
   }
 
   [Test]
@@ -68,7 +69,7 @@ internal class RemoveEdgeTests
     (graph as IGraph<int, int>).RemoveEdge(edge);
 
     // ASSERT
-    Assert.That(edge.IsValid, Is.False);
+    Assert.That(edge, Is.Invalid);
   }
 
   [Test]
@@ -155,7 +156,7 @@ internal class RemoveEdgeTests
     graph.RemoveEdgesWhere(data => data > 0);
 
     // ASSERT
-    Assert.That(edge.IsValid, Is.False);
+    Assert.That(edge, Is.Invalid);
   }
 
   [Test]

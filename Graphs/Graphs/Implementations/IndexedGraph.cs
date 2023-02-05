@@ -108,9 +108,9 @@ public sealed class IndexedGraph<TIndex, TNodeData, TEdgeData> :
     TEdgeData data)
   {
     if (!nodes.ContainsKey(origin))
-      throw new KeyNotFoundException("The origin node does not exist in the graph.");
+      throw new ArgumentException("The origin node does not exist in the graph.");
     if (!nodes.ContainsKey(destination))
-      throw new KeyNotFoundException("The destination node does not exist in the graph.");
+      throw new ArgumentException("The destination node does not exist in the graph.");
     var edge = new IndexedEdge<TIndex, TNodeData, TEdgeData>(this, origin, destination, data);
     edges.Add(edge);
     outgoingEdges.Add(origin, edge);

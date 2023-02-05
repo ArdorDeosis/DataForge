@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using Is = DataForge.Graphs.Tests.Is;
 
 namespace DataForge.ObservableGraphs.Tests.UnindexedGraph;
 
@@ -26,7 +27,7 @@ internal class RemoveNodeTests
     graph.RemoveNode(node);
 
     // ASSERT
-    Assert.That(node.IsValid, Is.False);
+    Assert.That(node, Is.Invalid);
   }
 
   [Test]
@@ -88,8 +89,8 @@ internal class RemoveNodeTests
     graph.RemoveNode(node);
 
     // ASSERT
-    Assert.That(edge1.IsValid, Is.False);
-    Assert.That(edge2.IsValid, Is.False);
+    Assert.That(edge1, Is.Invalid);
+    Assert.That(edge2, Is.Invalid);
   }
 
   [Test]
@@ -119,7 +120,7 @@ internal class RemoveNodeTests
     graph.RemoveNodesWhere(data => data > 0);
 
     // ASSERT
-    Assert.That(node.IsValid, Is.False);
+    Assert.That(node, Is.Invalid);
   }
 
   [Test]
@@ -138,8 +139,8 @@ internal class RemoveNodeTests
     // ASSERT
     Assert.That(graph.Edges, Does.Not.Contain(edge1));
     Assert.That(graph.Edges, Does.Not.Contain(edge2));
-    Assert.That(edge1.IsValid, Is.False);
-    Assert.That(edge2.IsValid, Is.False);
+    Assert.That(edge1, Is.Invalid);
+    Assert.That(edge2, Is.Invalid);
   }
 
   [Test]

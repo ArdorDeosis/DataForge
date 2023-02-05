@@ -88,7 +88,7 @@ internal class RemoveNodeTests
     graph.RemoveNode(node);
 
     // ASSERT
-    Assert.That(node.IsValid, Is.False);
+    Assert.That(node, Is.Invalid);
   }
 
   [Test]
@@ -101,7 +101,7 @@ internal class RemoveNodeTests
     (graph as IGraph<int, int>).RemoveNode(node);
 
     // ASSERT
-    Assert.That(node.IsValid, Is.False);
+    Assert.That(node, Is.Invalid);
   }
 
   [Test]
@@ -114,7 +114,7 @@ internal class RemoveNodeTests
     graph.RemoveNode(index);
 
     // ASSERT
-    Assert.That(node.IsValid, Is.False);
+    Assert.That(node, Is.Invalid);
   }
 
   [Test]
@@ -266,8 +266,8 @@ internal class RemoveNodeTests
     graph.RemoveNode(middleNode);
 
     // ASSERT
-    Assert.That(edge1.IsValid, Is.False);
-    Assert.That(edge2.IsValid, Is.False);
+    Assert.That(edge1, Is.Invalid);
+    Assert.That(edge2, Is.Invalid);
   }
 
   [Test]
@@ -297,7 +297,7 @@ internal class RemoveNodeTests
     graph.RemoveNodesWhere(data => data > 0);
 
     // ASSERT
-    Assert.That(node.IsValid, Is.False);
+    Assert.That(node, Is.Invalid);
   }
 
   [Test]
@@ -318,8 +318,8 @@ internal class RemoveNodeTests
     // ASSERT
     Assert.That(graph.Edges, Does.Not.Contain(edge1));
     Assert.That(graph.Edges, Does.Not.Contain(edge2));
-    Assert.That(edge1.IsValid, Is.False);
-    Assert.That(edge2.IsValid, Is.False);
+    Assert.That(edge1, Is.Invalid);
+    Assert.That(edge2, Is.Invalid);
   }
 
   [Test]
@@ -331,10 +331,10 @@ internal class RemoveNodeTests
     const int index2 = 1;
     graph.AddNode(index1);
     graph.AddNode(index2);
-    
+
     // ACT
     var removedNodeCount = graph.RemoveNodesWhere(n => n > 0);
-    
+
     // ASSERT
     Assert.That(removedNodeCount, Is.EqualTo(1));
   }

@@ -57,7 +57,7 @@ internal class RemoveNodeTests
     // ASSERT
     Assert.That(graph.RemoveNode(index), Is.True);
   }
-  
+
   [Test]
   public void RemoveNodeOutNode_IndexInGraph_ReturnsTrue()
   {
@@ -67,7 +67,7 @@ internal class RemoveNodeTests
     // ASSERT
     Assert.That(graph.RemoveNode(index, out _), Is.True);
   }
-  
+
   [Test]
   public void RemoveNodeOutNode_IndexInGraph_OutputsNode()
   {
@@ -76,7 +76,7 @@ internal class RemoveNodeTests
 
     // ACT
     graph.RemoveNode(index, out var retrievedNode);
-      
+
     // ASSERT
     Assert.That(retrievedNode, Is.EqualTo(node));
   }
@@ -91,7 +91,7 @@ internal class RemoveNodeTests
     graph.RemoveNode(node);
 
     // ASSERT
-    Assert.That(node.IsValid, Is.False);
+    Assert.That(node, Is.Invalid);
   }
 
   [Test]
@@ -104,7 +104,7 @@ internal class RemoveNodeTests
     (graph as IGraph<int, int>).RemoveNode(node);
 
     // ASSERT
-    Assert.That(node.IsValid, Is.False);
+    Assert.That(node, Is.Invalid);
   }
 
   [Test]
@@ -117,7 +117,7 @@ internal class RemoveNodeTests
     graph.RemoveNode(index);
 
     // ASSERT
-    Assert.That(node.IsValid, Is.False);
+    Assert.That(node, Is.Invalid);
   }
 
   [Test]
@@ -275,8 +275,8 @@ internal class RemoveNodeTests
     graph.RemoveNode(indices[1]);
 
     // ASSERT
-    Assert.That(edge1.IsValid, Is.False);
-    Assert.That(edge2.IsValid, Is.False);
+    Assert.That(edge1, Is.Invalid);
+    Assert.That(edge2, Is.Invalid);
   }
 
   [Test]
@@ -306,7 +306,7 @@ internal class RemoveNodeTests
     graph.RemoveNodesWhere(data => data > 0);
 
     // ASSERT
-    Assert.That(node.IsValid, Is.False);
+    Assert.That(node, Is.Invalid);
   }
 
   [Test]
@@ -327,8 +327,8 @@ internal class RemoveNodeTests
     // ASSERT
     Assert.That(graph.Edges, Does.Not.Contain(edge1));
     Assert.That(graph.Edges, Does.Not.Contain(edge2));
-    Assert.That(edge1.IsValid, Is.False);
-    Assert.That(edge2.IsValid, Is.False);
+    Assert.That(edge1, Is.Invalid);
+    Assert.That(edge2, Is.Invalid);
   }
 
   [Test]

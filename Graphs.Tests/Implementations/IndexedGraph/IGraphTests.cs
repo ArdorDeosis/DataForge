@@ -1,4 +1,6 @@
-﻿using DataForge.Graphs.Tests.Interfaces;
+﻿using System.Collections.Generic;
+using System.Linq;
+using DataForge.Graphs.Tests.Interfaces;
 using NUnit.Framework;
 
 namespace DataForge.Graphs.Tests.Implementations.IndexedGraph;
@@ -17,6 +19,30 @@ public class IGraphTests : IGraphTests<IndexedGraph<int, int, int>>
     }
   }
 
+  protected override (IndexedGraph<int, int, int> graph, IReadOnlyCollection<INode<int, int>> expectedNodes)
+    GraphWithNodes
+  {
+    get
+    {
+      var graph = new IndexedGraph<int, int, int>();
+      return (graph, new[]
+      {
+        graph.AddNode(0xC0FFEE, default),
+        graph.AddNode(0xBEEF, default),
+        graph.AddNode(0xF00D, default),
+      });
+    }
+  }
+
+  protected override (IndexedGraph<int, int, int> graph, IReadOnlyCollection<INode<int, int>> expectedNodes)
+    GraphWithNodesWithData(IReadOnlyCollection<int> data)
+  {
+    var counter = 0;
+    var graph = new IndexedGraph<int, int, int>();
+    var nodes = data.Select(datum => graph.AddNode(counter++, datum));
+    return (graph, nodes.ToArray());
+  }
+
   protected override (IndexedGraph<int, int, int> graph, IEdge<int, int> expectedEdge) GraphWithEdge
   {
     get
@@ -29,6 +55,39 @@ public class IGraphTests : IGraphTests<IndexedGraph<int, int, int>>
       var edge = graph.AddEdge(index1, index2, default);
       return (graph, edge);
     }
+  }
+
+  protected override (IndexedGraph<int, int, int> graph, IReadOnlyCollection<IEdge<int, int>> expectedEdges)
+    GraphWithEdges
+  {
+    get
+    {
+      const int index1 = 0xC0FFEE;
+      const int index2 = 0xF00D;
+      var graph = new IndexedGraph<int, int, int>();
+      graph.AddNode(index1, default);
+      graph.AddNode(index2, default);
+      var edges = new[]
+      {
+        graph.AddEdge(index1, index1, default),
+        graph.AddEdge(index1, index2, default),
+        graph.AddEdge(index2, index1, default),
+      };
+      return (graph, edges);
+    }
+  }
+
+  protected override (IndexedGraph<int, int, int> graph, IReadOnlyCollection<IEdge<int, int>> expectedEdges)
+    GraphWithEdgesWithData(IReadOnlyCollection<int> data)
+  {
+    var counter = 0;
+    var graph = new IndexedGraph<int, int, int>();
+    var edges = data.Select(datum => graph.AddEdge(
+      graph.AddNode(counter++, default).Index,
+      graph.AddNode(counter++, default).Index,
+      datum)
+    );
+    return (graph, edges.ToArray());
   }
 
   protected override (IndexedGraph<int, int, int> graph, INode<int, int> removedNode) EmptyGraphWithRemovedNode

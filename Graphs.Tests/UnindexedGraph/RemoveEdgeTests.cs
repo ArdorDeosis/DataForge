@@ -27,7 +27,7 @@ internal class RemoveEdgeTests
     graph.RemoveEdge(edge);
 
     // ASSERT
-    Assert.That(edge.IsValid, Is.False);
+    Assert.That(edge, Is.Invalid);
   }
 
   [Test]
@@ -76,7 +76,7 @@ internal class RemoveEdgeTests
     Assert.That(graph.Edges, Does.Contain(edge1));
     Assert.That(graph.Edges, Does.Not.Contain(edge2));
   }
-  
+
   [Test]
   public void RemoveEdgesWhere_RemovedEdgesAreInvalidated()
   {
@@ -88,9 +88,9 @@ internal class RemoveEdgeTests
     graph.RemoveEdgesWhere(data => data > 0);
 
     // ASSERT
-    Assert.That(edge.IsValid, Is.False);
+    Assert.That(edge, Is.Invalid);
   }
-  
+
   [Test]
   public void RemoveEdgesWhere_ReturnedNumber_IsCorrect()
   {

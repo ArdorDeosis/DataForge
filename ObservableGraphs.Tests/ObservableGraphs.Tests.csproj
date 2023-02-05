@@ -8,6 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Graphs.Tests\Graphs.Tests.csproj"/>
       <ProjectReference Include="..\Graphs\Graphs.csproj" />
       <ProjectReference Include="..\ObservableGraphs\ObservableGraphs.csproj" />
     </ItemGroup>

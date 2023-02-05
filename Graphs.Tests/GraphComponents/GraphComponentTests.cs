@@ -11,7 +11,7 @@ internal class GraphComponentTests
     var component = (GraphComponent)new Graph<int, int>().AddNode(0);
 
     // ASSERT
-    Assert.That(component.IsValid);
+    Assert.That(component, Is.Valid);
   }
 
   [Test]
@@ -24,6 +24,6 @@ internal class GraphComponentTests
     component.Invalidate();
 
     // ASSERT
-    Assert.That(component.IsValid, Is.False);
+    Assert.That(component, Is.Invalid);
   }
 }

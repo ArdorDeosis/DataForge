@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using Is = DataForge.Graphs.Tests.Is;
 
 namespace DataForge.ObservableGraphs.Tests.IndexedGraph;
 
@@ -46,7 +47,7 @@ internal class ClearGraphTests
     graph.Clear();
 
     // ASSERT
-    Assert.That(node.IsValid, Is.False);
+    Assert.That(node, Is.Invalid);
   }
 
   [Test]
@@ -63,6 +64,6 @@ internal class ClearGraphTests
     graph.Clear();
 
     // ASSERT
-    Assert.That(edge.IsValid, Is.False);
+    Assert.That(edge, Is.Invalid);
   }
 }

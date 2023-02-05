@@ -1,16 +1,34 @@
-﻿using NUnit.Framework;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using NUnit.Framework;
 
 namespace DataForge.Graphs.Tests.Interfaces;
 
 [TestFixture]
+[SuppressMessage("ReSharper", "AccessToStaticMemberViaDerivedType")]
 // ReSharper disable once InconsistentNaming
 public abstract class IGraphTests<TGraph> where TGraph : IGraph<int, int>
 {
   /// <summary> A graph and a node expected to be in the graph. </summary>
   protected abstract (TGraph graph, INode<int, int> expectedNode) GraphWithNode { get; }
 
+  /// <summary> A graph and nodes expected to be in the graph. </summary>
+  protected abstract (TGraph graph, IReadOnlyCollection<INode<int, int>> expectedNodes) GraphWithNodes { get; }
+
+  /// <summary> A graph containing nodes with the provided data. </summary>
+  protected abstract (TGraph graph, IReadOnlyCollection<INode<int, int>> expectedNodes) GraphWithNodesWithData(
+    IReadOnlyCollection<int> data);
+
   /// <summary> A graph and an edge expected to be in the graph. </summary>
   protected abstract (TGraph graph, IEdge<int, int> expectedEdge) GraphWithEdge { get; }
+
+  /// <summary> A graph and edges expected to be in the graph. </summary>
+  protected abstract (TGraph graph, IReadOnlyCollection<IEdge<int, int>> expectedEdges) GraphWithEdges { get; }
+
+  /// <summary> A graph containing edges with the provided data. </summary>
+  protected abstract (TGraph graph, IReadOnlyCollection<IEdge<int, int>> expectedEdges) GraphWithEdgesWithData(
+    IReadOnlyCollection<int> data);
 
   /// <summary> An empty graph and a node that has been in the graph but was removed. </summary>
   protected abstract (TGraph graph, INode<int, int> removedNode) EmptyGraphWithRemovedNode { get; }
@@ -52,13 +70,27 @@ public abstract class IGraphTests<TGraph> where TGraph : IGraph<int, int>
   public void RemoveNode_ExistingNode_NodeIsInvalidated()
   {
     // ARRANGE
-    var (graph, expectedNode) = GraphWithNode;
+    var (graph, node) = GraphWithNode;
 
     // ACT
-    graph.RemoveNode(expectedNode);
+    graph.RemoveNode(node);
 
     // ASSERT
-    Assert.That(expectedNode.IsValid, Is.False);
+    Assert.That(node, Is.Invalid);
+  }
+
+  [Test]
+  public void RemoveNode_AdjacentEdgeIsRemovedAndInvalidated()
+  {
+    // ARRANGE
+    var (graph, edge) = GraphWithEdge;
+
+    // ACT
+    graph.RemoveNode(edge.Origin);
+
+    // ASSERT
+    Assert.That(graph.Edges, Does.Not.Contain(edge));
+    Assert.That(edge, Is.Invalid);
   }
 
   [Test]
@@ -70,6 +102,100 @@ public abstract class IGraphTests<TGraph> where TGraph : IGraph<int, int>
     // ASSERT
     Assert.That(graph.RemoveNode(removedNode), Is.False);
     Assert.That(graph.RemoveNode(NodeFromOtherGraph), Is.False);
+  }
+
+  [Test]
+  public void RemoveNodesWhere_RemovesExpectedNodes()
+  {
+    // ARRANGE
+    var data = new[] { -1, int.MinValue, 1, 0xC0FFEE };
+    var (graph, _) = GraphWithNodesWithData(data);
+    bool Predicate(int value) => value <= 0;
+
+    // ACT
+    graph.RemoveNodesWhere(Predicate);
+
+    // ASSERT
+    Assert.That(graph.Nodes.Select(node => node.Data), Is.All.Positive);
+    Assert.That(graph.Nodes, Has.Count.EqualTo(data.Count(value => !Predicate(value))));
+  }
+
+  [Test]
+  public void RemoveNodesWhere_ReturnsNumberOfRemovedNodes()
+  {
+    // ARRANGE
+    var data = new[] { -1, int.MinValue, 1, 0xC0FFEE };
+    var (graph, nodes) = GraphWithNodesWithData(data);
+    bool Predicate(int value) => value <= 0;
+    var expectedRemovedNodeCount = data.Count(Predicate);
+
+    // ACT
+    var removedNodeCount = graph.RemoveNodesWhere(Predicate);
+
+    // ASSERT
+    Assert.That(removedNodeCount, Is.EqualTo(expectedRemovedNodeCount));
+  }
+
+  [Test]
+  public void RemoveNodesWhere_AdjacentEdgesAreRemovedAndInvalidated()
+  {
+    // ARRANGE
+    var (graph, edge) = GraphWithEdge;
+    edge.Origin.Data = 0;
+    edge.Destination.Data = 1;
+
+    // ACT
+    graph.RemoveNodesWhere(data => data > 0);
+
+    // ASSERT
+    Assert.That(graph.Edges, Does.Not.Contain(edge));
+    Assert.That(edge, Is.Invalid);
+  }
+
+  [Test]
+  public void RemoveNodesWhere_RemovedNodesAreInvalidated()
+  {
+    // ARRANGE
+    var data = new[] { -1, int.MinValue, 1, 0xC0FFEE };
+    var (graph, nodes) = GraphWithNodesWithData(data);
+    bool Predicate(int value) => value <= 0;
+
+    // ACT
+    graph.RemoveNodesWhere(Predicate);
+
+    // ASSERT
+    Assert.That(nodes.Where(node => Predicate(node.Data)), AreAll.Invalid);
+  }
+
+  [Test]
+  public void RemoveEdgesWhere_RemovesExpectedEdges()
+  {
+    // ARRANGE
+    var data = new[] { -1, int.MinValue, 1, 0xC0FFEE };
+    var (graph, _) = GraphWithEdgesWithData(data);
+    bool Predicate(int value) => value <= 0;
+
+    // ACT
+    graph.RemoveEdgesWhere(Predicate);
+
+    // ASSERT
+    Assert.That(graph.Edges.Select(edge => edge.Data), Is.All.Positive);
+    Assert.That(graph.Edges, Has.Count.EqualTo(data.Count(value => !Predicate(value))));
+  }
+
+  [Test]
+  public void RemoveEdgesWhere_RemovedEdgesAreInvalidated()
+  {
+    // ARRANGE
+    var data = new[] { -1, int.MinValue, 1, 0xC0FFEE };
+    var (graph, edges) = GraphWithEdgesWithData(data);
+    bool Predicate(int value) => value <= 0;
+
+    // ACT
+    graph.RemoveEdgesWhere(Predicate);
+
+    // ASSERT
+    Assert.That(edges.Where(edge => Predicate(edge.Data)), AreAll.Invalid);
   }
 
   [Test]
@@ -100,13 +226,13 @@ public abstract class IGraphTests<TGraph> where TGraph : IGraph<int, int>
   public void RemoveEdge_ExistingEdge_EdgeIsInvalidated()
   {
     // ARRANGE
-    var (graph, expectedEdge) = GraphWithEdge;
+    var (graph, edge) = GraphWithEdge;
 
     // ACT
-    graph.RemoveEdge(expectedEdge);
+    graph.RemoveEdge(edge);
 
     // ASSERT
-    Assert.That(expectedEdge.IsValid, Is.False);
+    Assert.That(edge, Is.Invalid);
   }
 
   [Test]
@@ -118,5 +244,57 @@ public abstract class IGraphTests<TGraph> where TGraph : IGraph<int, int>
     // ASSERT
     Assert.That(graph.RemoveEdge(removedEdge), Is.False);
     Assert.That(graph.RemoveEdge(EdgeFromOtherGraph), Is.False);
+  }
+
+  [Test]
+  public void Clear_NodesAreRemoved()
+  {
+    // ARRANGE
+    var (graph, _) = GraphWithNodes;
+
+    // ACT
+    graph.Clear();
+
+    // ASSERT
+    Assert.That(graph.Nodes, Is.Empty);
+  }
+
+  [Test]
+  public void Clear_NodesAreInvalidated()
+  {
+    // ARRANGE
+    var (graph, nodes) = GraphWithNodes;
+
+    // ACT
+    graph.Clear();
+
+    // ASSERT
+    Assert.That(nodes, AreAll.Invalid);
+  }
+
+  [Test]
+  public void Clear_EdgesAreRemoved()
+  {
+    // ARRANGE
+    var (graph, _) = GraphWithEdges;
+
+    // ACT
+    graph.Clear();
+
+    // ASSERT
+    Assert.That(graph.Nodes, Is.Empty);
+  }
+
+  [Test]
+  public void Clear_EdgesAreInvalidated()
+  {
+    // ARRANGE
+    var (graph, edges) = GraphWithEdges;
+
+    // ACT
+    graph.Clear();
+
+    // ASSERT
+    Assert.That(edges, AreAll.Invalid);
   }
 }
