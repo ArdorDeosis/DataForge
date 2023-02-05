@@ -1,5 +1,5 @@
 ﻿using DataForge.Graphs;
-using DataForge.ObservableGraphs.Tests.TestUtilities;
+using DataForge.Graphs.Tests;
 using NUnit.Framework;
 
 namespace DataForge.ObservableGraphs.Tests.AutoIndexedGraph;
@@ -16,7 +16,7 @@ internal class EqualityComparerTests
     graph.AddNode(default);
 
     // ASSERT
-    Assert.That(() => graph.AddNode(default), Throws.InvalidOperationException);
+    Assert.That((TestDelegate)(() => graph.AddNode(default)), Throws.InvalidOperationException);
   }
 
   [Test]
@@ -29,6 +29,6 @@ internal class EqualityComparerTests
     graph.AddNode(default);
 
     // ASSERT
-    Assert.That(() => graph.AddNode(default), Throws.InvalidOperationException);
+    Assert.That((TestDelegate)(() => graph.AddNode(default)), Throws.InvalidOperationException);
   }
 }

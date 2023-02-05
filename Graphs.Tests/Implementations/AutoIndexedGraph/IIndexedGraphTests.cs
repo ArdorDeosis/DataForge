@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using DataForge.Graphs.Tests.Interfaces;
+﻿using DataForge.Graphs.Tests.Interfaces;
 using NUnit.Framework;
 
 namespace DataForge.Graphs.Tests.Implementations.AutoIndexedGraph;
