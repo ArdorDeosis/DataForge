@@ -1,31 +1,31 @@
 ﻿using DataForge.Graphs;
 using NUnit.Framework;
 
-namespace DataForge.ObservableGraphs.Tests.AutoIndexedGraph;
+namespace DataForge.ObservableGraphs.Tests.IndexedGraph;
 
 [TestFixture]
 public class GraphChangedEventTests
 {
 #pragma warning disable CS8618 // field not initialized warning; is initialized in setup method
-  private static ObservableAutoIndexedGraph<int, int, int> graph;
+  private static ObservableIndexedGraph<int, int, int> graph;
 #pragma warning restore CS8618
   private static readonly List<IndexedGraphChangedEventArgs<int, int, int>> EventList = new();
 
   [SetUp]
   public void Setup()
   {
-    graph = new ObservableAutoIndexedGraph<int, int, int>(data => data);
+    graph = new ObservableIndexedGraph<int, int, int>();
     EventList.Clear();
   }
 
   private static void LogEvent(object? sender, IndexedGraphChangedEventArgs<int, int, int> eventArgs) =>
     EventList.Add(eventArgs);
 
-  public delegate IndexedNode<int, int, int> AddNode(ObservableAutoIndexedGraph<int, int, int> graph, int index);
+  public delegate IndexedNode<int, int, int> AddNode(ObservableIndexedGraph<int, int, int> graph, int index);
 
-  public delegate void RemoveNode(ObservableAutoIndexedGraph<int, int, int> graph, IndexedNode<int, int, int> node);
+  public delegate void RemoveNode(ObservableIndexedGraph<int, int, int> graph, IndexedNode<int, int, int> node);
   
-  public delegate IndexedEdge<int, int, int> AddEdge(ObservableAutoIndexedGraph<int, int, int> graph, int origin, int destination, int data);
+  public delegate IndexedEdge<int, int, int> AddEdge(ObservableIndexedGraph<int, int, int> graph, int origin, int destination, int data);
 
   public static IEnumerable<AddNode> AddNodeActions()
   {
@@ -34,14 +34,14 @@ public class GraphChangedEventTests
     {
       try
       {
-        return graph.AddNode(index);
+        return graph.AddNode(index, default);
       }
       catch
       {
         return null!;
       }
     };
-    yield return (graph, index) => graph.TryAddNode(index, out var node) ? node : null!;
+    yield return (graph, index) => graph.TryAddNode(index, default, out var node) ? node : null!;
     // ReSharper restore ParameterHidesMember
   }
   
@@ -94,7 +94,7 @@ public class GraphChangedEventTests
   {
     // ARRANGE
     const int index = 0xBEEF;
-    graph.AddNode(index);
+    graph.AddNode(index, default);
     graph.GraphChanged += LogEvent;
 
     // ACT
@@ -111,8 +111,8 @@ public class GraphChangedEventTests
     const int index1 = 0xBEEF;
     const int index2 = 0xF00D;
     const int data = 0xC0FFEE;
-    graph.AddNode(index1);
-    graph.AddNode(index2);
+    graph.AddNode(index1, default);
+    graph.AddNode(index2, default);
     graph.GraphChanged += LogEvent;
 
     // ACT
@@ -144,7 +144,7 @@ public class GraphChangedEventTests
   public void RemoveNode_NodeIsRemoved_EventIsFiredOnceWithCorrectData(RemoveNode removeNode)
   {
     // ARRANGE
-    var node = graph.AddNode(default);
+    var node = graph.AddNode(default, default);
     graph.GraphChanged += LogEvent;
 
     // ACT
@@ -163,8 +163,8 @@ public class GraphChangedEventTests
   public void RemoveNode_NodeAndAdjacentEdgesAreRemoved_EventIsFiredOnceWithCorrectData(RemoveNode removeNode)
   {
     // ARRANGE
-    var origin = graph.AddNode(0xBEEF);
-    var destination = graph.AddNode(0xC0FFEE);
+    var origin = graph.AddNode(0xBEEF, default);
+    var destination = graph.AddNode(0xC0FFEE, default);
     var edge1 = graph.AddEdge(origin.Index, origin.Index, default);
     var edge2 = graph.AddEdge(origin.Index, destination.Index, default);
     var edge3 = graph.AddEdge(destination.Index, origin.Index, default);
@@ -188,7 +188,7 @@ public class GraphChangedEventTests
   {
     // ARRANGE
     const int index = 0xBEEF;
-    var removedNode = graph.AddNode(index);
+    var removedNode = graph.AddNode(index, default);
     graph.RemoveNode(removedNode);
     graph.GraphChanged += LogEvent;
 
@@ -206,8 +206,8 @@ public class GraphChangedEventTests
   {
     // ARRANGE
     var edge = graph.AddEdge(
-      graph.AddNode(0xC0FFEE).Index, 
-      graph.AddNode(0xBEEF).Index, 
+      graph.AddNode(0xC0FFEE, default).Index, 
+      graph.AddNode(0xBEEF, default).Index, 
       default);
     graph.GraphChanged += LogEvent;
 
@@ -228,8 +228,8 @@ public class GraphChangedEventTests
   {
     // ARRANGE
     var edge = graph.AddEdge(
-      graph.AddNode(0xC0FFEE).Index, 
-      graph.AddNode(0xBEEF).Index, 
+      graph.AddNode(0xC0FFEE, default).Index, 
+      graph.AddNode(0xBEEF, default).Index, 
       default);
     graph.RemoveEdge(edge);
     graph.GraphChanged += LogEvent;
@@ -245,8 +245,8 @@ public class GraphChangedEventTests
   public void Clear_EventIsFiredOnceWithCorrectData()
   {
     // ARRANGE
-    var node1 = graph.AddNode(0xC0FFEE);
-    var node2 = graph.AddNode(0xBEEF);
+    var node1 = graph.AddNode(0xC0FFEE, default);
+    var node2 = graph.AddNode(0xBEEF, default);
     var edge1 = graph.AddEdge(node1.Index, node2.Index, default);
     var edge2 = graph.AddEdge(node2.Index, node1.Index, default);
     graph.GraphChanged += LogEvent;
@@ -270,10 +270,10 @@ public class GraphChangedEventTests
     bool Predicate(int data) => data > 0;
     var nodes = new []
     {
-      graph.AddNode(0xC0FFEE),
-      graph.AddNode(0xBEEF),
-      graph.AddNode(0),
-      graph.AddNode(int.MinValue),
+      graph.AddNode(0xC0FFEE, 0xC0FFEE),
+      graph.AddNode(0xBEEF, 0xBEEF),
+      graph.AddNode(0, 0),
+      graph.AddNode(int.MinValue, int.MinValue),
     };
     graph.GraphChanged += LogEvent;
 
@@ -295,7 +295,7 @@ public class GraphChangedEventTests
     // ARRANGE
     bool Predicate(int data) => data > 0;
     var indices = new[] { 0, 1 };
-    var nodes = indices.Select(index => graph.AddNode(index)).ToArray();
+    var nodes = indices.Select(index => graph.AddNode(index, default)).ToArray();
     var edgesToRemove = new[]
     {
       graph.AddEdge(0, 1, default),
@@ -324,8 +324,8 @@ public class GraphChangedEventTests
     bool Predicate(int data) => data > 0;
     var data = new [] { 0xC0FFEE, 0xBEEF, 0, int.MinValue };
     var edges = data.Select(value => graph.AddEdge(
-      graph.AddNode(value).Index,
-      graph.AddNode(value + 1).Index, 
+      graph.AddNode(value, default).Index,
+      graph.AddNode(value + 1, default).Index, 
       value)).ToArray();
     graph.GraphChanged += LogEvent;
 
