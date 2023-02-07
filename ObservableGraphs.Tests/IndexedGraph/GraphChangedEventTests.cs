@@ -295,7 +295,7 @@ public class GraphChangedEventTests
     // ARRANGE
     bool Predicate(int data) => data > 0;
     var indices = new[] { 0, 1 };
-    var nodes = indices.Select(index => graph.AddNode(index, default)).ToArray();
+    var nodes = indices.Select(index => graph.AddNode(index, index)).ToArray();
     var edgesToRemove = new[]
     {
       graph.AddEdge(0, 1, default),

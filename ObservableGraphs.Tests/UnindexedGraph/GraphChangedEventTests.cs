@@ -279,7 +279,7 @@ public class GraphChangedEventTests
     Assert.That(EventList, Has.Count.EqualTo(1));
     var eventArgs = EventList[0];
     Assert.That(eventArgs.AddedNodes, Is.Empty);
-    Assert.That(eventArgs.RemovedNodes, Is.EquivalentTo(new []{node0}));
+    Assert.That(eventArgs.RemovedNodes, Is.EquivalentTo(new []{node1}));
     Assert.That(eventArgs.AddedEdges, Is.Empty);
     Assert.That(eventArgs.RemovedEdges, Is.EquivalentTo(edgesToRemove));
   }

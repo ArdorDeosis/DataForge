@@ -24,9 +24,21 @@ public sealed class ObservableGraph<TNodeData, TEdgeData> : IObservableUnindexed
 
   public bool RemoveNode(INode<TNodeData, TEdgeData> node)
   {
+    if (!node.IsValid || node is not Node<TNodeData, TEdgeData> typedNode)
+      return false;
+    var adjacentEdges = graph.Edges.Where(edge =>
+        edge.Origin == node ||
+        edge.Destination == node)
+      .ToArray();
     var result = graph.RemoveNode(node);
     if (result)
-      InvokeGraphChanged(GraphChangedEventArgs<TNodeData, TEdgeData>.NodesRemoved((Node<TNodeData, TEdgeData>)node));
+      InvokeGraphChanged(new GraphChangedEventArgs<TNodeData, TEdgeData>
+      {
+        RemovedEdges = adjacentEdges,
+        RemovedNodes = new[] { typedNode },
+        AddedNodes = Array.Empty<Node<TNodeData, TEdgeData>>(),
+        AddedEdges = Array.Empty<Edge<TNodeData, TEdgeData>>(),
+      });
     return result;
   }
 
@@ -40,12 +52,20 @@ public sealed class ObservableGraph<TNodeData, TEdgeData> : IObservableUnindexed
 
   public int RemoveNodesWhere(Predicate<TNodeData> predicate)
   {
+    
+    var edges = graph.Edges.ToArray();
     var removedNodes = graph.Nodes
       .Where(node => predicate(node.Data))
       .ToArray()
       .Where(node => graph.RemoveNode(node))
       .ToArray();
-    InvokeGraphChanged(GraphChangedEventArgs<TNodeData, TEdgeData>.NodesRemoved(removedNodes));
+    InvokeGraphChanged(new GraphChangedEventArgs<TNodeData, TEdgeData>
+    {
+      RemovedNodes = removedNodes,
+      RemovedEdges = edges.Where(edge => !edge.IsValid).ToArray(),
+      AddedNodes = Array.Empty<Node<TNodeData, TEdgeData>>(),
+      AddedEdges = Array.Empty<Edge<TNodeData, TEdgeData>>(),
+    });
     return removedNodes.Length;
   }
 

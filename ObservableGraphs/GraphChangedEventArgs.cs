@@ -6,6 +6,8 @@ namespace DataForge.ObservableGraphs;
 [PublicAPI]
 public sealed class GraphChangedEventArgs<TNodeData, TEdgeData> : EventArgs
 {
+  // TODO: remove builder methods and add default values to the properties instead
+  internal GraphChangedEventArgs(){}
   internal GraphChangedEventArgs(
     IReadOnlyCollection<Node<TNodeData, TEdgeData>> addedNodes,
     IReadOnlyCollection<Node<TNodeData, TEdgeData>> removedNodes,
@@ -19,10 +21,10 @@ public sealed class GraphChangedEventArgs<TNodeData, TEdgeData> : EventArgs
     RemovedEdges = removedEdges;
   }
 
-  public IReadOnlyCollection<Node<TNodeData, TEdgeData>> AddedNodes { get; }
-  public IReadOnlyCollection<Node<TNodeData, TEdgeData>> RemovedNodes { get; }
-  public IReadOnlyCollection<Edge<TNodeData, TEdgeData>> AddedEdges { get; }
-  public IReadOnlyCollection<Edge<TNodeData, TEdgeData>> RemovedEdges { get; }
+  public IReadOnlyCollection<Node<TNodeData, TEdgeData>> AddedNodes { get; init; }
+  public IReadOnlyCollection<Node<TNodeData, TEdgeData>> RemovedNodes { get; init; }
+  public IReadOnlyCollection<Edge<TNodeData, TEdgeData>> AddedEdges { get; init; }
+  public IReadOnlyCollection<Edge<TNodeData, TEdgeData>> RemovedEdges { get; init; }
 
   internal static GraphChangedEventArgs<TNodeData, TEdgeData> NodesAdded(params Node<TNodeData, TEdgeData>[] nodes) =>
     new(

@@ -45,13 +45,9 @@ public sealed class ObservableIndexedGraph<TIndex, TNodeData, TEdgeData> :
 
   public int Order => graph.Order;
   public int Size => graph.Size;
-  public bool RemoveNode(INode<TNodeData, TEdgeData> node)
-  {
-    var result = (graph as IGraph<TNodeData, TEdgeData>).RemoveNode(node);
-    if (result)
-      InvokeGraphChanged(IndexedGraphChangedEventArgs<TIndex, TNodeData, TEdgeData>.NodesRemoved((IndexedNode<TIndex, TNodeData, TEdgeData>)node));
-    return result;
-  }
+
+  public bool RemoveNode(INode<TNodeData, TEdgeData> node) =>
+    node is IndexedNode<TIndex, TNodeData, TEdgeData> indexedNode && RemoveNode(indexedNode);
 
   public bool RemoveEdge(IEdge<TNodeData, TEdgeData> edge)
   {
@@ -63,12 +59,19 @@ public sealed class ObservableIndexedGraph<TIndex, TNodeData, TEdgeData> :
 
   public int RemoveNodesWhere(Predicate<TNodeData> predicate)
   {
+    var edges = graph.Edges.ToArray();
     var removedNodes = graph.Nodes
       .Where(node => predicate(node.Data))
       .ToArray()
       .Where(node => graph.RemoveNode(node.Index))
       .ToArray();
-    InvokeGraphChanged(IndexedGraphChangedEventArgs<TIndex, TNodeData, TEdgeData>.NodesRemoved(removedNodes));
+    InvokeGraphChanged(new IndexedGraphChangedEventArgs<TIndex, TNodeData, TEdgeData>
+    {
+      RemovedNodes = removedNodes,
+      RemovedEdges = edges.Where(edge => !edge.IsValid).ToArray(),
+      AddedNodes = Array.Empty<IndexedNode<TIndex, TNodeData, TEdgeData>>(),
+      AddedEdges = Array.Empty<IndexedEdge<TIndex, TNodeData, TEdgeData>>(),
+    });
     return removedNodes.Length;
   }
 
@@ -94,31 +97,28 @@ public sealed class ObservableIndexedGraph<TIndex, TNodeData, TEdgeData> :
     InvokeGraphChanged(eventArgs);
   }
 
-  public bool RemoveNode(IndexedNode<TIndex, TNodeData, TEdgeData> node)
-  {
-    var result = graph.RemoveNode(node);
-    if (result)
-      InvokeGraphChanged(IndexedGraphChangedEventArgs<TIndex, TNodeData, TEdgeData>.NodesRemoved(node));
-    return result;
-  }
+  public bool RemoveNode(IndexedNode<TIndex, TNodeData, TEdgeData> node) => node.IsValid && RemoveNode(node.Index);
 
-  public bool RemoveNode(TIndex index)
-  {
-    if (!graph.TryGetNode(index, out var node))
-      return false;
-    var result = graph.RemoveNode(index);
-    if (result)
-      InvokeGraphChanged(IndexedGraphChangedEventArgs<TIndex, TNodeData, TEdgeData>.NodesRemoved(node));
-    return result;
-  }
+  public bool RemoveNode(TIndex index) => RemoveNode(index, out _);
 
   public bool RemoveNode(TIndex index, [NotNullWhen(true)] out IndexedNode<TIndex, TNodeData, TEdgeData>? node)
   {
     if (!graph.TryGetNode(index, out node))
       return false;
+    var nodeCopy = node; // out parameter cannot be used in lambda expression
+    var adjacentEdges = graph.Edges.Where(edge =>
+        edge.Origin == nodeCopy ||
+        edge.Destination == nodeCopy)
+      .ToArray();
     var result = graph.RemoveNode(index);
     if (result)
-      InvokeGraphChanged(IndexedGraphChangedEventArgs<TIndex, TNodeData, TEdgeData>.NodesRemoved(node));
+      InvokeGraphChanged(new IndexedGraphChangedEventArgs<TIndex, TNodeData, TEdgeData>
+      {
+        RemovedEdges = adjacentEdges,
+        RemovedNodes = new[] { node },
+        AddedNodes = Array.Empty<IndexedNode<TIndex, TNodeData, TEdgeData>>(),
+        AddedEdges = Array.Empty<IndexedEdge<TIndex, TNodeData, TEdgeData>>(),
+      });
     return result;
   }
 
