@@ -236,6 +236,7 @@ public class GraphChangedEventTests
 
     // ACT
     graph.RemoveEdge(edge);
+    (graph as IGraph<int, int>).RemoveEdge(edge);
 
     // ASSERT
     Assert.That(EventList, Is.Empty);

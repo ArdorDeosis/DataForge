@@ -282,7 +282,7 @@ public abstract class IGraphTests<TGraph> where TGraph : IGraph<int, int>
     graph.Clear();
 
     // ASSERT
-    Assert.That(graph.Nodes, Is.Empty);
+    Assert.That(graph.Edges, Is.Empty);
   }
 
   [Test]

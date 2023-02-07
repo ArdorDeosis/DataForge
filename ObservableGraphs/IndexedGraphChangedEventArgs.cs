@@ -3,63 +3,42 @@ using JetBrains.Annotations;
 
 namespace DataForge.ObservableGraphs;
 
+/// <summary>
+/// Data for the <see cref="IObservableIndexedGraph{TIndex,TNodeData,TEdgeData}.GraphChanged"/> event of an
+/// <see cref="IObservableIndexedGraph{TIndex,TNodeData,TEdgeData}"/>. 
+/// </summary>
+/// <typeparam name="TIndex">The type of index used to identify nodes in the graph.</typeparam>
+/// <typeparam name="TNodeData">The type of data stored in the graph's nodes.</typeparam>
+/// <typeparam name="TEdgeData">The type of data stored in the graph's edges.</typeparam>
 [PublicAPI]
 public sealed class IndexedGraphChangedEventArgs<TIndex, TNodeData, TEdgeData> : EventArgs where TIndex : notnull
 {
-  // TODO: remove builder methods and add default values to the properties instead
-  internal IndexedGraphChangedEventArgs(){}
-  
   internal IndexedGraphChangedEventArgs(
-    IReadOnlyCollection<IndexedNode<TIndex, TNodeData, TEdgeData>> addedNodes,
-    IReadOnlyCollection<IndexedNode<TIndex, TNodeData, TEdgeData>> removedNodes,
-    IReadOnlyCollection<IndexedEdge<TIndex, TNodeData, TEdgeData>> addedEdges,
-    IReadOnlyCollection<IndexedEdge<TIndex, TNodeData, TEdgeData>> removedEdges
   )
   {
-    AddedNodes = addedNodes;
-    RemovedNodes = removedNodes;
-    AddedEdges = addedEdges;
-    RemovedEdges = removedEdges;
+    AddedNodes = Array.Empty<IndexedNode<TIndex, TNodeData, TEdgeData>>();
+    RemovedNodes = Array.Empty<IndexedNode<TIndex, TNodeData, TEdgeData>>();
+    AddedEdges = Array.Empty<IndexedEdge<TIndex, TNodeData, TEdgeData>>();
+    RemovedEdges = Array.Empty<IndexedEdge<TIndex, TNodeData, TEdgeData>>();
   }
-
+  
+  /// <summary>
+  /// The nodes added to the graph.
+  /// </summary>
   public IReadOnlyCollection<IndexedNode<TIndex, TNodeData, TEdgeData>> AddedNodes { get; init; }
+  
+  /// <summary>
+  /// The nodes removed from the graph.
+  /// </summary>
   public IReadOnlyCollection<IndexedNode<TIndex, TNodeData, TEdgeData>> RemovedNodes { get; init; }
+  
+  /// <summary>
+  /// The edges added to the graph.
+  /// </summary>
   public IReadOnlyCollection<IndexedEdge<TIndex, TNodeData, TEdgeData>> AddedEdges { get; init; }
+  
+  /// <summary>
+  /// The edges removed from the graph.
+  /// </summary>
   public IReadOnlyCollection<IndexedEdge<TIndex, TNodeData, TEdgeData>> RemovedEdges { get; init; }
-
-  internal static IndexedGraphChangedEventArgs<TIndex, TNodeData, TEdgeData> NodesAdded(
-    params IndexedNode<TIndex, TNodeData, TEdgeData>[] nodes) =>
-    new(
-      nodes,
-      Array.Empty<IndexedNode<TIndex, TNodeData, TEdgeData>>(),
-      Array.Empty<IndexedEdge<TIndex, TNodeData, TEdgeData>>(),
-      Array.Empty<IndexedEdge<TIndex, TNodeData, TEdgeData>>()
-    );
-
-  internal static IndexedGraphChangedEventArgs<TIndex, TNodeData, TEdgeData> NodesRemoved(
-    params IndexedNode<TIndex, TNodeData, TEdgeData>[] nodes) =>
-    new(
-      Array.Empty<IndexedNode<TIndex, TNodeData, TEdgeData>>(),
-      nodes,
-      Array.Empty<IndexedEdge<TIndex, TNodeData, TEdgeData>>(),
-      Array.Empty<IndexedEdge<TIndex, TNodeData, TEdgeData>>()
-    );
-
-  internal static IndexedGraphChangedEventArgs<TIndex, TNodeData, TEdgeData> EdgesAdded(
-    params IndexedEdge<TIndex, TNodeData, TEdgeData>[] edges) =>
-    new(
-      Array.Empty<IndexedNode<TIndex, TNodeData, TEdgeData>>(),
-      Array.Empty<IndexedNode<TIndex, TNodeData, TEdgeData>>(),
-      edges,
-      Array.Empty<IndexedEdge<TIndex, TNodeData, TEdgeData>>()
-    );
-
-  internal static IndexedGraphChangedEventArgs<TIndex, TNodeData, TEdgeData> EdgesRemoved(
-    params IndexedEdge<TIndex, TNodeData, TEdgeData>[] edges) =>
-    new(
-      Array.Empty<IndexedNode<TIndex, TNodeData, TEdgeData>>(),
-      Array.Empty<IndexedNode<TIndex, TNodeData, TEdgeData>>(),
-      Array.Empty<IndexedEdge<TIndex, TNodeData, TEdgeData>>(),
-      edges
-    );
 }
