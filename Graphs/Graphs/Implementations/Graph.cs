@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Utilities;
+using DataForge.Utilities;
 
 namespace DataForge.Graphs;
 
@@ -31,22 +31,30 @@ public sealed class Graph<TNodeData, TEdgeData> : IUnindexedGraph<TNodeData, TEd
 
   #region Data Access
 
+  /// <inheritdoc />
   public IReadOnlyCollection<Node<TNodeData, TEdgeData>> Nodes { get; }
   IReadOnlyCollection<INode<TNodeData, TEdgeData>> IReadOnlyGraph<TNodeData, TEdgeData>.Nodes => Nodes;
 
+  /// <inheritdoc />
   public IReadOnlyCollection<Edge<TNodeData, TEdgeData>> Edges { get; }
+  
   IReadOnlyCollection<IEdge<TNodeData, TEdgeData>> IReadOnlyGraph<TNodeData, TEdgeData>.Edges => Edges;
 
+  /// <inheritdoc />
   public bool Contains(INode<TNodeData, TEdgeData> node) => nodes.Contains(node);
+  /// <inheritdoc />
   public bool Contains(IEdge<TNodeData, TEdgeData> edge) => edges.Contains(edge);
 
+  /// <inheritdoc />
   public int Order => nodes.Count;
+  /// <inheritdoc />
   public int Size => edges.Count;
 
   #endregion
 
   #region Data Modification
 
+  /// <inheritdoc />
   public Node<TNodeData, TEdgeData> AddNode(TNodeData data)
   {
     var node = new Node<TNodeData, TEdgeData>(this, data);
@@ -54,9 +62,15 @@ public sealed class Graph<TNodeData, TEdgeData> : IUnindexedGraph<TNodeData, TEd
     return node;
   }
 
+  /// <inheritdoc />
   public IEnumerable<Node<TNodeData, TEdgeData>> AddNodes(IEnumerable<TNodeData> data) =>
     data.Select(AddNode).ToArray();
 
+  /// <inheritdoc />
+  public IEnumerable<Node<TNodeData, TEdgeData>> AddNodes(params TNodeData[] data) =>
+    AddNodes(data.AsEnumerable());
+
+  /// <inheritdoc />
   public Edge<TNodeData, TEdgeData> AddEdge(Node<TNodeData, TEdgeData> origin, Node<TNodeData, TEdgeData> destination,
     TEdgeData data)
   {
@@ -71,6 +85,7 @@ public sealed class Graph<TNodeData, TEdgeData> : IUnindexedGraph<TNodeData, TEd
     return edge;
   }
 
+  /// <inheritdoc />
   public bool TryAddEdge(Node<TNodeData, TEdgeData> start, Node<TNodeData, TEdgeData> end, TEdgeData data,
     [NotNullWhen(true)] out Edge<TNodeData, TEdgeData>? edge)
   {
@@ -86,6 +101,7 @@ public sealed class Graph<TNodeData, TEdgeData> : IUnindexedGraph<TNodeData, TEd
     }
   }
 
+  /// <inheritdoc />
   public bool RemoveNode(INode<TNodeData, TEdgeData> node)
   {
     if (node is not Node<TNodeData, TEdgeData> castNode || !nodes.Remove(castNode))
@@ -98,30 +114,34 @@ public sealed class Graph<TNodeData, TEdgeData> : IUnindexedGraph<TNodeData, TEd
     return true;
   }
 
+  /// <inheritdoc />
   public bool RemoveEdge(IEdge<TNodeData, TEdgeData> edge)
   {
     if (edge is not Edge<TNodeData, TEdgeData> castEdge || !edges.Remove(castEdge))
       return false;
-    outgoingEdges.RemoveFrom(castEdge.Origin, castEdge);
-    incomingEdges.RemoveFrom(castEdge.Destination, castEdge);
+    outgoingEdges.Remove(castEdge.Origin, castEdge);
+    incomingEdges.Remove(castEdge.Destination, castEdge);
     castEdge.Invalidate();
     return true;
   }
 
+  /// <inheritdoc />
   public int RemoveNodesWhere(Predicate<TNodeData> predicate) =>
     nodes
       .Where(node => predicate(node.Data))
       .ToArray()
-      .Select(RemoveNode)
+      .Where(RemoveNode)
       .Count();
 
+  /// <inheritdoc />
   public int RemoveEdgesWhere(Predicate<TEdgeData> predicate) =>
     edges
       .Where(edge => predicate(edge.Data))
       .ToArray()
-      .Select(RemoveEdge)
+      .Where(RemoveEdge)
       .Count();
 
+  /// <inheritdoc />
   public void Clear()
   {
     foreach (var node in nodes)

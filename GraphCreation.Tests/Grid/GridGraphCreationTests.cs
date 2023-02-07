@@ -4,7 +4,7 @@ using System.Linq;
 using DataForge.Graphs;
 using NUnit.Framework;
 
-namespace GraphCreation.Tests;
+namespace DataForge.GraphCreation.Tests.Grid;
 
 internal class GridGraphCreationTests
 {

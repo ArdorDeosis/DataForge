@@ -1,4 +1,4 @@
-namespace Utilities;
+namespace DataForge.Utilities;
 
 public static class HashSetExtensions
 {

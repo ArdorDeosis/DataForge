@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Ardalis.GuardClauses;
 
-namespace GridUtilities;
+namespace DataForge.GridUtilities;
 
 /// <summary>
 /// Helper functions for working with (cartesian) coordinates of arbitrary dimension, represented as integer arrays.

@@ -6,11 +6,12 @@
         <Nullable>enable</Nullable>
         <Configurations>Debug;Release</Configurations>
         <Platforms>AnyCPU</Platforms>
+        <RootNamespace>DataForge.GraphCreation</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Graphs\Graphs.csproj"/>
-        <ProjectReference Include="..\GridUtilities\GridUtilities.csproj"/>
+        <ProjectReference Include="..\Graphs\Graphs.csproj" />
+        <ProjectReference Include="..\GridUtilities\GridUtilities.csproj" />
     </ItemGroup>
 
 </Project>

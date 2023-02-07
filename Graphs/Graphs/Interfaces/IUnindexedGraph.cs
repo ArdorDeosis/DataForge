@@ -24,12 +24,16 @@ public interface IUnindexedGraph<TNodeData, TEdgeData> : IReadOnlyUnindexedGraph
   /// <returns>An enumerable containing the newly added nodes.</returns>
   IEnumerable<Node<TNodeData, TEdgeData>> AddNodes(IEnumerable<TNodeData> data);
 
+  /// <inheritdoc cref="AddNodes(System.Collections.Generic.IEnumerable{TNodeData})"/>
+  IEnumerable<Node<TNodeData, TEdgeData>> AddNodes(params TNodeData[] data);
+
   /// <summary>
   /// Adds a new edge to the graph connecting the specified origin and destination nodes with the specified data.
   /// </summary>
   /// <param name="origin">The origin node of the new edge.</param>
   /// <param name="destination">The destination node of the new edge.</param>
   /// <param name="data">The data to store in the new edge.</param>
+  /// <exception cref="ArgumentException">If the origin or destination node are not in the graph.</exception>
   /// <returns>The newly added edge.</returns>
   Edge<TNodeData, TEdgeData> AddEdge(Node<TNodeData, TEdgeData> origin, Node<TNodeData, TEdgeData> destination,
     TEdgeData data);

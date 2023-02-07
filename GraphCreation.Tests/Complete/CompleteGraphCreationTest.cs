@@ -2,7 +2,7 @@
 using System.Linq;
 using NUnit.Framework;
 
-namespace GraphCreation.Tests.Complete;
+namespace DataForge.GraphCreation.Tests.Complete;
 
 public class CompleteGraphCreationTest
 {

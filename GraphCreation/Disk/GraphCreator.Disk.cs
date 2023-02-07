@@ -1,6 +1,6 @@
 ﻿using DataForge.Graphs;
 
-namespace GraphCreation;
+namespace DataForge.GraphCreation;
 
 public static partial class GraphCreator
 {

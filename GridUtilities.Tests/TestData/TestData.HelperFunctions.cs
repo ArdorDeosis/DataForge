@@ -2,7 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
-namespace GridUtilities.Tests;
+namespace DataForge.GridUtilities.Tests;
 
 internal static partial class TestData
 {
