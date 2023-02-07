@@ -5,16 +5,11 @@ namespace DataForge.Utilities;
 /// </summary>
 /// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
 /// <typeparam name="TValue">The type of values in the dictionary.</typeparam>
-public sealed class MultiValueDictionary<TKey, TValue> where TKey : notnull
+public sealed class MultiValueDictionary<TKey, TValue> : IReadOnlyMultiValueDictionary<TKey, TValue> where TKey : notnull
 {
   private readonly Dictionary<TKey, HashSet<TValue>> dictionary = new();
-
-  /// <summary>
-  /// Gets the collection of values associated with the specified key.
-  /// If the key is not present in the dictionary, an empty read-only hash set is returned.
-  /// </summary>
-  /// <param name="key">The key to look up in the dictionary.</param>
-  /// <returns>A read-only hash set containing the values associated with the specified key.</returns>
+  
+  /// <inheritdoc />
   public ReadOnlyHashSet<TValue> this[TKey key] =>
     dictionary.TryGetValue(key, out var set)
       ? set.ToReadOnly()
@@ -26,11 +21,12 @@ public sealed class MultiValueDictionary<TKey, TValue> where TKey : notnull
   /// </summary>
   /// <param name="key">The key to associate the value with.</param>
   /// <param name="value">The value to add to the collection.</param>
-  public void Add(TKey key, TValue value)
+  /// <returns>True if the value was added to the dictionary, false otherwise.</returns>
+  public bool Add(TKey key, TValue value)
   {
     if (!dictionary.ContainsKey(key))
       dictionary.Add(key, new HashSet<TValue>());
-    dictionary[key].Add(value);
+    return dictionary[key].Add(value);
   }
 
   /// <summary>
@@ -44,11 +40,9 @@ public sealed class MultiValueDictionary<TKey, TValue> where TKey : notnull
   /// Removes all items from the collections of values in the dictionary that satisfy the specified predicate.
   /// </summary>
   /// <param name="predicate">A function to test each value for a condition.</param>
-  public void RemoveAll(Predicate<TValue> predicate)
-  {
-    foreach (var key in dictionary.Keys.ToArray())
-      RemoveAllFrom(key, predicate);
-  }
+  /// <returns>The number of items removed from the dictionary.</returns>
+  public int RemoveWhere(Predicate<TValue> predicate) => 
+    dictionary.Keys.ToArray().Select(key => RemoveWhere(key, predicate)).Sum();
 
   /// <summary>
   /// Removes the specified value from the collection of values associated with the specified key.
@@ -56,7 +50,7 @@ public sealed class MultiValueDictionary<TKey, TValue> where TKey : notnull
   /// <param name="key">The key whose associated collection should be modified.</param>
   /// <param name="value">The value to remove from the collection.</param>
   /// <returns>True if the value was found and removed from the collection, false otherwise.</returns>
-  public bool RemoveFrom(TKey key, TValue value)
+  public bool Remove(TKey key, TValue value)
   {
     if (!dictionary.TryGetValue(key, out var set))
       return false;
@@ -73,7 +67,7 @@ public sealed class MultiValueDictionary<TKey, TValue> where TKey : notnull
   /// <param name="key">The key whose associated values will be removed.</param>
   /// <param name="predicate">A function to test each value for a condition.</param>
   /// <returns>The number of items removed from the collection of values.</returns>
-  public int RemoveAllFrom(TKey key, Predicate<TValue> predicate)
+  public int RemoveWhere(TKey key, Predicate<TValue> predicate)
   {
     if (!dictionary.TryGetValue(key, out var set))
       return 0;
@@ -89,7 +83,7 @@ public sealed class MultiValueDictionary<TKey, TValue> where TKey : notnull
   public void Clear() => dictionary.Clear();
 
   /// <summary>
-  /// Removes all values from associated with the provided key from this dictionary.
+  /// Removes all values associated with the provided key from this dictionary.
   /// </summary>
   public void Clear(TKey key)
   {

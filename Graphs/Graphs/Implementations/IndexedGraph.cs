@@ -188,8 +188,8 @@ public sealed class IndexedGraph<TIndex, TNodeData, TEdgeData> :
   public bool RemoveEdge(IndexedEdge<TIndex, TNodeData, TEdgeData> edge)
   {
     if (!edges.Remove(edge)) return false;
-    incomingEdges.RemoveFrom(edge.DestinationIndex, edge);
-    outgoingEdges.RemoveFrom(edge.OriginIndex, edge);
+    incomingEdges.Remove(edge.DestinationIndex, edge);
+    outgoingEdges.Remove(edge.OriginIndex, edge);
     edge.Invalidate();
     return true;
   }

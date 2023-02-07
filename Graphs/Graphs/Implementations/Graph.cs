@@ -37,6 +37,7 @@ public sealed class Graph<TNodeData, TEdgeData> : IUnindexedGraph<TNodeData, TEd
 
   /// <inheritdoc />
   public IReadOnlyCollection<Edge<TNodeData, TEdgeData>> Edges { get; }
+  
   IReadOnlyCollection<IEdge<TNodeData, TEdgeData>> IReadOnlyGraph<TNodeData, TEdgeData>.Edges => Edges;
 
   /// <inheritdoc />
@@ -118,8 +119,8 @@ public sealed class Graph<TNodeData, TEdgeData> : IUnindexedGraph<TNodeData, TEd
   {
     if (edge is not Edge<TNodeData, TEdgeData> castEdge || !edges.Remove(castEdge))
       return false;
-    outgoingEdges.RemoveFrom(castEdge.Origin, castEdge);
-    incomingEdges.RemoveFrom(castEdge.Destination, castEdge);
+    outgoingEdges.Remove(castEdge.Origin, castEdge);
+    incomingEdges.Remove(castEdge.Destination, castEdge);
     castEdge.Invalidate();
     return true;
   }
