@@ -1,40 +1,61 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using DataForge.Graphs;
 
-namespace DataForge.ObservableGraphs;
+namespace DataForge.Graphs.Observable;
 
 public sealed class ObservableGraph<TNodeData, TEdgeData> : IObservableUnindexedGraph<TNodeData, TEdgeData>
 {
+  #region Fields
+
   private readonly Graph<TNodeData, TEdgeData> graph = new();
 
-  /// <inheritdoc />
-  public IReadOnlyCollection<Node<TNodeData, TEdgeData>> Nodes => graph.Nodes;
+  #endregion
 
-  /// <inheritdoc />
-  IReadOnlyCollection<INode<TNodeData, TEdgeData>> IReadOnlyGraph<TNodeData, TEdgeData>.Nodes => graph.Nodes;
+  #region Events
 
-  /// <inheritdoc />
-  public IReadOnlyCollection<Edge<TNodeData, TEdgeData>> Edges => graph.Edges;
-
-  /// <inheritdoc />
-  IReadOnlyCollection<IEdge<TNodeData, TEdgeData>> IReadOnlyGraph<TNodeData, TEdgeData>.Edges => graph.Edges;
-
-  /// <inheritdoc />
-  public int Order => graph.Order;
-
-  /// <inheritdoc />
-  public int Size => graph.Size;
-
-  /// <inheritdoc />
   public event EventHandler<GraphChangedEventArgs<TNodeData, TEdgeData>>? GraphChanged;
 
-  /// <inheritdoc />
+  #endregion
+
+  #region Data Access
+
+  #region Nodes
+
+  public IReadOnlyCollection<Node<TNodeData, TEdgeData>> Nodes => graph.Nodes;
+  
+  IReadOnlyCollection<INode<TNodeData, TEdgeData>> IReadOnlyGraph<TNodeData, TEdgeData>.Nodes => graph.Nodes;
+
+  IReadOnlyCollection<INode<TNodeData, TEdgeData>> IReadOnlyUnindexedGraph<TNodeData, TEdgeData>.Nodes => Nodes;
+  
   public bool Contains(INode<TNodeData, TEdgeData> node) => graph.Contains(node);
 
-  /// <inheritdoc />
+  #endregion
+
+  #region Edges
+
+  public IReadOnlyCollection<Edge<TNodeData, TEdgeData>> Edges => graph.Edges;
+  
+  IReadOnlyCollection<IEdge<TNodeData, TEdgeData>> IReadOnlyUnindexedGraph<TNodeData, TEdgeData>.Edges => Edges;
+
+  IReadOnlyCollection<IEdge<TNodeData, TEdgeData>> IReadOnlyGraph<TNodeData, TEdgeData>.Edges => graph.Edges;
+
   public bool Contains(IEdge<TNodeData, TEdgeData> edge) => graph.Contains(edge);
 
-  /// <inheritdoc />
+  #endregion
+
+  #region Graph Metrics
+  
+  public int Order => graph.Order;
+
+  public int Size => graph.Size;
+
+  #endregion
+
+  #endregion
+
+  #region Data Manipulation
+
+  #region Add Nodes
+
   public Node<TNodeData, TEdgeData> AddNode(TNodeData data)
   {
     var node = graph.AddNode(data);
@@ -42,10 +63,8 @@ public sealed class ObservableGraph<TNodeData, TEdgeData> : IObservableUnindexed
     return node;
   }
 
-  /// <inheritdoc />
-  public IEnumerable<Node<TNodeData, TEdgeData>> AddNodes(params TNodeData[] data) => AddNodes(data.AsEnumerable());
+  INode<TNodeData, TEdgeData> IUnindexedGraph<TNodeData, TEdgeData>.AddNode(TNodeData data) => AddNode(data);
 
-  /// <inheritdoc />
   public IEnumerable<Node<TNodeData, TEdgeData>> AddNodes(IEnumerable<TNodeData> data)
   {
     var nodes = graph.AddNodes(data).ToArray();
@@ -53,10 +72,15 @@ public sealed class ObservableGraph<TNodeData, TEdgeData> : IObservableUnindexed
     return nodes;
   }
 
-  /// <inheritdoc />
+  public IEnumerable<Node<TNodeData, TEdgeData>> AddNodes(params TNodeData[] data) => AddNodes(data.AsEnumerable());
+
+  #endregion
+
+  #region Remove Nodes
+
   public bool RemoveNode(INode<TNodeData, TEdgeData> node)
   {
-    if (!node.IsValid || node is not Node<TNodeData, TEdgeData> typedNode)
+    if (node is not Node<TNodeData, TEdgeData> { IsValid: true } typedNode)
       return false;
     var adjacentEdges = graph.Edges.Where(edge =>
         edge.Origin == node ||
@@ -72,24 +96,6 @@ public sealed class ObservableGraph<TNodeData, TEdgeData> : IObservableUnindexed
     return result;
   }
 
-  /// <inheritdoc />
-  public Edge<TNodeData, TEdgeData> AddEdge(Node<TNodeData, TEdgeData> origin, Node<TNodeData, TEdgeData> destination,
-    TEdgeData data)
-  {
-    var edge = graph.AddEdge(origin, destination, data);
-    InvokeGraphChanged(new GraphChangedEventArgs<TNodeData, TEdgeData> { AddedEdges = new[] { edge } });
-    return edge;
-  }
-
-  public bool TryAddEdge(Node<TNodeData, TEdgeData> origin, Node<TNodeData, TEdgeData> destination, TEdgeData data,
-    [NotNullWhen(true)] out Edge<TNodeData, TEdgeData>? edge)
-  {
-    if (!graph.TryAddEdge(origin, destination, data, out edge)) return false;
-    InvokeGraphChanged(new GraphChangedEventArgs<TNodeData, TEdgeData> { AddedEdges = new[] { edge } });
-    return true;
-  }
-
-  /// <inheritdoc />
   public int RemoveNodesWhere(Predicate<TNodeData> predicate)
   {
     var edges = graph.Edges.ToArray();
@@ -106,10 +112,42 @@ public sealed class ObservableGraph<TNodeData, TEdgeData> : IObservableUnindexed
     return removedNodes.Length;
   }
 
-  /// <inheritdoc />
+  #endregion
+
+  #region Add Edges
+
+  public Edge<TNodeData, TEdgeData> AddEdge(Node<TNodeData, TEdgeData> origin, Node<TNodeData, TEdgeData> destination,
+    TEdgeData data)
+  {
+    var edge = graph.AddEdge(origin, destination, data);
+    InvokeGraphChanged(new GraphChangedEventArgs<TNodeData, TEdgeData> { AddedEdges = new[] { edge } });
+    return edge;
+  }
+
+  IEdge<TNodeData, TEdgeData> IUnindexedGraph<TNodeData, TEdgeData>.AddEdge(INode<TNodeData, TEdgeData> origin, INode<TNodeData, TEdgeData> destination, TEdgeData data)
+  {
+    if (origin is not Node<TNodeData, TEdgeData> typedOrigin)
+      throw new ArgumentException("The origin node is not part of this graph.");
+    if (destination is not Node<TNodeData, TEdgeData> typedDestination)
+      throw new ArgumentException("The destination node is not part of this graph.");
+    return AddEdge(typedOrigin, typedDestination, data);
+  }
+
+  public bool TryAddEdge(Node<TNodeData, TEdgeData> origin, Node<TNodeData, TEdgeData> destination, TEdgeData data,
+    [NotNullWhen(true)] out Edge<TNodeData, TEdgeData>? edge)
+  {
+    if (!graph.TryAddEdge(origin, destination, data, out edge)) return false;
+    InvokeGraphChanged(new GraphChangedEventArgs<TNodeData, TEdgeData> { AddedEdges = new[] { edge } });
+    return true;
+  }
+
+  #endregion
+
+  #region Remove Edges
+
   public bool RemoveEdge(IEdge<TNodeData, TEdgeData> edge)
   {
-    if (!edge.IsValid || edge is not Edge<TNodeData, TEdgeData> typedEdge)
+    if (edge is not Edge<TNodeData, TEdgeData> { IsValid: true } typedEdge)
       return false;
     var result = graph.RemoveEdge(typedEdge);
     if (result)
@@ -117,7 +155,13 @@ public sealed class ObservableGraph<TNodeData, TEdgeData> : IObservableUnindexed
     return result;
   }
 
-  /// <inheritdoc />
+  public void ClearEdges()
+  {
+    var eventArgs = new GraphChangedEventArgs<TNodeData, TEdgeData> { RemovedEdges = graph.Edges };
+    graph.ClearEdges();
+    InvokeGraphChanged(eventArgs);
+  }
+
   public int RemoveEdgesWhere(Predicate<TEdgeData> predicate)
   {
     var removedEdges = graph.Edges
@@ -129,7 +173,12 @@ public sealed class ObservableGraph<TNodeData, TEdgeData> : IObservableUnindexed
     return removedEdges.Length;
   }
 
-  /// <inheritdoc />
+  #endregion
+
+  #endregion
+
+  #region Clear
+
   public void Clear()
   {
     var eventArgs = new GraphChangedEventArgs<TNodeData, TEdgeData>
@@ -140,6 +189,8 @@ public sealed class ObservableGraph<TNodeData, TEdgeData> : IObservableUnindexed
     graph.Clear();
     InvokeGraphChanged(eventArgs);
   }
+
+  #endregion
 
   private void InvokeGraphChanged(GraphChangedEventArgs<TNodeData, TEdgeData> eventArgs) =>
     GraphChanged?.Invoke(this, eventArgs);

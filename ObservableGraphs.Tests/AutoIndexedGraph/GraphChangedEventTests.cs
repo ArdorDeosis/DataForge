@@ -1,4 +1,5 @@
 ﻿using DataForge.Graphs;
+using DataForge.Graphs.Observable;
 using NUnit.Framework;
 
 namespace DataForge.ObservableGraphs.Tests.AutoIndexedGraph;

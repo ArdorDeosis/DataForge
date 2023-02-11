@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace DataForge.Graphs.Tests.AutoIndexedGraph;
+namespace DataForge.Graphs.Tests.Implementations.AutoIndexedGraph;
 
 internal class EqualityComparerTests
 {

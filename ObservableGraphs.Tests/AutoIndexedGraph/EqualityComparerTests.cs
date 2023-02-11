@@ -1,4 +1,5 @@
 ﻿using DataForge.Graphs;
+using DataForge.Graphs.Observable;
 using DataForge.Graphs.Tests;
 using NUnit.Framework;
 

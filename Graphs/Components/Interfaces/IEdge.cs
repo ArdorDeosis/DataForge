@@ -1,6 +1,6 @@
 ﻿namespace DataForge.Graphs;
 
-public interface IEdge<TNodeData, TEdgeData> : IGraphComponent
+public interface IEdge<TNodeData, TEdgeData>
 {
   TEdgeData Data { get; set; }
   INode<TNodeData, TEdgeData> Origin { get; }

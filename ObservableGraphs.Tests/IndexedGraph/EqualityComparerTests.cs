@@ -1,4 +1,5 @@
-﻿using DataForge.Graphs.Tests;
+﻿using DataForge.Graphs.Observable;
+using DataForge.Graphs.Tests;
 using NUnit.Framework;
 
 namespace DataForge.ObservableGraphs.Tests.IndexedGraph;

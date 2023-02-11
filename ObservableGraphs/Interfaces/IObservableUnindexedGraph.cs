@@ -1,6 +1,4 @@
-﻿using DataForge.Graphs;
-
-namespace DataForge.ObservableGraphs;
+﻿namespace DataForge.Graphs.Observable;
 
 public interface IObservableUnindexedGraph<TNodeData, TEdgeData> : IUnindexedGraph<TNodeData, TEdgeData>
 {

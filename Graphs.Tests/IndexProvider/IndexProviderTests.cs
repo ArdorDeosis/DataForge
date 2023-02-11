@@ -13,7 +13,7 @@ internal class IndexProviderTests
     const int data = 0xC0FFEE;
 
     // ACT
-    var index = indexProvider.GetIndex(data);
+    var index = indexProvider.GetCurrentIndex(data);
 
     // ASSERT
     Assert.That(index, Is.EqualTo(GeneratorFunction(data)));
@@ -27,13 +27,15 @@ internal class IndexProviderTests
     var ulongProvider = new IncrementalIndexProvider<object, ulong>(0);
     var byteProvider = new IncrementalIndexProvider<object, byte>(0);
 
+    // ACT
+    integerProvider.Move();
+    ulongProvider.Move();
+    byteProvider.Move();
+
     // ASSERT
-    for (var expectedIndex = 0; expectedIndex < 5; expectedIndex++)
-    {
-      Assert.That(integerProvider.GetIndex(new { }), Is.EqualTo(expectedIndex));
-      Assert.That(ulongProvider.GetIndex(new { }), Is.EqualTo(expectedIndex));
-      Assert.That(byteProvider.GetIndex(new { }), Is.EqualTo(expectedIndex));
-    }
+    Assert.That(integerProvider.GetCurrentIndex(new { }), Is.EqualTo(1));
+    Assert.That(ulongProvider.GetCurrentIndex(new { }), Is.EqualTo(1));
+    Assert.That(byteProvider.GetCurrentIndex(new { }), Is.EqualTo(1));
   }
 
   [Test]
@@ -48,8 +50,8 @@ internal class IndexProviderTests
     var byteProvider = new IncrementalIndexProvider<object, byte>(byteIndex);
 
     // ASSERT
-    Assert.That(integerProvider.GetIndex(new { }), Is.EqualTo(intIndex));
-    Assert.That(ulongProvider.GetIndex(new { }), Is.EqualTo(ulongIndex));
-    Assert.That(byteProvider.GetIndex(new { }), Is.EqualTo(byteIndex));
+    Assert.That(integerProvider.GetCurrentIndex(new { }), Is.EqualTo(intIndex));
+    Assert.That(ulongProvider.GetCurrentIndex(new { }), Is.EqualTo(ulongIndex));
+    Assert.That(byteProvider.GetCurrentIndex(new { }), Is.EqualTo(byteIndex));
   }
 }

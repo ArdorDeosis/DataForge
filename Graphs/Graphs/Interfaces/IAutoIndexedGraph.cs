@@ -17,7 +17,7 @@ public interface IAutoIndexedGraph<TIndex, TNodeData, TEdgeData> :
   /// </summary>
   /// <param name="data">The data to store in the new node.</param>
   /// <returns>The newly added indexed node.</returns>
-  IndexedNode<TIndex, TNodeData, TEdgeData> AddNode(TNodeData data);
+  IIndexedNode<TIndex, TNodeData, TEdgeData> AddNode(TNodeData data);
 
   /// <summary>
   /// Attempts to add a new indexed node to the graph with the specified data, and assigns the next available index to the new node.
@@ -25,5 +25,5 @@ public interface IAutoIndexedGraph<TIndex, TNodeData, TEdgeData> :
   /// <param name="data">The data to store in the new node.</param>
   /// <param name="node">The newly added indexed node, or null if the node could not be added.</param>
   /// <returns>True if the node was successfully added, false otherwise.</returns>
-  bool TryAddNode(TNodeData data, [NotNullWhen(true)] out IndexedNode<TIndex, TNodeData, TEdgeData>? node);
+  bool TryAddNode(TNodeData data, [NotNullWhen(true)] out IIndexedNode<TIndex, TNodeData, TEdgeData>? node);
 }

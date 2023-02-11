@@ -9,15 +9,15 @@ public sealed class IndexedGraph<TIndex, TNodeData, TEdgeData> :
 {
   #region Fields
 
+  internal readonly MultiValueDictionary<TIndex, IndexedEdge<TIndex, TNodeData, TEdgeData>>
+    IncomingEdges = new();
+
+  internal readonly MultiValueDictionary<TIndex, IndexedEdge<TIndex, TNodeData, TEdgeData>>
+    OutgoingEdges = new();
+
   private readonly Dictionary<TIndex, IndexedNode<TIndex, TNodeData, TEdgeData>> nodes;
+
   private readonly HashSet<IndexedEdge<TIndex, TNodeData, TEdgeData>> edges;
-
-
-  private readonly MultiValueDictionary<TIndex, IndexedEdge<TIndex, TNodeData, TEdgeData>>
-    incomingEdges = new();
-
-  private readonly MultiValueDictionary<TIndex, IndexedEdge<TIndex, TNodeData, TEdgeData>>
-    outgoingEdges = new();
 
   private readonly Func<IEqualityComparer<TIndex>?> nodeIndexEqualityComparerFactoryMethod;
 
@@ -44,57 +44,70 @@ public sealed class IndexedGraph<TIndex, TNodeData, TEdgeData> :
 
   #region Data Access
 
-  /// <inheritdoc />
+  #region Nodes
+
   public IReadOnlyCollection<IndexedNode<TIndex, TNodeData, TEdgeData>> Nodes { get; }
 
-  /// <inheritdoc />
+  IReadOnlyCollection<IIndexedNode<TIndex, TNodeData, TEdgeData>> IReadOnlyIndexedGraph<TIndex, TNodeData, TEdgeData>.
+    Nodes => Nodes;
+
   IReadOnlyCollection<INode<TNodeData, TEdgeData>> IReadOnlyGraph<TNodeData, TEdgeData>.Nodes => Nodes;
+  
+  // TODO: should these have custom exceptions?
 
-  /// <inheritdoc />
-  public IReadOnlyCollection<IndexedEdge<TIndex, TNodeData, TEdgeData>> Edges { get; }
-
-  /// <inheritdoc />
-  IReadOnlyCollection<IEdge<TNodeData, TEdgeData>> IReadOnlyGraph<TNodeData, TEdgeData>.Edges => Edges;
-
-  /// <inheritdoc />
-  public IReadOnlyCollection<TIndex> Indices { get; }
-
-  /// <inheritdoc />
-  public bool Contains(INode<TNodeData, TEdgeData> node) =>
-    node is IndexedNode<TIndex, TNodeData, TEdgeData> indexedNode && nodes.ContainsValue(indexedNode);
-
-  /// <inheritdoc />
-  public bool Contains(IEdge<TNodeData, TEdgeData> edge) => edges.Contains(edge);
-
-  /// <inheritdoc />
-  public bool Contains(TIndex index) => nodes.ContainsKey(index);
-
-  /// <inheritdoc />
-  public int Order => nodes.Count;
-  /// <inheritdoc />
-  public int Size => edges.Count;
-
-  /// <inheritdoc />
   public IndexedNode<TIndex, TNodeData, TEdgeData> this[TIndex index] => nodes[index];
 
-  // TODO: should these have custom exceptions?
-  /// <inheritdoc />
+  IIndexedNode<TIndex, TNodeData, TEdgeData> IReadOnlyIndexedGraph<TIndex, TNodeData, TEdgeData>.this[TIndex index] =>
+    this[index];
+
   public IndexedNode<TIndex, TNodeData, TEdgeData> GetNode(TIndex index) => nodes[index];
 
-  /// <inheritdoc />
   public IndexedNode<TIndex, TNodeData, TEdgeData>? GetNodeOrNull(TIndex index) =>
     nodes.TryGetValue(index, out var node) ? node : null;
 
-  /// <inheritdoc />
-  public bool TryGetNode(TIndex index,
-    [NotNullWhen(true)] out IndexedNode<TIndex, TNodeData, TEdgeData>? node) =>
+  public bool TryGetNode(TIndex index, [NotNullWhen(true)] out IndexedNode<TIndex, TNodeData, TEdgeData>? node) =>
     nodes.TryGetValue(index, out node);
+
+  public bool Contains(INode<TNodeData, TEdgeData> node) =>
+    node is IndexedNode<TIndex, TNodeData, TEdgeData> indexedNode && nodes.ContainsValue(indexedNode);
+
+  #endregion
+
+  #region Edges
+
+  public IReadOnlyCollection<IndexedEdge<TIndex, TNodeData, TEdgeData>> Edges { get; }
+
+  IReadOnlyCollection<IIndexedEdge<TIndex, TNodeData, TEdgeData>> IReadOnlyIndexedGraph<TIndex, TNodeData, TEdgeData>.
+    Edges => Edges;
+
+  IReadOnlyCollection<IEdge<TNodeData, TEdgeData>> IReadOnlyGraph<TNodeData, TEdgeData>.Edges => Edges;
+  
+  public bool Contains(IEdge<TNodeData, TEdgeData> edge) => edges.Contains(edge);
+
+  #endregion
+
+  #region Indices
+
+  public IReadOnlyCollection<TIndex> Indices { get; }
+  
+  public bool Contains(TIndex index) => nodes.ContainsKey(index);
+
+  #endregion
+
+  #region Graph Metrics
+
+  public int Order => nodes.Count;
+
+  public int Size => edges.Count;
+
+  #endregion
 
   #endregion
 
   #region Data Modification
 
-  /// <inheritdoc />
+  #region Add Nodes
+
   public IndexedNode<TIndex, TNodeData, TEdgeData> AddNode(TIndex index, TNodeData data)
   {
     if (nodes.ContainsKey(index))
@@ -104,57 +117,22 @@ public sealed class IndexedGraph<TIndex, TNodeData, TEdgeData> :
     return node;
   }
 
-  /// <inheritdoc />
+  IIndexedNode<TIndex, TNodeData, TEdgeData> IManuallyIndexedGraph<TIndex, TNodeData, TEdgeData>.AddNode(TIndex index,
+    TNodeData data) => AddNode(index, data);
+
   public bool TryAddNode(TIndex index, TNodeData data,
     [NotNullWhen(true)] out IndexedNode<TIndex, TNodeData, TEdgeData>? node)
   {
-    try
-    {
-      node = AddNode(index, data);
-      return true;
-    }
-    catch (Exception _)
-    {
-      node = null;
-      return false;
-    }
+    node = nodes.ContainsKey(index) ? null : AddNode(index, data);
+    return node is not null;
   }
 
-  /// <inheritdoc />
-  public IndexedEdge<TIndex, TNodeData, TEdgeData> AddEdge(TIndex origin, TIndex destination,
-    TEdgeData data)
-  {
-    if (!nodes.ContainsKey(origin))
-      throw new ArgumentException("The origin node does not exist in the graph.");
-    if (!nodes.ContainsKey(destination))
-      throw new ArgumentException("The destination node does not exist in the graph.");
-    var edge = new IndexedEdge<TIndex, TNodeData, TEdgeData>(this, origin, destination, data);
-    edges.Add(edge);
-    outgoingEdges.Add(origin, edge);
-    incomingEdges.Add(destination, edge);
-    return edge;
-  }
+  #endregion
 
-  /// <inheritdoc />
-  public bool TryAddEdge(TIndex origin, TIndex destination, TEdgeData data,
-    [NotNullWhen(true)] out IndexedEdge<TIndex, TNodeData, TEdgeData>? edge)
-  {
-    try
-    {
-      edge = AddEdge(origin, destination, data);
-      return true;
-    }
-    catch (Exception _)
-    {
-      edge = default;
-      return false;
-    }
-  }
+  #region Remove Nodes
 
-  /// <inheritdoc />
   public bool RemoveNode(TIndex index) => RemoveNode(index, out _);
 
-  /// <inheritdoc />
   public bool RemoveNode(TIndex index,
     [NotNullWhen(true)] out IndexedNode<TIndex, TNodeData, TEdgeData>? node)
   {
@@ -166,7 +144,7 @@ public sealed class IndexedGraph<TIndex, TNodeData, TEdgeData> :
 
     node = retrievedNode;
 
-    foreach (var edge in incomingEdges[index].Concat(outgoingEdges[index]).Distinct())
+    foreach (var edge in node.Edges)
     {
       edges.Remove(edge);
       edge.Invalidate();
@@ -176,29 +154,22 @@ public sealed class IndexedGraph<TIndex, TNodeData, TEdgeData> :
     return true;
   }
 
-  /// <inheritdoc />
+  bool IIndexedGraph<TIndex, TNodeData, TEdgeData>.RemoveNode(TIndex index,
+    [NotNullWhen(true)] out IIndexedNode<TIndex, TNodeData, TEdgeData>? node)
+  {
+    node = RemoveNode(index, out var retrievedNode) ? retrievedNode : null;
+    return node is not null;
+  }
+
   public bool RemoveNode(IndexedNode<TIndex, TNodeData, TEdgeData> node) =>
     node.Graph == this && node.IsValid && RemoveNode(node.Index);
 
-  /// <inheritdoc />
-  bool IGraph<TNodeData, TEdgeData>.RemoveNode(INode<TNodeData, TEdgeData> node) =>
+  public bool RemoveNode(IIndexedNode<TIndex, TNodeData, TEdgeData> node) =>
     node is IndexedNode<TIndex, TNodeData, TEdgeData> indexedNode && RemoveNode(indexedNode);
 
-  /// <inheritdoc />
-  public bool RemoveEdge(IndexedEdge<TIndex, TNodeData, TEdgeData> edge)
-  {
-    if (!edges.Remove(edge)) return false;
-    incomingEdges.Remove(edge.DestinationIndex, edge);
-    outgoingEdges.Remove(edge.OriginIndex, edge);
-    edge.Invalidate();
-    return true;
-  }
+  public bool RemoveNode(INode<TNodeData, TEdgeData> node) =>
+    node is IndexedNode<TIndex, TNodeData, TEdgeData> indexedNode && RemoveNode(indexedNode);
 
-  /// <inheritdoc />
-  bool IGraph<TNodeData, TEdgeData>.RemoveEdge(IEdge<TNodeData, TEdgeData> edge) =>
-    edge is IndexedEdge<TIndex, TNodeData, TEdgeData> indexedEdge && RemoveEdge(indexedEdge);
-
-  /// <inheritdoc />
   public int RemoveNodesWhere(Predicate<TNodeData> predicate) =>
     nodes.Values
       .Where(node => predicate(node.Data))
@@ -207,7 +178,53 @@ public sealed class IndexedGraph<TIndex, TNodeData, TEdgeData> :
       .Where(RemoveNode)
       .Count();
 
-  /// <inheritdoc />
+  #endregion
+
+  #region Add Edges
+
+  public IndexedEdge<TIndex, TNodeData, TEdgeData> AddEdge(TIndex origin, TIndex destination,
+    TEdgeData data)
+  {
+    if (!nodes.ContainsKey(origin))
+      throw new ArgumentException("The origin node does not exist in the graph.");
+    if (!nodes.ContainsKey(destination))
+      throw new ArgumentException("The destination node does not exist in the graph.");
+    var edge = new IndexedEdge<TIndex, TNodeData, TEdgeData>(this, origin, destination, data);
+    edges.Add(edge);
+    OutgoingEdges.Add(origin, edge);
+    IncomingEdges.Add(destination, edge);
+    return edge;
+  }
+
+  IIndexedEdge<TIndex, TNodeData, TEdgeData> IIndexedGraph<TIndex, TNodeData, TEdgeData>.AddEdge(TIndex origin,
+    TIndex destination, TEdgeData data) => AddEdge(origin, destination, data);
+
+  public bool TryAddEdge(TIndex origin, TIndex destination, TEdgeData data,
+    [NotNullWhen(true)] out IndexedEdge<TIndex, TNodeData, TEdgeData>? edge)
+  {
+    edge = Contains(origin) && Contains(destination) ? AddEdge(origin, destination, data) : null;
+    return edge is not null;
+  }
+
+  #endregion
+
+  #region Remove Edges
+
+  public bool RemoveEdge(IndexedEdge<TIndex, TNodeData, TEdgeData> edge)
+  {
+    if (!edges.Remove(edge)) return false;
+    IncomingEdges.Remove(edge.DestinationIndex, edge);
+    OutgoingEdges.Remove(edge.OriginIndex, edge);
+    edge.Invalidate();
+    return true;
+  }
+
+  public bool RemoveEdge(IIndexedEdge<TIndex, TNodeData, TEdgeData> edge) =>
+    edge is IndexedEdge<TIndex, TNodeData, TEdgeData> indexedEdge && RemoveEdge(indexedEdge);
+
+  public bool RemoveEdge(IEdge<TNodeData, TEdgeData> edge) =>
+    edge is IndexedEdge<TIndex, TNodeData, TEdgeData> indexedEdge && RemoveEdge(indexedEdge);
+
   public int RemoveEdgesWhere(Predicate<TEdgeData> predicate) =>
     edges
       .Where(edge => predicate(edge.Data))
@@ -215,7 +232,19 @@ public sealed class IndexedGraph<TIndex, TNodeData, TEdgeData> :
       .Where(RemoveEdge)
       .Count();
 
-  /// <inheritdoc />
+  public void ClearEdges()
+  {
+    foreach (var edge in edges)
+      edge.Invalidate();
+    edges.Clear();
+    IncomingEdges.Clear();
+    OutgoingEdges.Clear();
+  }
+
+  #endregion
+
+  #region Clear
+
   public void Clear()
   {
     foreach (var node in nodes.Values)
@@ -224,13 +253,15 @@ public sealed class IndexedGraph<TIndex, TNodeData, TEdgeData> :
       edge.Invalidate();
     nodes.Clear();
     edges.Clear();
-    incomingEdges.Clear();
-    outgoingEdges.Clear();
+    IncomingEdges.Clear();
+    OutgoingEdges.Clear();
   }
 
   #endregion
 
-  #region Transformation
+  #endregion
+
+  #region Clone & Transformation
 
   public IndexedGraph<TIndex, TNodeData, TEdgeData> Clone() =>
     Transform(data => data, data => data, index => index, nodeIndexEqualityComparerFactoryMethod);
@@ -268,6 +299,8 @@ public sealed class IndexedGraph<TIndex, TNodeData, TEdgeData> :
     return transformedGraph;
   }
 
+  #region To Unindexed Graph
+
   public Graph<TNodeData, TEdgeData> ToUnindexedGraph() => ToUnindexedGraph(data => data, data => data);
 
   public Graph<TNodeData, TEdgeData> ToUnindexedGraph(
@@ -286,6 +319,8 @@ public sealed class IndexedGraph<TIndex, TNodeData, TEdgeData> :
       graph.AddEdge(nodeMap[edge.Origin], nodeMap[edge.Destination], edgeDataTransformation(edge.Data));
     return graph;
   }
+
+  #endregion
 
   #endregion
 }
