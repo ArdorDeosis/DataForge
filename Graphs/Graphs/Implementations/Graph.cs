@@ -215,6 +215,8 @@ public sealed class Graph<TNodeData, TEdgeData> : IUnindexedGraph<TNodeData, TEd
     return graph;
   }
 
+  #endregion
+
   #region To Indexed Graph
 
   public IndexedGraph<TIndex, TNodeData, TEdgeData> ToIndexedGraph<TIndex>(
@@ -366,8 +368,6 @@ public sealed class Graph<TNodeData, TEdgeData> : IUnindexedGraph<TNodeData, TEd
       indexedGraph.AddEdge(nodeMap[edge.Origin], nodeMap[edge.Destination], edgeDataTransformation(edge.Data));
     return indexedGraph;
   }
-
-  #endregion
-
+  
   #endregion
 }

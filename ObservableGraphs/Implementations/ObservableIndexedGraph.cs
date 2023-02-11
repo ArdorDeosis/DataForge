@@ -23,6 +23,11 @@ public sealed class ObservableIndexedGraph<TIndex, TNodeData, TEdgeData> :
     graph = new IndexedGraph<TIndex, TNodeData, TEdgeData>(nodeIndexEqualityComparerFactoryMethod);
   }
 
+  internal ObservableIndexedGraph(IndexedGraph<TIndex, TNodeData, TEdgeData> graph)
+  {
+    this.graph = graph;
+  }
+
   #endregion
 
   #region Events

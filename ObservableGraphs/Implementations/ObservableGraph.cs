@@ -6,7 +6,21 @@ public sealed class ObservableGraph<TNodeData, TEdgeData> : IObservableUnindexed
 {
   #region Fields
 
-  private readonly Graph<TNodeData, TEdgeData> graph = new();
+  private readonly Graph<TNodeData, TEdgeData> graph;
+
+  #endregion
+
+  #region Constructors
+
+  public ObservableGraph()
+  {
+    graph = new Graph<TNodeData, TEdgeData>();
+  }
+
+  internal ObservableGraph(Graph<TNodeData, TEdgeData> graph)
+  {
+    this.graph = graph;
+  }
 
   #endregion
 
@@ -21,11 +35,11 @@ public sealed class ObservableGraph<TNodeData, TEdgeData> : IObservableUnindexed
   #region Nodes
 
   public IReadOnlyCollection<Node<TNodeData, TEdgeData>> Nodes => graph.Nodes;
-  
+
   IReadOnlyCollection<INode<TNodeData, TEdgeData>> IReadOnlyGraph<TNodeData, TEdgeData>.Nodes => graph.Nodes;
 
   IReadOnlyCollection<INode<TNodeData, TEdgeData>> IReadOnlyUnindexedGraph<TNodeData, TEdgeData>.Nodes => Nodes;
-  
+
   public bool Contains(INode<TNodeData, TEdgeData> node) => graph.Contains(node);
 
   #endregion
@@ -33,7 +47,7 @@ public sealed class ObservableGraph<TNodeData, TEdgeData> : IObservableUnindexed
   #region Edges
 
   public IReadOnlyCollection<Edge<TNodeData, TEdgeData>> Edges => graph.Edges;
-  
+
   IReadOnlyCollection<IEdge<TNodeData, TEdgeData>> IReadOnlyUnindexedGraph<TNodeData, TEdgeData>.Edges => Edges;
 
   IReadOnlyCollection<IEdge<TNodeData, TEdgeData>> IReadOnlyGraph<TNodeData, TEdgeData>.Edges => graph.Edges;
@@ -43,7 +57,7 @@ public sealed class ObservableGraph<TNodeData, TEdgeData> : IObservableUnindexed
   #endregion
 
   #region Graph Metrics
-  
+
   public int Order => graph.Order;
 
   public int Size => graph.Size;
@@ -124,7 +138,8 @@ public sealed class ObservableGraph<TNodeData, TEdgeData> : IObservableUnindexed
     return edge;
   }
 
-  IEdge<TNodeData, TEdgeData> IUnindexedGraph<TNodeData, TEdgeData>.AddEdge(INode<TNodeData, TEdgeData> origin, INode<TNodeData, TEdgeData> destination, TEdgeData data)
+  IEdge<TNodeData, TEdgeData> IUnindexedGraph<TNodeData, TEdgeData>.AddEdge(INode<TNodeData, TEdgeData> origin,
+    INode<TNodeData, TEdgeData> destination, TEdgeData data)
   {
     if (origin is not Node<TNodeData, TEdgeData> typedOrigin)
       throw new ArgumentException("The origin node is not part of this graph.");
@@ -189,6 +204,106 @@ public sealed class ObservableGraph<TNodeData, TEdgeData> : IObservableUnindexed
     graph.Clear();
     InvokeGraphChanged(eventArgs);
   }
+
+  #endregion
+
+
+  #region Clone & Transformation
+
+  public ObservableGraph<TNodeData, TEdgeData> Clone() => new(graph.Clone());
+
+  public ObservableGraph<TNodeData, TEdgeData> Clone(
+    Func<TNodeData, TNodeData> cloneNodeData,
+    Func<TEdgeData, TEdgeData> cloneEdgeData) => new(graph.Clone(cloneNodeData, cloneEdgeData));
+
+  public ObservableGraph<TNodeDataTransformed, TEdgeDataTransformed>
+    Transform<TNodeDataTransformed, TEdgeDataTransformed>(
+      Func<TNodeData, TNodeDataTransformed> nodeDataTransformation,
+      Func<TEdgeData, TEdgeDataTransformed> edgeDataTransformation
+    ) => new(graph.Transform(nodeDataTransformation, edgeDataTransformation));
+
+  #region To Indexed Graph
+
+  public ObservableIndexedGraph<TIndex, TNodeData, TEdgeData> ToIndexedGraph<TIndex>(
+    Func<TNodeData, TIndex> indexGeneratorFunction, IEqualityComparer<TIndex>? indexEqualityComparer = null)
+    where TIndex : notnull =>
+    new(graph.ToIndexedGraph(indexGeneratorFunction, indexEqualityComparer));
+
+  public ObservableIndexedGraph<TIndex, TNodeData, TEdgeData> ToIndexedGraph<TIndex>(
+    IIndexProvider<TNodeData, TIndex> indexProvider, IEqualityComparer<TIndex>? indexEqualityComparer = null)
+    where TIndex : notnull => new(graph.ToIndexedGraph(indexProvider, indexEqualityComparer));
+
+  public ObservableIndexedGraph<TIndex, TNodeData, TEdgeData> ToIndexedGraph<TIndex>(
+    Func<TNodeData, TIndex> indexGeneratorFunction,
+    Func<IEqualityComparer<TIndex>?> indexEqualityComparerFactoryMethod) where TIndex : notnull =>
+    new(graph.ToIndexedGraph(indexGeneratorFunction, indexEqualityComparerFactoryMethod));
+
+  public ObservableIndexedGraph<TIndex, TNodeData, TEdgeData> ToIndexedGraph<TIndex>(
+    IIndexProvider<TNodeData, TIndex> indexProvider,
+    Func<IEqualityComparer<TIndex>?> indexEqualityComparerFactoryMethod) where TIndex : notnull =>
+    new(graph.ToIndexedGraph(indexProvider, indexEqualityComparerFactoryMethod));
+
+  public ObservableIndexedGraph<TIndex, TNodeData, TEdgeData> ToIndexedGraph<TIndex>(
+    Func<TNodeData, TIndex> indexGeneratorFunction,
+    Func<TNodeData, TNodeData> cloneNodeData,
+    Func<TEdgeData, TEdgeData> cloneEdgeData,
+    IEqualityComparer<TIndex>? indexEqualityComparer = null) where TIndex : notnull =>
+    new(graph.ToIndexedGraph(indexGeneratorFunction, cloneNodeData, cloneEdgeData, indexEqualityComparer));
+
+  public ObservableIndexedGraph<TIndex, TNodeData, TEdgeData> ToIndexedGraph<TIndex>(
+    IIndexProvider<TNodeData, TIndex> indexProvider,
+    Func<TNodeData, TNodeData> cloneNodeData,
+    Func<TEdgeData, TEdgeData> cloneEdgeData,
+    IEqualityComparer<TIndex>? indexEqualityComparer = null) where TIndex : notnull =>
+    new(graph.ToIndexedGraph(indexProvider, cloneNodeData, cloneEdgeData, indexEqualityComparer));
+
+  public ObservableIndexedGraph<TIndex, TNodeData, TEdgeData> ToIndexedGraph<TIndex>(
+    Func<TNodeData, TIndex> indexGeneratorFunction,
+    Func<TNodeData, TNodeData> cloneNodeData,
+    Func<TEdgeData, TEdgeData> cloneEdgeData,
+    Func<IEqualityComparer<TIndex>?> indexEqualityComparerFactoryMethod) where TIndex : notnull =>
+    new(graph.ToIndexedGraph(indexGeneratorFunction, cloneNodeData, cloneEdgeData, indexEqualityComparerFactoryMethod));
+
+  public ObservableIndexedGraph<TIndex, TNodeData, TEdgeData> ToIndexedGraph<TIndex>(
+    IIndexProvider<TNodeData, TIndex> indexProvider,
+    Func<TNodeData, TNodeData> cloneNodeData,
+    Func<TEdgeData, TEdgeData> cloneEdgeData,
+    Func<IEqualityComparer<TIndex>?> indexEqualityComparerFactoryMethod) where TIndex : notnull =>
+    new(graph.ToIndexedGraph(indexProvider, cloneNodeData, cloneEdgeData, indexEqualityComparerFactoryMethod));
+
+  public ObservableIndexedGraph<TIndex, TNodeDataTransformed, TEdgeDataTransformed> TransformToIndexedGraph<TIndex,
+    TNodeDataTransformed, TEdgeDataTransformed>(
+    Func<TNodeData, TIndex> indexGeneratorFunction,
+    Func<TNodeData, TNodeDataTransformed> nodeDataTransformation,
+    Func<TEdgeData, TEdgeDataTransformed> edgeDataTransformation,
+    IEqualityComparer<TIndex>? indexEqualityComparer = null) where TIndex : notnull =>
+    new(graph.TransformToIndexedGraph(indexGeneratorFunction, nodeDataTransformation, edgeDataTransformation, indexEqualityComparer));
+
+  public ObservableIndexedGraph<TIndex, TNodeDataTransformed, TEdgeDataTransformed> TransformToIndexedGraph<TIndex,
+    TNodeDataTransformed, TEdgeDataTransformed>(
+    IIndexProvider<TNodeData, TIndex> indexProvider,
+    Func<TNodeData, TNodeDataTransformed> nodeDataTransformation,
+    Func<TEdgeData, TEdgeDataTransformed> edgeDataTransformation,
+    IEqualityComparer<TIndex>? indexEqualityComparer = null) where TIndex : notnull =>
+    new(graph.TransformToIndexedGraph(indexProvider, nodeDataTransformation, edgeDataTransformation, indexEqualityComparer));
+
+  public ObservableIndexedGraph<TIndex, TNodeDataTransformed, TEdgeDataTransformed> TransformToIndexedGraph<TIndex,
+    TNodeDataTransformed, TEdgeDataTransformed>(
+    Func<TNodeData, TIndex> indexGeneratorFunction,
+    Func<TNodeData, TNodeDataTransformed> nodeDataTransformation,
+    Func<TEdgeData, TEdgeDataTransformed> edgeDataTransformation,
+    Func<IEqualityComparer<TIndex>?> indexEqualityComparerFactoryMethod) where TIndex : notnull =>
+    new(graph.TransformToIndexedGraph(indexGeneratorFunction, nodeDataTransformation, edgeDataTransformation, indexEqualityComparerFactoryMethod));
+
+  public ObservableIndexedGraph<TIndex, TNodeDataTransformed, TEdgeDataTransformed> TransformToIndexedGraph<TIndex,
+    TNodeDataTransformed, TEdgeDataTransformed>(
+    IIndexProvider<TNodeData, TIndex> indexProvider,
+    Func<TNodeData, TNodeDataTransformed> nodeDataTransformation,
+    Func<TEdgeData, TEdgeDataTransformed> edgeDataTransformation,
+    Func<IEqualityComparer<TIndex>?> indexEqualityComparerFactoryMethod) where TIndex : notnull =>
+    new(graph.TransformToIndexedGraph(indexProvider, nodeDataTransformation, edgeDataTransformation, indexEqualityComparerFactoryMethod));
+
+  #endregion
 
   #endregion
 
