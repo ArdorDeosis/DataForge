@@ -1,6 +1,4 @@
-﻿using DataForge.Graphs;
-
-namespace DataForge.ObservableGraphs;
+﻿namespace DataForge.Graphs.Observable;
 
 public interface IObservableIndexedGraph<TIndex, TNodeData, TEdgeData> : IIndexedGraph<TIndex, TNodeData, TEdgeData> where TIndex : notnull
 {

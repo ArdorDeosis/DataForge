@@ -1,9 +1,10 @@
-﻿namespace DataForge.Graphs;
+﻿using JetBrains.Annotations;
 
+namespace DataForge.Graphs;
+
+[PublicAPI]
 public sealed class IndexedEdge<TIndex, TNodeData, TEdgeData> :
-  IndexedGraphComponent<TIndex, TNodeData, TEdgeData>,
-  IEdge<TNodeData, TEdgeData>
-  where TIndex : notnull
+  IndexedGraphComponent<TIndex, TNodeData, TEdgeData>, IIndexedEdge<TIndex, TNodeData, TEdgeData> where TIndex : notnull
 {
   internal readonly TIndex DestinationIndex;
   internal readonly TIndex OriginIndex;
@@ -35,5 +36,8 @@ public sealed class IndexedEdge<TIndex, TNodeData, TEdgeData> :
     IsValid ? Graph.GetNode(DestinationIndex) : throw ComponentInvalidException;
 
   INode<TNodeData, TEdgeData> IEdge<TNodeData, TEdgeData>.Origin => Origin;
+  
   INode<TNodeData, TEdgeData> IEdge<TNodeData, TEdgeData>.Destination => Destination;
+  
+  protected override string Description => "Edge";
 }

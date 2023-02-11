@@ -1,7 +1,6 @@
-﻿using DataForge.Graphs;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 
-namespace DataForge.ObservableGraphs;
+namespace DataForge.Graphs.Observable;
 
 /// <summary>
 /// Data for the <see cref="IObservableIndexedGraph{TIndex,TNodeData,TEdgeData}.GraphChanged"/> event of an

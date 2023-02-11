@@ -39,105 +39,157 @@ public sealed class AutoIndexedGraph<TIndex, TNodeData, TEdgeData> :
   #endregion
 
   #region Data Access
-
-  /// <inheritdoc />
+  
+  #region Nodes
+  
   public IReadOnlyCollection<IndexedNode<TIndex, TNodeData, TEdgeData>> Nodes => graph.Nodes;
 
-  /// <inheritdoc />
+  IReadOnlyCollection<IIndexedNode<TIndex, TNodeData, TEdgeData>> IReadOnlyIndexedGraph<TIndex, TNodeData, TEdgeData>.
+    Nodes => graph.Nodes;
+
   IReadOnlyCollection<INode<TNodeData, TEdgeData>> IReadOnlyGraph<TNodeData, TEdgeData>.Nodes => graph.Nodes;
-
-  /// <inheritdoc />
-  public IReadOnlyCollection<IndexedEdge<TIndex, TNodeData, TEdgeData>> Edges => graph.Edges;
-
-  /// <inheritdoc />
-  IReadOnlyCollection<IEdge<TNodeData, TEdgeData>> IReadOnlyGraph<TNodeData, TEdgeData>.Edges => Edges;
-
-  /// <inheritdoc />
-  public IReadOnlyCollection<TIndex> Indices => graph.Indices;
-
-  /// <inheritdoc />
-  public bool Contains(INode<TNodeData, TEdgeData> node) => graph.Contains(node);
-
-  /// <inheritdoc />
-  public bool Contains(IEdge<TNodeData, TEdgeData> edge) => graph.Contains(edge);
-
-  /// <inheritdoc />
-  public bool Contains(TIndex index) => graph.Contains(index);
-
-  /// <inheritdoc />
-  public int Order => graph.Order;
-
-  /// <inheritdoc />
-  public int Size => graph.Size;
-
-  /// <inheritdoc />
+  
   public IndexedNode<TIndex, TNodeData, TEdgeData> this[TIndex index] => graph[index];
 
-  /// <inheritdoc />
-  public IndexedNode<TIndex, TNodeData, TEdgeData> GetNode(TIndex index) => graph.GetNode(index);
+  IIndexedNode<TIndex, TNodeData, TEdgeData> IReadOnlyIndexedGraph<TIndex, TNodeData, TEdgeData>.this[TIndex index] =>
+    graph[index];
+  
+  public IndexedNode<TIndex, TNodeData, TEdgeData> GetNode(TIndex index) => graph[index];
 
-  /// <inheritdoc />
   public IndexedNode<TIndex, TNodeData, TEdgeData>? GetNodeOrNull(TIndex index) => graph.GetNodeOrNull(index);
 
-  /// <inheritdoc />
   public bool TryGetNode(TIndex index, [NotNullWhen(true)] out IndexedNode<TIndex, TNodeData, TEdgeData>? node) =>
     graph.TryGetNode(index, out node);
 
+  public bool Contains(INode<TNodeData, TEdgeData> node) => graph.Contains(node);
+
+  #endregion
+
+  #region Edges
+
+  public IReadOnlyCollection<IndexedEdge<TIndex, TNodeData, TEdgeData>> Edges => graph.Edges;
+  
+  IReadOnlyCollection<IIndexedEdge<TIndex, TNodeData, TEdgeData>> IReadOnlyIndexedGraph<TIndex, TNodeData, TEdgeData>.
+    Edges => graph.Edges;
+
+  IReadOnlyCollection<IEdge<TNodeData, TEdgeData>> IReadOnlyGraph<TNodeData, TEdgeData>.Edges => graph.Edges;
+  
+  public bool Contains(IEdge<TNodeData, TEdgeData> edge) => graph.Contains(edge);
+
+  #endregion
+
+  #region Indices
+
+  public IReadOnlyCollection<TIndex> Indices => graph.Indices;
+  
+  public bool Contains(TIndex index) => graph.Contains(index);
+
+  #endregion
+
+  #region Graph Metrics
+
+  public int Order => graph.Order;
+
+  public int Size => graph.Size;
+
+  #endregion
+  
   #endregion
 
   #region Data Modification
 
-  /// <inheritdoc />
-  public IndexedNode<TIndex, TNodeData, TEdgeData> AddNode(TNodeData data) =>
-    graph.AddNode(indexProvider.GetIndex(data), data);
+  #region Add Nodes
 
-  /// <inheritdoc />
-  public bool TryAddNode(TNodeData data, [NotNullWhen(true)] out IndexedNode<TIndex, TNodeData, TEdgeData>? node) =>
-    graph.TryAddNode(indexProvider.GetIndex(data), data, out node);
+  public IndexedNode<TIndex, TNodeData, TEdgeData> AddNode(TNodeData data)
+  {
+    var index = indexProvider.GetCurrentIndex(data);
+    var node = graph.AddNode(index, data);
+    indexProvider.Move();
+    return node;
+  }
 
-  /// <inheritdoc />
+  IIndexedNode<TIndex, TNodeData, TEdgeData> IAutoIndexedGraph<TIndex, TNodeData, TEdgeData>.AddNode(TNodeData data) => AddNode(data);
+
+  public bool TryAddNode(TNodeData data, [NotNullWhen(true)] out IndexedNode<TIndex, TNodeData, TEdgeData>? node)
+  {
+    var nodeAdded = graph.TryAddNode(indexProvider.GetCurrentIndex(data), data, out node);
+    if(nodeAdded)
+      indexProvider.Move();
+    return nodeAdded;
+  }
+
+  bool IAutoIndexedGraph<TIndex, TNodeData, TEdgeData>.TryAddNode(TNodeData data,
+    [NotNullWhen(true)] out IIndexedNode<TIndex, TNodeData, TEdgeData>? node)
+  {
+    node = TryAddNode(data, out var indexedNode) ? indexedNode : null;
+    return node is not null;
+  }
+
+  #endregion
+
+  #region Remove Nodes
+
+  public bool RemoveNode(TIndex index) => graph.RemoveNode(index, out _);
+
+  public bool RemoveNode(TIndex index, [NotNullWhen(true)] out IndexedNode<TIndex, TNodeData, TEdgeData>? node) =>
+    graph.RemoveNode(index, out node);
+
+  public bool RemoveNode(TIndex index, [NotNullWhen(true)] out IIndexedNode<TIndex, TNodeData, TEdgeData>? node)
+  {
+    node = graph.RemoveNode(index, out var indexedNode) ? indexedNode : null;
+    return node is not null;
+  }
+  
+  public bool RemoveNode(IIndexedNode<TIndex, TNodeData, TEdgeData> node) => graph.RemoveNode(node);
+  
+  public bool RemoveNode(IndexedNode<TIndex, TNodeData, TEdgeData> node) => graph.RemoveNode(node);
+
+  public bool RemoveNode(INode<TNodeData, TEdgeData> node) => graph.RemoveNode(node);
+
+  public int RemoveNodesWhere(Predicate<TNodeData> predicate) => graph.RemoveNodesWhere(predicate);
+
+  #endregion
+
+  #region Add Edges
+
   public IndexedEdge<TIndex, TNodeData, TEdgeData> AddEdge(TIndex origin, TIndex destination, TEdgeData data) =>
     graph.AddEdge(origin, destination, data);
 
-  /// <inheritdoc />
+  IIndexedEdge<TIndex, TNodeData, TEdgeData> IIndexedGraph<TIndex, TNodeData, TEdgeData>.AddEdge(TIndex origin,
+    TIndex destination, TEdgeData data) =>
+    AddEdge(origin, destination, data);
+
   public bool TryAddEdge(TIndex origin, TIndex destination, TEdgeData data,
     [NotNullWhen(true)] out IndexedEdge<TIndex, TNodeData, TEdgeData>? edge) =>
     graph.TryAddEdge(origin, destination, data, out edge);
 
-  /// <inheritdoc />
-  public bool RemoveNode(TIndex index) => graph.RemoveNode(index);
+  #endregion
 
-  /// <inheritdoc />
-  public bool RemoveNode(TIndex index,
-    [NotNullWhen(true)] out IndexedNode<TIndex, TNodeData, TEdgeData>? node) =>
-    graph.RemoveNode(index, out node);
+  #region Remove Edges
 
-  /// <inheritdoc />
-  public bool RemoveNode(IndexedNode<TIndex, TNodeData, TEdgeData> node) => graph.RemoveNode(node);
-
-  /// <inheritdoc />
-  bool IGraph<TNodeData, TEdgeData>.RemoveNode(INode<TNodeData, TEdgeData> node) =>
-    ((IGraph<TNodeData, TEdgeData>)graph).RemoveNode(node);
-
-  /// <inheritdoc />
   public bool RemoveEdge(IndexedEdge<TIndex, TNodeData, TEdgeData> edge) => graph.RemoveEdge(edge);
 
-  /// <inheritdoc />
-  bool IGraph<TNodeData, TEdgeData>.RemoveEdge(IEdge<TNodeData, TEdgeData> edge) =>
-    ((IGraph<TNodeData, TEdgeData>)graph).RemoveEdge(edge);
+  public bool RemoveEdge(IIndexedEdge<TIndex, TNodeData, TEdgeData> edge) => graph.RemoveEdge(edge);
 
-  /// <inheritdoc />
-  public int RemoveNodesWhere(Predicate<TNodeData> predicate) => graph.RemoveNodesWhere(predicate);
+  bool IGraph<TNodeData, TEdgeData>.RemoveEdge(IEdge<TNodeData, TEdgeData> edge) => graph.RemoveEdge(edge);
 
-  /// <inheritdoc />
   public int RemoveEdgesWhere(Predicate<TEdgeData> predicate) => graph.RemoveEdgesWhere(predicate);
 
-  /// <inheritdoc />
+  public void ClearEdges() => graph.ClearEdges();
+
+  #endregion
+
+  #region Clear
+
   public void Clear() => graph.Clear();
 
   #endregion
 
+  #endregion
+
   #region Transformation
+
+  #region To Indexed Graph
 
   public IndexedGraph<TIndex, TNodeData, TEdgeData> ToIndexedGraph() => graph.Clone();
 
@@ -166,6 +218,10 @@ public sealed class AutoIndexedGraph<TIndex, TNodeData, TEdgeData> :
     graph.Transform(nodeDataTransformation, edgeDataTransformation,
       indexTransformation, indexEqualityComparerFactoryMethod);
 
+  #endregion
+
+  #region To Unindexed Graph
+
   public Graph<TNodeData, TEdgeData> ToUnindexedGraph() => ToUnindexedGraph(data => data, data => data);
 
   public Graph<TNodeData, TEdgeData> ToUnindexedGraph(
@@ -178,6 +234,8 @@ public sealed class AutoIndexedGraph<TIndex, TNodeData, TEdgeData> :
     Func<TNodeData, TNodeDataTransformed> nodeDataTransformation,
     Func<TEdgeData, TEdgeDataTransformed> edgeDataTransformation) =>
     graph.TransformToUnindexedGraph(nodeDataTransformation, edgeDataTransformation);
+
+  #endregion
 
   #endregion
 }

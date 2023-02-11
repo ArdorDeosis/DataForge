@@ -10,10 +10,10 @@ public interface IReadOnlyUnindexedGraph<TNodeData, TEdgeData> : IReadOnlyGraph<
   /// <summary>
   /// Gets a collection of all the unindexed nodes in the graph.
   /// </summary>
-  new IReadOnlyCollection<Node<TNodeData, TEdgeData>> Nodes { get; }
+  new IReadOnlyCollection<INode<TNodeData, TEdgeData>> Nodes { get; }
 
   /// <summary>
   /// Gets a collection of all the unindexed edges in the graph.
   /// </summary>
-  new IReadOnlyCollection<Edge<TNodeData, TEdgeData>> Edges { get; }
+  new IReadOnlyCollection<IEdge<TNodeData, TEdgeData>> Edges { get; }
 }

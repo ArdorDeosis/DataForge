@@ -39,4 +39,9 @@ public interface IGraph<TNodeData, TEdgeData> : IReadOnlyGraph<TNodeData, TEdgeD
   /// Removes all nodes and edges from the graph.
   /// </summary>
   void Clear();
+  
+  /// <summary>
+  /// Removes all edges from the graph.
+  /// </summary>
+  void ClearEdges();
 }

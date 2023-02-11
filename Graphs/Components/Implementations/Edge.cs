@@ -1,19 +1,22 @@
-﻿namespace DataForge.Graphs;
+﻿using JetBrains.Annotations;
 
+namespace DataForge.Graphs;
+
+[PublicAPI]
 public sealed class Edge<TNodeData, TEdgeData> :
   UnindexedGraphComponent<TNodeData, TEdgeData>,
   IEdge<TNodeData, TEdgeData>
 {
-  internal readonly Node<TNodeData, TEdgeData> InternalDestination;
-  internal readonly Node<TNodeData, TEdgeData> InternalOrigin;
+  private readonly Node<TNodeData, TEdgeData> destination;
+  private readonly Node<TNodeData, TEdgeData> origin;
 
   private TEdgeData data;
 
   internal Edge(Graph<TNodeData, TEdgeData> graph, Node<TNodeData, TEdgeData> origin,
     Node<TNodeData, TEdgeData> destination, TEdgeData data) : base(graph)
   {
-    InternalOrigin = origin;
-    InternalDestination = destination;
+    this.origin = origin;
+    this.destination = destination;
     this.data = data;
   }
 
@@ -28,11 +31,14 @@ public sealed class Edge<TNodeData, TEdgeData> :
   }
 
   public Node<TNodeData, TEdgeData> Origin =>
-    IsValid ? InternalOrigin : throw ComponentInvalidException;
+    IsValid ? origin : throw ComponentInvalidException;
 
   public Node<TNodeData, TEdgeData> Destination =>
-    IsValid ? InternalDestination : throw ComponentInvalidException;
+    IsValid ? destination : throw ComponentInvalidException;
 
   INode<TNodeData, TEdgeData> IEdge<TNodeData, TEdgeData>.Origin => Origin;
+  
   INode<TNodeData, TEdgeData> IEdge<TNodeData, TEdgeData>.Destination => Destination;
+  
+  protected override string Description => "Edge";
 }
