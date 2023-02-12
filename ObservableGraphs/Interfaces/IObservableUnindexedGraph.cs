@@ -1,6 +1,7 @@
 ﻿namespace DataForge.Graphs.Observable;
 
-public interface IObservableUnindexedGraph<TNodeData, TEdgeData> : IUnindexedGraph<TNodeData, TEdgeData>
+public interface IObservableUnindexedGraph<TNodeData, TEdgeData> : IUnindexedGraph<TNodeData, TEdgeData>,
+  IObservableGraph<TNodeData, TEdgeData>
 {
-  event EventHandler<GraphChangedEventArgs<TNodeData, TEdgeData>> GraphChanged;
+  new event EventHandler<GraphChangedEventArgs<TNodeData, TEdgeData>> GraphChanged;
 }

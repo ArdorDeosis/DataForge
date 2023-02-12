@@ -33,6 +33,8 @@ public sealed class ObservableIndexedGraph<TIndex, TNodeData, TEdgeData> :
     AddNode(index, data);
 
   public event EventHandler<IndexedGraphChangedEventArgs<TIndex, TNodeData, TEdgeData>>? GraphChanged;
+  
+  private event EventHandler<IGraphChangedEventArgs<TNodeData, TEdgeData>>? GraphChangedInterfaceImplementation;
 
   IReadOnlyCollection<INode<TNodeData, TEdgeData>> IReadOnlyGraph<TNodeData, TEdgeData>.Nodes => graph.Nodes;
 
@@ -197,13 +199,10 @@ public sealed class ObservableIndexedGraph<TIndex, TNodeData, TEdgeData> :
     return removedEdge;
   }
 
-  public ObservableIndexedGraph<TIndex, TNodeData, TEdgeData> Clone() =>
-    new ObservableIndexedGraph<TIndex, TNodeData, TEdgeData>(graph.Clone());
+  public ObservableIndexedGraph<TIndex, TNodeData, TEdgeData> Clone() => new(graph.Clone());
 
-  public ObservableIndexedGraph<TIndex, TNodeData, TEdgeData> Clone(
-    Func<TNodeData, TNodeData> cloneNodeData,
-    Func<TEdgeData, TEdgeData> cloneEdgeData) =>
-    new ObservableIndexedGraph<TIndex, TNodeData, TEdgeData>(graph.Clone(cloneNodeData, cloneEdgeData));
+  public ObservableIndexedGraph<TIndex, TNodeData, TEdgeData> Clone(Func<TNodeData, TNodeData> cloneNodeData,
+    Func<TEdgeData, TEdgeData> cloneEdgeData) => new(graph.Clone(cloneNodeData, cloneEdgeData));
 
   public ObservableIndexedGraph<TIndexTransformed, TNodeDataTransformed, TEdgeDataTransformed>
     Transform<TIndexTransformed, TNodeDataTransformed, TEdgeDataTransformed>(
@@ -212,7 +211,7 @@ public sealed class ObservableIndexedGraph<TIndex, TNodeData, TEdgeData> :
       Func<TIndex, TIndexTransformed> indexTransformation,
       IEqualityComparer<TIndexTransformed>? indexEqualityComparer = null
     ) where TIndexTransformed : notnull =>
-    new ObservableIndexedGraph<TIndexTransformed, TNodeDataTransformed, TEdgeDataTransformed>(graph.Transform(
+    new(graph.Transform(
       nodeDataTransformation, edgeDataTransformation, indexTransformation,
       indexEqualityComparer));
 
@@ -223,29 +222,35 @@ public sealed class ObservableIndexedGraph<TIndex, TNodeData, TEdgeData> :
       Func<TIndex, TIndexTransformed> indexTransformation,
       Func<IEqualityComparer<TIndexTransformed>?> indexEqualityComparerFactoryMethod
     ) where TIndexTransformed : notnull =>
-    new ObservableIndexedGraph<TIndexTransformed, TNodeDataTransformed, TEdgeDataTransformed>(graph.Transform(
+    new(graph.Transform(
       nodeDataTransformation,
       edgeDataTransformation,
       indexTransformation,
       indexEqualityComparerFactoryMethod));
 
-  public ObservableGraph<TNodeData, TEdgeData> ToUnindexedGraph() =>
-    new ObservableGraph<TNodeData, TEdgeData>(graph.ToUnindexedGraph());
+  public ObservableGraph<TNodeData, TEdgeData> ToUnindexedGraph() => new(graph.ToUnindexedGraph());
 
   public ObservableGraph<TNodeData, TEdgeData> ToUnindexedGraph(
     Func<TNodeData, TNodeData> cloneNodeData,
     Func<TEdgeData, TEdgeData> cloneEdgeData) =>
-    new ObservableGraph<TNodeData, TEdgeData>(graph.ToUnindexedGraph(cloneNodeData, cloneEdgeData));
+    new(graph.ToUnindexedGraph(cloneNodeData, cloneEdgeData));
 
   public ObservableGraph<TNodeDataTransformed, TEdgeDataTransformed> TransformToUnindexedGraph<TNodeDataTransformed,
     TEdgeDataTransformed>(
     Func<TNodeData, TNodeDataTransformed> nodeDataTransformation,
     Func<TEdgeData, TEdgeDataTransformed> edgeDataTransformation) =>
-    new ObservableGraph<TNodeDataTransformed, TEdgeDataTransformed>(
+    new(
       graph.TransformToUnindexedGraph(nodeDataTransformation, edgeDataTransformation));
 
   private void InvokeGraphChanged(IndexedGraphChangedEventArgs<TIndex, TNodeData, TEdgeData> eventArgs)
   {
     GraphChanged?.Invoke(this, eventArgs);
+    GraphChangedInterfaceImplementation?.Invoke(this, eventArgs);
+  }
+
+  event EventHandler<IGraphChangedEventArgs<TNodeData, TEdgeData>>? IObservableGraph<TNodeData, TEdgeData>.GraphChanged
+  {
+    add => GraphChangedInterfaceImplementation += value;
+    remove => GraphChangedInterfaceImplementation -= value;
   }
 }
