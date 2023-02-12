@@ -1,6 +1,4 @@
-﻿using JetBrains.Annotations;
-
-namespace DataForge.GraphCreation;
+﻿namespace DataForge.GraphCreation;
 
 /// <summary>
 /// Creation options for edge data in a non-indexed graph.
