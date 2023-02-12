@@ -6,9 +6,9 @@ public static partial class GraphCreator
 {
   /// <summary>
   /// Creates a complete graph from a set of node data. The
-  /// <see cref="CompleteGraphCreationOptions{TNodeData,TEdgeData}">options</see> provide the  
-  /// <see cref="CompleteGraphCreationOptions{TNodeData,TEdgeData}.NodeData">node data</see>, 
-  /// <see cref="CompleteGraphCreationOptions{TNodeData,TEdgeData}.EdgeDirection">edge direction</see> and a function to 
+  /// <see cref="CompleteGraphCreationOptions{TNodeData,TEdgeData}">options</see> provide the
+  /// <see cref="CompleteGraphCreationOptions{TNodeData,TEdgeData}.NodeData">node data</see>,
+  /// <see cref="CompleteGraphCreationOptions{TNodeData,TEdgeData}.EdgeDirection">edge direction</see> and a function to
   /// <see cref="UnindexedGraphEdgeDataCreationOption{TNodeData,TEdgeData}.CreateEdgeData">generate edge data</see>.
   /// </summary>
   /// <param name="options">Graphs creation options.</param>
@@ -25,14 +25,12 @@ public static partial class GraphCreator
     for (var i = 0; i < nodeArray.Length; i++)
     {
       for (var j = i + 1; j < nodeArray.Length; j++)
-      {
         graph.AddEdgesForDirection(
           options.EdgeDirection,
           nodeArray[i],
           nodeArray[j],
           options.CreateEdgeData
         );
-      }
     }
 
     return graph;

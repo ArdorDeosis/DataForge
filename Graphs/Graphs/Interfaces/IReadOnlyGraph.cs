@@ -18,6 +18,16 @@ public interface IReadOnlyGraph<TNodeData, TEdgeData>
   IReadOnlyCollection<IEdge<TNodeData, TEdgeData>> Edges { get; }
 
   /// <summary>
+  /// Gets the number of nodes in the graph.
+  /// </summary>
+  int Order { get; }
+
+  /// <summary>
+  /// Gets the number of edges in the graph.
+  /// </summary>
+  int Size { get; }
+
+  /// <summary>
   /// Determines whether the graph contains a specific node.
   /// </summary>
   /// <param name="node">The node to locate in the graph.</param>
@@ -30,14 +40,4 @@ public interface IReadOnlyGraph<TNodeData, TEdgeData>
   /// <param name="edge">The edge to locate in the graph.</param>
   /// <returns>True if the graph contains the specified edge, false otherwise.</returns>
   bool Contains(IEdge<TNodeData, TEdgeData> edge);
-
-  /// <summary>
-  /// Gets the number of nodes in the graph.
-  /// </summary>
-  int Order { get; }
-
-  /// <summary>
-  /// Gets the number of edges in the graph.
-  /// </summary>
-  int Size { get; }
 }

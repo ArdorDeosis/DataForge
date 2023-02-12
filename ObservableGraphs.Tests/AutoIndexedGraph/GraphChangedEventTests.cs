@@ -7,26 +7,28 @@ namespace DataForge.ObservableGraphs.Tests.AutoIndexedGraph;
 [TestFixture]
 public class GraphChangedEventTests
 {
-#pragma warning disable CS8618 // field not initialized warning; is initialized in setup method
-  private static ObservableAutoIndexedGraph<int, int, int> graph;
-#pragma warning restore CS8618
-  private static readonly List<IndexedGraphChangedEventArgs<int, int, int>> EventList = new();
-
   [SetUp]
   public void Setup()
   {
     graph = new ObservableAutoIndexedGraph<int, int, int>(data => data);
     EventList.Clear();
   }
+#pragma warning disable CS8618 // field not initialized warning; is initialized in setup method
+  private static ObservableAutoIndexedGraph<int, int, int> graph;
+#pragma warning restore CS8618
+  private static readonly List<IndexedGraphChangedEventArgs<int, int, int>> EventList = new();
 
-  private static void LogEvent(object? sender, IndexedGraphChangedEventArgs<int, int, int> eventArgs) =>
+  private static void LogEvent(object? sender, IndexedGraphChangedEventArgs<int, int, int> eventArgs)
+  {
     EventList.Add(eventArgs);
+  }
 
   public delegate IndexedNode<int, int, int> AddNode(ObservableAutoIndexedGraph<int, int, int> graph, int index);
 
   public delegate void RemoveNode(ObservableAutoIndexedGraph<int, int, int> graph, IndexedNode<int, int, int> node);
-  
-  public delegate IndexedEdge<int, int, int> AddEdge(ObservableAutoIndexedGraph<int, int, int> graph, int origin, int destination, int data);
+
+  public delegate IndexedEdge<int, int, int> AddEdge(ObservableAutoIndexedGraph<int, int, int> graph, int origin,
+    int destination, int data);
 
   public static IEnumerable<AddNode> AddNodeActions()
   {
@@ -45,7 +47,7 @@ public class GraphChangedEventTests
     yield return (graph, index) => graph.TryAddNode(index, out var node) ? node : null!;
     // ReSharper restore ParameterHidesMember
   }
-  
+
   public static IEnumerable<RemoveNode> RemoveNodeActions()
   {
     // ReSharper disable ParameterHidesMember
@@ -54,6 +56,7 @@ public class GraphChangedEventTests
     yield return (graph, node) => graph.RemoveNode(node.Index, out _);
     // ReSharper restore ParameterHidesMember
   }
+
   public static IEnumerable<AddEdge> AddEdgeActions()
   {
     // ReSharper disable ParameterHidesMember
@@ -68,7 +71,8 @@ public class GraphChangedEventTests
         return null!;
       }
     };
-    yield return (graph, origin, destination, data) => graph.TryAddEdge(origin, destination, data, out var edge) ? edge : null!;
+    yield return (graph, origin, destination, data) =>
+      graph.TryAddEdge(origin, destination, data, out var edge) ? edge : null!;
     // ReSharper restore ParameterHidesMember
   }
 
@@ -201,14 +205,14 @@ public class GraphChangedEventTests
     // ASSERT
     Assert.That(EventList, Is.Empty);
   }
-  
+
   [Test]
   public void RemoveEdge_EdgeIsRemoved_EventIsFiredOnceWithCorrectData()
   {
     // ARRANGE
     var edge = graph.AddEdge(
-      graph.AddNode(0xC0FFEE).Index, 
-      graph.AddNode(0xBEEF).Index, 
+      graph.AddNode(0xC0FFEE).Index,
+      graph.AddNode(0xBEEF).Index,
       default);
     graph.GraphChanged += LogEvent;
 
@@ -229,8 +233,8 @@ public class GraphChangedEventTests
   {
     // ARRANGE
     var edge = graph.AddEdge(
-      graph.AddNode(0xC0FFEE).Index, 
-      graph.AddNode(0xBEEF).Index, 
+      graph.AddNode(0xC0FFEE).Index,
+      graph.AddNode(0xBEEF).Index,
       default);
     graph.RemoveEdge(edge);
     graph.GraphChanged += LogEvent;
@@ -270,7 +274,8 @@ public class GraphChangedEventTests
   {
     // ARRANGE
     bool Predicate(int data) => data > 0;
-    var nodes = new []
+
+    var nodes = new[]
     {
       graph.AddNode(0xC0FFEE),
       graph.AddNode(0xBEEF),
@@ -290,12 +295,13 @@ public class GraphChangedEventTests
     Assert.That(eventArgs.AddedEdges, Is.Empty);
     Assert.That(eventArgs.RemovedEdges, Is.Empty);
   }
-  
+
   [Test]
   public void RemoveNodesWhere_AdjacentEdgesAreRemoved_EventIsFiredOnceWithCorrectData()
   {
     // ARRANGE
     bool Predicate(int data) => data > 0;
+
     var indices = new[] { 0, 1 };
     var nodes = indices.Select(index => graph.AddNode(index)).ToArray();
     var edgesToRemove = new[]
@@ -318,16 +324,17 @@ public class GraphChangedEventTests
     Assert.That(eventArgs.AddedEdges, Is.Empty);
     Assert.That(eventArgs.RemovedEdges, Is.EquivalentTo(edgesToRemove));
   }
-  
+
   [Test]
   public void RemoveEdgesWhere_EventIsFiredOnceWithCorrectData()
   {
     // ARRANGE
     bool Predicate(int data) => data > 0;
-    var data = new [] { 0xC0FFEE, 0xBEEF, 0, int.MinValue };
+
+    var data = new[] { 0xC0FFEE, 0xBEEF, 0, int.MinValue };
     var edges = data.Select(value => graph.AddEdge(
       graph.AddNode(value).Index,
-      graph.AddNode(value + 1).Index, 
+      graph.AddNode(value + 1).Index,
       value)).ToArray();
     graph.GraphChanged += LogEvent;
 

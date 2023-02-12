@@ -26,27 +26,30 @@ public static class CoordinateHelpers
   /// <summary>
   /// Checks equality for two coordinates represented as <tt>int[]</tt>.
   /// </summary>
-  public static bool CoordinatesEqual(this IReadOnlyList<int> left, IReadOnlyList<int> right) =>
-    (left, right) switch
+  public static bool CoordinatesEqual(this IReadOnlyList<int> left, IReadOnlyList<int> right)
+  {
+    return (left, right) switch
     {
       (null, null) => true,
       (null, { }) or ({ }, null) => false,
       ({ }, { }) when left.Count != right.Count => false,
       _ => !left.Where((t, i) => t != right[i]).Any(),
     };
+  }
 
   /// <summary>
-  /// Gets a hash for a coordinate represented as <tt>int[]</tt> in compliance with the <see cref="CoordinatesEqual"/>
+  /// Gets a hash for a coordinate represented as <tt>int[]</tt> in compliance with the <see cref="CoordinatesEqual" />
   /// function.
   /// </summary>
   /// <remarks>
   /// This function only produces useful hashes for coordinates with up to 8 dimensions. After that, all further
   /// dimensions are ignored in regards to generating the hash. This could result in suboptimal performance for
-  /// retrieving objects from a dictionary for coordinates with more than 8 dimensions. 
+  /// retrieving objects from a dictionary for coordinates with more than 8 dimensions.
   /// </remarks>
   [ExcludeFromCodeCoverage]
-  public static int GetCoordinateHashCode(this IReadOnlyList<int> coordinate) =>
-    coordinate switch
+  public static int GetCoordinateHashCode(this IReadOnlyList<int> coordinate)
+  {
+    return coordinate switch
     {
       null or [] => 0,
       [var a] => a,
@@ -58,14 +61,15 @@ public static class CoordinateHelpers
       [var a, var b, var c, var d, var e, var f, var g] => HashCode.Combine(a, b, c, d, e, f, g),
       [var a, var b, var c, var d, var e, var f, var g, var h, ..] => HashCode.Combine(a, b, c, d, e, f, g, h),
     };
+  }
 
   /// <summary>
-  /// A <see cref="EqualityComparer{T}"/> to compare int arrays representing coordinates.
+  /// A <see cref="EqualityComparer{T}" /> to compare int arrays representing coordinates.
   /// </summary>
   /// <remarks>
-  /// The <see cref="GetHashCode"/> functions only produces useful hashes for coordinates with up to 8 dimensions. After
+  /// The <see cref="GetHashCode" /> functions only produces useful hashes for coordinates with up to 8 dimensions. After
   /// that, all further dimensions are ignored in regards to generating the hash. This could result in suboptimal
-  /// performance for retrieving objects from a dictionary for coordinates with more than 8 dimensions. 
+  /// performance for retrieving objects from a dictionary for coordinates with more than 8 dimensions.
   /// </remarks>
   public class EqualityComparer : EqualityComparer<IReadOnlyList<int>>
   {

@@ -35,7 +35,9 @@ public sealed class StarGraphCreationOptions<TNodeData, TEdgeData>
   /// <summary>
   /// Function to calculate the length of a ray based on its index. Rays are numbered from 0 to
   /// <see cref="StarGraphCreationOptions{TNodeData,TEdgeData}.RayCount">
-  /// StarGraphCreationOption&lt;TNodeData,TEdgeData&gt;.RayCount</see> - 1.
+  ///   StarGraphCreationOption&lt;TNodeData,TEdgeData&gt;.RayCount
+  /// </see>
+  /// - 1.
   /// </summary>
   public /*required*/ Func<int, int> CalculateRayLength { get; init; }
 #pragma warning restore CS8618

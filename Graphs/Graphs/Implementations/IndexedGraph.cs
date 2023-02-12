@@ -7,8 +7,6 @@ public sealed class IndexedGraph<TIndex, TNodeData, TEdgeData> :
   IManuallyIndexedGraph<TIndex, TNodeData, TEdgeData>
   where TIndex : notnull
 {
-  #region Fields
-
   internal readonly MultiValueDictionary<TIndex, IndexedEdge<TIndex, TNodeData, TEdgeData>>
     IncomingEdges = new();
 
@@ -20,10 +18,6 @@ public sealed class IndexedGraph<TIndex, TNodeData, TEdgeData> :
   private readonly HashSet<IndexedEdge<TIndex, TNodeData, TEdgeData>> edges;
 
   private readonly Func<IEqualityComparer<TIndex>?> nodeIndexEqualityComparerFactoryMethod;
-
-  #endregion
-
-  #region Constructors
 
   public IndexedGraph(IEqualityComparer<TIndex>? nodeIndexEqualityComparer = null)
     : this(() => nodeIndexEqualityComparer) { }
@@ -40,19 +34,13 @@ public sealed class IndexedGraph<TIndex, TNodeData, TEdgeData> :
     Indices = nodes.Keys.InReadOnlyWrapper();
   }
 
-  #endregion
-
-  #region Data Access
-
-  #region Nodes
-
   public IReadOnlyCollection<IndexedNode<TIndex, TNodeData, TEdgeData>> Nodes { get; }
 
   IReadOnlyCollection<IIndexedNode<TIndex, TNodeData, TEdgeData>> IReadOnlyIndexedGraph<TIndex, TNodeData, TEdgeData>.
     Nodes => Nodes;
 
   IReadOnlyCollection<INode<TNodeData, TEdgeData>> IReadOnlyGraph<TNodeData, TEdgeData>.Nodes => Nodes;
-  
+
   // TODO: should these have custom exceptions?
 
   public IndexedNode<TIndex, TNodeData, TEdgeData> this[TIndex index] => nodes[index];
@@ -71,42 +59,22 @@ public sealed class IndexedGraph<TIndex, TNodeData, TEdgeData> :
   public bool Contains(INode<TNodeData, TEdgeData> node) =>
     node is IndexedNode<TIndex, TNodeData, TEdgeData> indexedNode && nodes.ContainsValue(indexedNode);
 
-  #endregion
-
-  #region Edges
-
   public IReadOnlyCollection<IndexedEdge<TIndex, TNodeData, TEdgeData>> Edges { get; }
 
   IReadOnlyCollection<IIndexedEdge<TIndex, TNodeData, TEdgeData>> IReadOnlyIndexedGraph<TIndex, TNodeData, TEdgeData>.
     Edges => Edges;
 
   IReadOnlyCollection<IEdge<TNodeData, TEdgeData>> IReadOnlyGraph<TNodeData, TEdgeData>.Edges => Edges;
-  
+
   public bool Contains(IEdge<TNodeData, TEdgeData> edge) => edges.Contains(edge);
 
-  #endregion
-
-  #region Indices
-
   public IReadOnlyCollection<TIndex> Indices { get; }
-  
+
   public bool Contains(TIndex index) => nodes.ContainsKey(index);
-
-  #endregion
-
-  #region Graph Metrics
 
   public int Order => nodes.Count;
 
   public int Size => edges.Count;
-
-  #endregion
-
-  #endregion
-
-  #region Data Modification
-
-  #region Add Nodes
 
   public IndexedNode<TIndex, TNodeData, TEdgeData> AddNode(TIndex index, TNodeData data)
   {
@@ -118,7 +86,8 @@ public sealed class IndexedGraph<TIndex, TNodeData, TEdgeData> :
   }
 
   IIndexedNode<TIndex, TNodeData, TEdgeData> IManuallyIndexedGraph<TIndex, TNodeData, TEdgeData>.AddNode(TIndex index,
-    TNodeData data) => AddNode(index, data);
+    TNodeData data) =>
+    AddNode(index, data);
 
   public bool TryAddNode(TIndex index, TNodeData data,
     [NotNullWhen(true)] out IndexedNode<TIndex, TNodeData, TEdgeData>? node)
@@ -126,10 +95,6 @@ public sealed class IndexedGraph<TIndex, TNodeData, TEdgeData> :
     node = nodes.ContainsKey(index) ? null : AddNode(index, data);
     return node is not null;
   }
-
-  #endregion
-
-  #region Remove Nodes
 
   public bool RemoveNode(TIndex index) => RemoveNode(index, out _);
 
@@ -170,17 +135,15 @@ public sealed class IndexedGraph<TIndex, TNodeData, TEdgeData> :
   public bool RemoveNode(INode<TNodeData, TEdgeData> node) =>
     node is IndexedNode<TIndex, TNodeData, TEdgeData> indexedNode && RemoveNode(indexedNode);
 
-  public int RemoveNodesWhere(Predicate<TNodeData> predicate) =>
-    nodes.Values
+  public int RemoveNodesWhere(Predicate<TNodeData> predicate)
+  {
+    return nodes.Values
       .Where(node => predicate(node.Data))
       .Select(node => node.Index)
       .ToArray()
       .Where(RemoveNode)
       .Count();
-
-  #endregion
-
-  #region Add Edges
+  }
 
   public IndexedEdge<TIndex, TNodeData, TEdgeData> AddEdge(TIndex origin, TIndex destination,
     TEdgeData data)
@@ -197,7 +160,8 @@ public sealed class IndexedGraph<TIndex, TNodeData, TEdgeData> :
   }
 
   IIndexedEdge<TIndex, TNodeData, TEdgeData> IIndexedGraph<TIndex, TNodeData, TEdgeData>.AddEdge(TIndex origin,
-    TIndex destination, TEdgeData data) => AddEdge(origin, destination, data);
+    TIndex destination, TEdgeData data) =>
+    AddEdge(origin, destination, data);
 
   public bool TryAddEdge(TIndex origin, TIndex destination, TEdgeData data,
     [NotNullWhen(true)] out IndexedEdge<TIndex, TNodeData, TEdgeData>? edge)
@@ -205,10 +169,6 @@ public sealed class IndexedGraph<TIndex, TNodeData, TEdgeData> :
     edge = Contains(origin) && Contains(destination) ? AddEdge(origin, destination, data) : null;
     return edge is not null;
   }
-
-  #endregion
-
-  #region Remove Edges
 
   public bool RemoveEdge(IndexedEdge<TIndex, TNodeData, TEdgeData> edge)
   {
@@ -225,12 +185,14 @@ public sealed class IndexedGraph<TIndex, TNodeData, TEdgeData> :
   public bool RemoveEdge(IEdge<TNodeData, TEdgeData> edge) =>
     edge is IndexedEdge<TIndex, TNodeData, TEdgeData> indexedEdge && RemoveEdge(indexedEdge);
 
-  public int RemoveEdgesWhere(Predicate<TEdgeData> predicate) =>
-    edges
+  public int RemoveEdgesWhere(Predicate<TEdgeData> predicate)
+  {
+    return edges
       .Where(edge => predicate(edge.Data))
       .ToArray()
       .Where(RemoveEdge)
       .Count();
+  }
 
   public void ClearEdges()
   {
@@ -240,10 +202,6 @@ public sealed class IndexedGraph<TIndex, TNodeData, TEdgeData> :
     IncomingEdges.Clear();
     OutgoingEdges.Clear();
   }
-
-  #endregion
-
-  #region Clear
 
   public void Clear()
   {
@@ -257,19 +215,17 @@ public sealed class IndexedGraph<TIndex, TNodeData, TEdgeData> :
     OutgoingEdges.Clear();
   }
 
-  #endregion
-
-  #endregion
-
-  #region Clone & Transformation
-
-  public IndexedGraph<TIndex, TNodeData, TEdgeData> Clone() =>
-    Transform(data => data, data => data, index => index, nodeIndexEqualityComparerFactoryMethod);
+  public IndexedGraph<TIndex, TNodeData, TEdgeData> Clone()
+  {
+    return Transform(data => data, data => data, index => index, nodeIndexEqualityComparerFactoryMethod);
+  }
 
   public IndexedGraph<TIndex, TNodeData, TEdgeData> Clone(
     Func<TNodeData, TNodeData> cloneNodeData,
-    Func<TEdgeData, TEdgeData> cloneEdgeData) =>
-    Transform(cloneNodeData, cloneEdgeData, index => index, nodeIndexEqualityComparerFactoryMethod);
+    Func<TEdgeData, TEdgeData> cloneEdgeData)
+  {
+    return Transform(cloneNodeData, cloneEdgeData, index => index, nodeIndexEqualityComparerFactoryMethod);
+  }
 
   public IndexedGraph<TIndexTransformed, TNodeDataTransformed, TEdgeDataTransformed>
     Transform<TIndexTransformed, TNodeDataTransformed, TEdgeDataTransformed>(
@@ -277,8 +233,10 @@ public sealed class IndexedGraph<TIndex, TNodeData, TEdgeData> :
       Func<TEdgeData, TEdgeDataTransformed> edgeDataTransformation,
       Func<TIndex, TIndexTransformed> indexTransformation,
       IEqualityComparer<TIndexTransformed>? indexEqualityComparer = null
-    ) where TIndexTransformed : notnull =>
-    Transform(nodeDataTransformation, edgeDataTransformation, indexTransformation, () => indexEqualityComparer);
+    ) where TIndexTransformed : notnull
+  {
+    return Transform(nodeDataTransformation, edgeDataTransformation, indexTransformation, () => indexEqualityComparer);
+  }
 
   public IndexedGraph<TIndexTransformed, TNodeDataTransformed, TEdgeDataTransformed>
     Transform<TIndexTransformed, TNodeDataTransformed, TEdgeDataTransformed>(
@@ -299,9 +257,10 @@ public sealed class IndexedGraph<TIndex, TNodeData, TEdgeData> :
     return transformedGraph;
   }
 
-  #region To Unindexed Graph
-
-  public Graph<TNodeData, TEdgeData> ToUnindexedGraph() => ToUnindexedGraph(data => data, data => data);
+  public Graph<TNodeData, TEdgeData> ToUnindexedGraph()
+  {
+    return ToUnindexedGraph(data => data, data => data);
+  }
 
   public Graph<TNodeData, TEdgeData> ToUnindexedGraph(
     Func<TNodeData, TNodeData> cloneNodeData,
@@ -319,8 +278,4 @@ public sealed class IndexedGraph<TIndex, TNodeData, TEdgeData> :
       graph.AddEdge(nodeMap[edge.Origin], nodeMap[edge.Destination], edgeDataTransformation(edge.Data));
     return graph;
   }
-
-  #endregion
-
-  #endregion
 }

@@ -16,8 +16,8 @@ internal class TransformGraphTests
     var clonedGraph = graph.Transform(data => data.ToString(), data => data.ToString());
 
     // ASSERT
-    Assert.That(clonedGraph.Nodes.Select(node => node.Data), Is.EquivalentTo(new[] { "1", "2" }));
-    Assert.That(clonedGraph.Edges.Select(edge => edge.Data), Is.EquivalentTo(new[] { "3" }));
+    Assert.That(clonedGraph.Nodes.Select(node => node.Data), NUnit.Framework.Is.EquivalentTo(new[] { "1", "2" }));
+    Assert.That(clonedGraph.Edges.Select(edge => edge.Data), NUnit.Framework.Is.EquivalentTo(new[] { "3" }));
   }
 
   [Test]

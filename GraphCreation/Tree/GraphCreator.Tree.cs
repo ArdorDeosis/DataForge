@@ -5,13 +5,13 @@ namespace DataForge.GraphCreation;
 public static partial class GraphCreator
 {
   /// <summary>
-  /// Creates a graph with a tree structure. The <paramref name="options"/> define the
+  /// Creates a graph with a tree structure. The <paramref name="options" /> define the
   /// <see cref="TreeGraphCreationOptions{TNodeData,TEdgeData}.EdgeDirection">edge direction</see> and an optional
   /// <see cref="TreeGraphCreationOptions{TNodeData,TEdgeData}.MaxDepth">maximum depth</see>. The
-  /// <see cref="TreeGraphCreationOptions{TNodeData,TEdgeData}.CreateNodeData"/> and
-  /// <see cref="TreeGraphCreationOptions{TNodeData,TEdgeData}.CreateEdgeData"/> functions are used to produce data for
+  /// <see cref="TreeGraphCreationOptions{TNodeData,TEdgeData}.CreateNodeData" /> and
+  /// <see cref="TreeGraphCreationOptions{TNodeData,TEdgeData}.CreateEdgeData" /> functions are used to produce data for
   /// the nodes and edges in the graph depending on their position in the tree and with
-  /// <see cref="TreeGraphCreationOptions{TNodeData,TEdgeData}.CalculateChildNodeCount"/> the number of child nodes for
+  /// <see cref="TreeGraphCreationOptions{TNodeData,TEdgeData}.CalculateChildNodeCount" /> the number of child nodes for
   /// a particular node is calculated.
   /// </summary>
   /// <param name="options">Definition of the tree graph structure.</param>
@@ -24,13 +24,13 @@ public static partial class GraphCreator
 
   /// <summary>
   /// Creates an indexed graph with a tree structure. Nodes are indexed by their position on the star represented as a
-  /// <see cref="TreeIndex"/>. The <paramref name="options"/> define the
+  /// <see cref="TreeIndex" />. The <paramref name="options" /> define the
   /// <see cref="TreeGraphCreationOptions{TNodeData,TEdgeData}.EdgeDirection">edge direction</see> and an optional
   /// <see cref="TreeGraphCreationOptions{TNodeData,TEdgeData}.MaxDepth">maximum depth</see>. The
-  /// <see cref="TreeGraphCreationOptions{TNodeData,TEdgeData}.CreateNodeData"/> and
-  /// <see cref="TreeGraphCreationOptions{TNodeData,TEdgeData}.CreateEdgeData"/> functions are used to produce data for
+  /// <see cref="TreeGraphCreationOptions{TNodeData,TEdgeData}.CreateNodeData" /> and
+  /// <see cref="TreeGraphCreationOptions{TNodeData,TEdgeData}.CreateEdgeData" /> functions are used to produce data for
   /// the nodes and edges in the graph depending on their position in the tree and with
-  /// <see cref="TreeGraphCreationOptions{TNodeData,TEdgeData}.CalculateChildNodeCount"/> the number of child nodes for
+  /// <see cref="TreeGraphCreationOptions{TNodeData,TEdgeData}.CalculateChildNodeCount" /> the number of child nodes for
   /// a particular node is calculated.
   /// </summary>
   /// <param name="options">Definition of the tree graph structure.</param>
@@ -67,7 +67,7 @@ public static partial class GraphCreator
       var childNodeCount = options.CalculateChildNodeCount(index, data);
       for (var n = 0; n < childNodeCount; n++)
       {
-        var childAddress = new TreeIndex(parentIndex: index, childIndex: n);
+        var childAddress = new TreeIndex(index, n);
         queue.Enqueue(childAddress);
       }
     }

@@ -25,7 +25,7 @@ public class RingGraphCreationOptions<TNodeData, TEdgeData> : IndexedGraphDataCr
   }
 
   /// <summary>
-  /// The direction 
+  /// The direction
   /// </summary>
   public EdgeDirection EdgeDirection { get; init; } = EdgeDirection.Forward;
 }

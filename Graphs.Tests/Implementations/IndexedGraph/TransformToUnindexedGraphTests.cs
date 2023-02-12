@@ -13,13 +13,15 @@ internal class TransformToUnindexedGraphTests
     var nodeData = new[] { 0xC0FFEE, 0xBEEF, 0xF00D };
     for (var index = 0; index < nodeData.Length; index++)
       graph.AddNode(index, nodeData[index]);
+
     string TransformData(int data) => data.ToString();
 
     // ACT
     var unindexedGraph = graph.TransformToUnindexedGraph(TransformData, n => n);
 
     // ASSERT
-    Assert.That(unindexedGraph.Nodes.Select(node => node.Data), Is.EquivalentTo(nodeData.Select(TransformData)));
+    Assert.That(unindexedGraph.Nodes.Select(node => node.Data),
+      NUnit.Framework.Is.EquivalentTo(nodeData.Select(TransformData)));
   }
 
   [Test]
@@ -34,13 +36,15 @@ internal class TransformToUnindexedGraphTests
     graph.AddEdge(indices[0], indices[1], edgeData[0]);
     graph.AddEdge(indices[0], indices[1], edgeData[1]);
     graph.AddEdge(indices[0], indices[1], edgeData[2]);
+
     string TransformData(int data) => data.ToString();
 
     // ACT
     var unindexedGraph = graph.TransformToUnindexedGraph(n => n, TransformData);
 
     // ASSERT
-    Assert.That(unindexedGraph.Edges.Select(edge => edge.Data), Is.EquivalentTo(edgeData.Select(TransformData)));
+    Assert.That(unindexedGraph.Edges.Select(edge => edge.Data),
+      NUnit.Framework.Is.EquivalentTo(edgeData.Select(TransformData)));
   }
 
 

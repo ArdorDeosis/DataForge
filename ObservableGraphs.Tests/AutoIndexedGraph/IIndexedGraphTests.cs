@@ -10,7 +10,7 @@ namespace DataForge.ObservableGraphs.Tests.AutoIndexedGraph;
 public class IIndexedGraphTests : IIndexedGraphTests<ObservableAutoIndexedGraph<int, int, int>>
 {
   protected override ObservableAutoIndexedGraph<int, int, int> EmptyGraph =>
-    new ObservableAutoIndexedGraph<int, int, int>(new IncrementalIndexProvider<int, int>(0));
+    new(new IncrementalIndexProvider<int, int>(0));
 
   protected override (ObservableAutoIndexedGraph<int, int, int> graph, IndexedNode<int, int, int> expectedNode)
     GraphWithNode

@@ -29,7 +29,7 @@ public sealed class
   /// </summary>
   /// <remarks>
   /// If this is not set, the tree generation can potentially be endless, depending on
-  /// <see cref="CalculateChildNodeCount"/>.
+  /// <see cref="CalculateChildNodeCount" />.
   /// </remarks>
   public int? MaxDepth
   {

@@ -38,10 +38,11 @@ public class GridGraphDimensionInformation
   public EdgeDirection EdgeDirection { get; init; } = EdgeDirection.Forward;
 
   /// <summary>
-  /// Implicitly converts an integer to a <see cref="GridGraphDimensionInformation"/> with the length of that integer
+  /// Implicitly converts an integer to a <see cref="GridGraphDimensionInformation" /> with the length of that integer
   /// and default values for all other parameters.
   /// </summary>
   /// <param name="length">The length of the produced dimension information.</param>
   [ExcludeFromCodeCoverage]
-  public static implicit operator GridGraphDimensionInformation(int length) => new() { Length = length };
+  public static implicit operator GridGraphDimensionInformation(int length) =>
+    new GridGraphDimensionInformation { Length = length };
 }

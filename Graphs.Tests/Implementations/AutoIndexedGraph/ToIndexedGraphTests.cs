@@ -18,9 +18,9 @@ internal class ToIndexedGraphTests
     var indexedGraph = graph.ToIndexedGraph();
 
     // ASSERT
-    Assert.That(indexedGraph.Nodes.Select(node => node.Data), Is.EquivalentTo(indices));
+    Assert.That(indexedGraph.Nodes.Select(node => node.Data), NUnit.Framework.Is.EquivalentTo(indices));
     foreach (var node in indexedGraph.Nodes)
-      Assert.That(node.Index, Is.EqualTo(node.Data));
+      Assert.That(node.Index, NUnit.Framework.Is.EqualTo(node.Data));
   }
 
   [Test]
@@ -37,7 +37,7 @@ internal class ToIndexedGraphTests
     var indexedGraph = graph.ToIndexedGraph();
 
     // ASSERT
-    Assert.That(indexedGraph.Edges.Select(edge => edge.Data), Is.EquivalentTo(data));
+    Assert.That(indexedGraph.Edges.Select(edge => edge.Data), NUnit.Framework.Is.EquivalentTo(data));
   }
 
   [Test]
@@ -48,6 +48,7 @@ internal class ToIndexedGraphTests
     var data = new[] { 0xC0FFEE, 0xBEEF, 0xF00D };
     foreach (var datum in data)
       graph.AddNode(datum);
+
     int CloneData(int input) => -input;
 
     // ACT
@@ -55,7 +56,7 @@ internal class ToIndexedGraphTests
 
     // ASSERT
     var clonedNodeData = indexedGraph.Nodes.Select(node => node.Data);
-    Assert.That(clonedNodeData, Is.EquivalentTo(data.Select(CloneData)));
+    Assert.That(clonedNodeData, NUnit.Framework.Is.EquivalentTo(data.Select(CloneData)));
   }
 
   [Test]
@@ -71,6 +72,7 @@ internal class ToIndexedGraphTests
     graph.AddEdge(index1, index1, data[0]);
     graph.AddEdge(index1, index2, data[1]);
     graph.AddEdge(index2, index1, data[2]);
+
     int CloneData(int input) => -input;
 
     // ACT
@@ -78,7 +80,7 @@ internal class ToIndexedGraphTests
 
     // ASSERT
     var clonedEdgeData = indexedGraph.Edges.Select(node => node.Data);
-    Assert.That(clonedEdgeData, Is.EquivalentTo(data.Select(CloneData)));
+    Assert.That(clonedEdgeData, NUnit.Framework.Is.EquivalentTo(data.Select(CloneData)));
   }
 
   [Test]
@@ -104,10 +106,8 @@ internal class ToIndexedGraphTests
 
     // ASSERT
     foreach (var edgeConnection in edgeConnections)
-    {
       Assert.That(indexedGraph.Edges.Count(edge =>
           edge.Origin.Index == edgeConnection.Item1 && edge.Destination.Index == edgeConnection.Item2),
-        Is.EqualTo(1));
-    }
+        NUnit.Framework.Is.EqualTo(1));
   }
 }

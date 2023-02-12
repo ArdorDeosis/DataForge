@@ -8,8 +8,10 @@ namespace DataForge.GraphCreation.Tests.Tree;
 
 internal static class TreeIndexHelper
 {
-  internal static TreeIndex FromArray(params int[] childIndices) =>
-    childIndices.Aggregate(new TreeIndex(), (lastIndex, childIndex) => new TreeIndex(lastIndex, childIndex));
+  internal static TreeIndex FromArray(params int[] childIndices)
+  {
+    return childIndices.Aggregate(new TreeIndex(), (lastIndex, childIndex) => new TreeIndex(lastIndex, childIndex));
+  }
 }
 
 internal class TreeGraphCreationTests
@@ -80,6 +82,7 @@ internal class TreeGraphCreationTests
   private static IEnumerable<object[]> OptionsAndExpectedNodeIndicesOrData()
   {
     TreeIndex CreateNodeData(TreeIndex data) => data;
+
     int CreateEdgeData(IndexedGraphEdgeDataCreationInput<TreeIndex, TreeIndex> _) => 0;
 
     yield return new object[]
@@ -146,6 +149,7 @@ internal class TreeGraphCreationTests
   private static IEnumerable<object[]> OptionsAndExpectedEdgeData()
   {
     const int maxDepth = 2;
+
     TreeIndex CreateNodeData(TreeIndex index) => index;
 
     (TreeIndex from, TreeIndex to) CreateEdgeData(IndexedGraphEdgeDataCreationInput<TreeIndex, TreeIndex> data) =>

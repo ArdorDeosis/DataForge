@@ -34,7 +34,7 @@ public abstract class IReadOnlyGraphTests<TGraph> where TGraph : IReadOnlyGraph<
     var graph = GetEmptyGraph;
 
     // ASSERT
-    Assert.That(graph.Nodes, Is.Empty);
+    Assert.That(graph.Nodes, NUnit.Framework.Is.Empty);
   }
 
   [Test]
@@ -44,7 +44,7 @@ public abstract class IReadOnlyGraphTests<TGraph> where TGraph : IReadOnlyGraph<
     var (graph, expectedNodes) = GraphWithNodes;
 
     // ASSERT
-    Assert.That(graph.Nodes, Is.EquivalentTo(expectedNodes));
+    Assert.That(graph.Nodes, NUnit.Framework.Is.EquivalentTo(expectedNodes));
   }
 
   [Test]
@@ -66,7 +66,7 @@ public abstract class IReadOnlyGraphTests<TGraph> where TGraph : IReadOnlyGraph<
     var graph = GetEmptyGraph;
 
     // ASSERT
-    Assert.That(graph.Edges, Is.Empty);
+    Assert.That(graph.Edges, NUnit.Framework.Is.Empty);
   }
 
   [Test]
@@ -76,7 +76,7 @@ public abstract class IReadOnlyGraphTests<TGraph> where TGraph : IReadOnlyGraph<
     var (graph, expectedEdges) = GraphWithEdges;
 
     // ASSERT
-    Assert.That(graph.Edges, Is.EquivalentTo(expectedEdges));
+    Assert.That(graph.Edges, NUnit.Framework.Is.EquivalentTo(expectedEdges));
   }
 
   [Test]
@@ -99,7 +99,7 @@ public abstract class IReadOnlyGraphTests<TGraph> where TGraph : IReadOnlyGraph<
 
     // ASSERT
     foreach (var expectedNode in expectedNodes)
-      Assert.That(graph.Contains(expectedNode), Is.True);
+      Assert.That(graph.Contains(expectedNode), NUnit.Framework.Is.True);
   }
 
   [Test]
@@ -110,8 +110,8 @@ public abstract class IReadOnlyGraphTests<TGraph> where TGraph : IReadOnlyGraph<
     var nodeInOtherGraph = NodeFromOtherGraph;
 
     // ASSERT
-    Assert.That(graph.Contains(removedNode), Is.False);
-    Assert.That(graph.Contains(nodeInOtherGraph), Is.False);
+    Assert.That(graph.Contains(removedNode), NUnit.Framework.Is.False);
+    Assert.That(graph.Contains(nodeInOtherGraph), NUnit.Framework.Is.False);
   }
 
   [Test]
@@ -122,7 +122,7 @@ public abstract class IReadOnlyGraphTests<TGraph> where TGraph : IReadOnlyGraph<
 
     // ASSERT
     foreach (var expectedEdge in expectedEdges)
-      Assert.That(graph.Contains(expectedEdge), Is.True);
+      Assert.That(graph.Contains(expectedEdge), NUnit.Framework.Is.True);
   }
 
   [Test]
@@ -133,8 +133,8 @@ public abstract class IReadOnlyGraphTests<TGraph> where TGraph : IReadOnlyGraph<
     var edgeInOtherGraph = EdgeFromOtherGraph;
 
     // ASSERT
-    Assert.That(graph.Contains(removedEdge), Is.False);
-    Assert.That(graph.Contains(edgeInOtherGraph), Is.False);
+    Assert.That(graph.Contains(removedEdge), NUnit.Framework.Is.False);
+    Assert.That(graph.Contains(edgeInOtherGraph), NUnit.Framework.Is.False);
   }
 
   [Test]
@@ -144,7 +144,7 @@ public abstract class IReadOnlyGraphTests<TGraph> where TGraph : IReadOnlyGraph<
     var graph = GetEmptyGraph;
 
     // ASSERT
-    Assert.That(graph.Order, Is.Zero);
+    Assert.That(graph.Order, NUnit.Framework.Is.Zero);
   }
 
   [Test]
@@ -154,7 +154,7 @@ public abstract class IReadOnlyGraphTests<TGraph> where TGraph : IReadOnlyGraph<
     var (graph, expectedNodes) = GraphWithNodes;
 
     // ASSERT
-    Assert.That(graph.Order, Is.EqualTo(expectedNodes.Length));
+    Assert.That(graph.Order, NUnit.Framework.Is.EqualTo(expectedNodes.Length));
   }
 
   [Test]
@@ -164,7 +164,7 @@ public abstract class IReadOnlyGraphTests<TGraph> where TGraph : IReadOnlyGraph<
     var (graph, expectedNodes) = EmptyGraphWithRemovedNode;
 
     // ASSERT
-    Assert.That(graph.Order, Is.Zero);
+    Assert.That(graph.Order, NUnit.Framework.Is.Zero);
   }
 
   [Test]
@@ -174,7 +174,7 @@ public abstract class IReadOnlyGraphTests<TGraph> where TGraph : IReadOnlyGraph<
     var graph = GetEmptyGraph;
 
     // ASSERT
-    Assert.That(graph.Size, Is.Zero);
+    Assert.That(graph.Size, NUnit.Framework.Is.Zero);
   }
 
   [Test]
@@ -184,7 +184,7 @@ public abstract class IReadOnlyGraphTests<TGraph> where TGraph : IReadOnlyGraph<
     var (graph, expectedEdges) = GraphWithEdges;
 
     // ASSERT
-    Assert.That(graph.Size, Is.EqualTo(expectedEdges.Length));
+    Assert.That(graph.Size, NUnit.Framework.Is.EqualTo(expectedEdges.Length));
   }
 
   [Test]
@@ -194,6 +194,6 @@ public abstract class IReadOnlyGraphTests<TGraph> where TGraph : IReadOnlyGraph<
     var (graph, _) = EmptyGraphWithRemovedEdge;
 
     // ASSERT
-    Assert.That(graph.Size, Is.Zero);
+    Assert.That(graph.Size, NUnit.Framework.Is.Zero);
   }
 }

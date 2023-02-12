@@ -47,8 +47,8 @@ internal class DiskGraphCreationTests
       RingCount = 2,
       CreateNodeData = index => index,
       CreateEdgeData = data => (
-        OriginIndex: data.StartIndex,
-        DestinationIndex: data.EndIndex
+        data.StartIndex,
+        data.EndIndex
       ),
       MeridianEdgeDirection = EdgeDirection.Backward,
       RingEdgeDirection = EdgeDirection.ForwardAndBackward,

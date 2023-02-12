@@ -110,6 +110,7 @@ public abstract class IGraphTests<TGraph> where TGraph : IGraph<int, int>
     // ARRANGE
     var data = new[] { -1, int.MinValue, 1, 0xC0FFEE };
     var (graph, _) = GraphWithNodesWithData(data);
+
     bool Predicate(int value) => value <= 0;
 
     // ACT
@@ -126,7 +127,9 @@ public abstract class IGraphTests<TGraph> where TGraph : IGraph<int, int>
     // ARRANGE
     var data = new[] { -1, int.MinValue, 1, 0xC0FFEE };
     var (graph, nodes) = GraphWithNodesWithData(data);
+
     bool Predicate(int value) => value <= 0;
+
     var expectedRemovedNodeCount = data.Count(Predicate);
 
     // ACT
@@ -158,6 +161,7 @@ public abstract class IGraphTests<TGraph> where TGraph : IGraph<int, int>
     // ARRANGE
     var data = new[] { -1, int.MinValue, 1, 0xC0FFEE };
     var (graph, nodes) = GraphWithNodesWithData(data);
+
     bool Predicate(int value) => value <= 0;
 
     // ACT
@@ -173,6 +177,7 @@ public abstract class IGraphTests<TGraph> where TGraph : IGraph<int, int>
     // ARRANGE
     var data = new[] { -1, int.MinValue, 1, 0xC0FFEE };
     var (graph, _) = GraphWithEdgesWithData(data);
+
     bool Predicate(int value) => value <= 0;
 
     // ACT
@@ -189,6 +194,7 @@ public abstract class IGraphTests<TGraph> where TGraph : IGraph<int, int>
     // ARRANGE
     var data = new[] { -1, int.MinValue, 1, 0xC0FFEE };
     var (graph, edges) = GraphWithEdgesWithData(data);
+
     bool Predicate(int value) => value <= 0;
 
     // ACT

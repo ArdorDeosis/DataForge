@@ -10,8 +10,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Graphs\Graphs.csproj" />
-        <ProjectReference Include="..\GridUtilities\GridUtilities.csproj" />
+        <ProjectReference Include="..\Graphs\Graphs.csproj"/>
+        <ProjectReference Include="..\GridUtilities\GridUtilities.csproj"/>
     </ItemGroup>
 
 </Project>

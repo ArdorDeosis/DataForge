@@ -13,13 +13,14 @@ internal class TransformToIndexedGraphTests
     var indices = new[] { 0xC0FFEE, 0xBEEF, 0xF00D };
     foreach (var index in indices)
       graph.AddNode(index);
+
     string TransformData(int input) => input.ToString();
 
     // ACT
     var indexedGraph = graph.TransformToIndexedGraph(n => n, n => n, TransformData);
 
     // ASSERT
-    Assert.That(indexedGraph.Indices, Is.EquivalentTo(indices.Select(TransformData)));
+    Assert.That(indexedGraph.Indices, NUnit.Framework.Is.EquivalentTo(indices.Select(TransformData)));
   }
 
   [Test]
@@ -30,6 +31,7 @@ internal class TransformToIndexedGraphTests
     var data = new[] { 0xC0FFEE, 0xBEEF, 0xF00D };
     foreach (var datum in data)
       graph.AddNode(datum);
+
     string TransformData(int input) => input.ToString();
 
     // ACT
@@ -37,7 +39,7 @@ internal class TransformToIndexedGraphTests
 
     // ASSERT
     var clonedNodeData = indexedGraph.Nodes.Select(node => node.Data);
-    Assert.That(clonedNodeData, Is.EquivalentTo(data.Select(TransformData)));
+    Assert.That(clonedNodeData, NUnit.Framework.Is.EquivalentTo(data.Select(TransformData)));
   }
 
   [Test]
@@ -53,6 +55,7 @@ internal class TransformToIndexedGraphTests
     graph.AddEdge(index1, index1, data[0]);
     graph.AddEdge(index1, index2, data[1]);
     graph.AddEdge(index2, index1, data[2]);
+
     string CloneData(int input) => input.ToString();
 
     // ACT
@@ -60,7 +63,7 @@ internal class TransformToIndexedGraphTests
 
     // ASSERT
     var clonedEdgeData = indexedGraph.Edges.Select(node => node.Data);
-    Assert.That(clonedEdgeData, Is.EquivalentTo(data.Select(CloneData)));
+    Assert.That(clonedEdgeData, NUnit.Framework.Is.EquivalentTo(data.Select(CloneData)));
   }
 
   [Test]
@@ -86,10 +89,8 @@ internal class TransformToIndexedGraphTests
 
     // ASSERT
     foreach (var edgeConnection in edgeConnections)
-    {
       Assert.That(indexedGraph.Edges.Count(edge =>
           edge.Origin.Index == edgeConnection.Item1 && edge.Destination.Index == edgeConnection.Item2),
-        Is.EqualTo(1));
-    }
+        NUnit.Framework.Is.EqualTo(1));
   }
 }

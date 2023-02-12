@@ -16,7 +16,7 @@ public sealed class GridGraphCreationOptions<TNodeData, TEdgeData>
 
   /// <summary>
   /// Dimensional information about the grid including size, wrap and edge direction. Each element represents one
-  /// dimension in the grid. 
+  /// dimension in the grid.
   /// </summary>
   public /*required*/ IReadOnlyList<GridGraphDimensionInformation> DimensionInformation { get; init; }
 

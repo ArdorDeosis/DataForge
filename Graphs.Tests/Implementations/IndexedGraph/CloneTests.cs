@@ -24,8 +24,8 @@ internal class CloneTests
     // ASSERT
     foreach (var clonedGraph in clonedGraphs)
     {
-      Assert.That(clonedGraph.Indices, Is.EquivalentTo(indices));
-      Assert.That(clonedGraph.Indices, Is.EquivalentTo(graph.Indices));
+      Assert.That(clonedGraph.Indices, NUnit.Framework.Is.EquivalentTo(indices));
+      Assert.That(clonedGraph.Indices, NUnit.Framework.Is.EquivalentTo(graph.Indices));
     }
   }
 
@@ -89,7 +89,7 @@ internal class CloneTests
     foreach (var clonedGraph in clonedGraphs)
     {
       var clonedNodeData = clonedGraph.Nodes.Select(node => node.Data);
-      Assert.That(clonedNodeData, Is.EquivalentTo(data));
+      Assert.That(clonedNodeData, NUnit.Framework.Is.EquivalentTo(data));
     }
   }
 
@@ -116,7 +116,7 @@ internal class CloneTests
     foreach (var clonedGraph in clonedGraphs)
     {
       var clonedEdgeData = clonedGraph.Edges.Select(node => node.Data);
-      Assert.That(clonedEdgeData, Is.EquivalentTo(edgeData));
+      Assert.That(clonedEdgeData, NUnit.Framework.Is.EquivalentTo(edgeData));
     }
   }
 
@@ -128,6 +128,7 @@ internal class CloneTests
     var data = new[] { 0xC0FFEE, 0xBEEF, 0xF00D };
     foreach (var datum in data)
       graph.AddNode(datum, datum);
+
     int CloneData(int input) => -input;
 
     // ACT
@@ -135,7 +136,7 @@ internal class CloneTests
 
     // ASSERT
     var clonedNodeData = clonedGraph.Nodes.Select(node => node.Data);
-    Assert.That(clonedNodeData, Is.EquivalentTo(data.Select(CloneData)));
+    Assert.That(clonedNodeData, NUnit.Framework.Is.EquivalentTo(data.Select(CloneData)));
   }
 
   [Test]
@@ -151,6 +152,7 @@ internal class CloneTests
     graph.AddEdge(index1, index1, data[0]);
     graph.AddEdge(index1, index2, data[1]);
     graph.AddEdge(index2, index1, data[2]);
+
     int CloneData(int input) => -input;
 
     // ACT
@@ -158,7 +160,7 @@ internal class CloneTests
 
     // ASSERT
     var clonedEdgeData = clonedGraph.Edges.Select(node => node.Data);
-    Assert.That(clonedEdgeData, Is.EquivalentTo(data.Select(CloneData)));
+    Assert.That(clonedEdgeData, NUnit.Framework.Is.EquivalentTo(data.Select(CloneData)));
   }
 
   [Test]
@@ -189,10 +191,8 @@ internal class CloneTests
     // ASSERT
     foreach (var clonedGraph in clonedGraphs)
       foreach (var edgeConnection in edgeConnections)
-      {
         Assert.That(clonedGraph.Edges.Count(edge =>
             edge.OriginIndex == edgeConnection.Item1 && edge.DestinationIndex == edgeConnection.Item2),
-          Is.EqualTo(1));
-      }
+          NUnit.Framework.Is.EqualTo(1));
   }
 }

@@ -5,17 +5,19 @@ using Ardalis.GuardClauses;
 namespace DataForge.GridUtilities;
 
 /// <summary>
-/// Custom guard clauses for <see cref="GridUtilities"/>.
+/// Custom guard clauses for <see cref="GridUtilities" />.
 /// </summary>
 [SuppressMessage("ReSharper", "UnusedParameter.Global")]
 internal static class CustomGuardClauses
 {
   /// <summary>
-  /// Throws an <see cref="ArgumentNullException"/> if <paramref name="dimensionSize"/> is <tt>null</tt>. Throws an
-  /// <see cref="ArgumentException"/> if <paramref name="dimensionSize"/> is empty or if any element of
-  /// <see cref="dimensionSize"/> is negative or zero.
+  /// Throws an <see cref="ArgumentNullException" /> if <paramref name="dimensionSize" /> is <tt>null</tt>. Throws an
+  /// <see cref="ArgumentException" /> if <paramref name="dimensionSize" /> is empty or if any element of
+  /// <see cref="dimensionSize" /> is negative or zero.
   /// </summary>
-  /// <returns><paramref name="dimensionSize"/></returns>
+  /// <returns>
+  /// <paramref name="dimensionSize" />
+  /// </returns>
   /// <exception cref="ArgumentException"></exception>
   /// <exception cref="ArgumentNullException"></exception>
   internal static IReadOnlyList<int> InvalidDimensionsList(this IGuardClause guardClause,
@@ -28,7 +30,7 @@ internal static class CustomGuardClauses
   }
 
   /// <summary>
-  /// Throws an <see cref="ArgumentException"/> if <paramref name="left"/> and <paramref name="right"/> are of different
+  /// Throws an <see cref="ArgumentException" /> if <paramref name="left" /> and <paramref name="right" /> are of different
   /// lengths.
   /// </summary>
   /// <exception cref="ArgumentException"></exception>

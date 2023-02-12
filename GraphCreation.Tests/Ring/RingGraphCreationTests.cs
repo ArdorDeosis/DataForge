@@ -39,7 +39,7 @@ internal class RingGraphCreationTests
     {
       Size = 4,
       CreateNodeData = _ => 0,
-      CreateEdgeData = data => (OriginIndex: data.StartIndex, DestinationIndex: data.EndIndex),
+      CreateEdgeData = data => (data.StartIndex, data.EndIndex),
       EdgeDirection = EdgeDirection.ForwardAndBackward,
     };
     var expectedEdges = new[] { (0, 1), (1, 2), (2, 3), (3, 0), (0, 3), (3, 2), (2, 1), (1, 0) };

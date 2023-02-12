@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 
@@ -65,7 +66,7 @@ public class CompleteGraphCreationTest
 
   private static IEnumerable<int[]> NodeDataTestSets()
   {
-    yield return System.Array.Empty<int>();
+    yield return Array.Empty<int>();
     yield return new[] { 0xC0FFEE, 0xBEEF, 0xF00D };
     yield return new[] { 0, 0 };
     yield return Enumerable.Range(0, 1000).ToArray();
@@ -73,7 +74,7 @@ public class CompleteGraphCreationTest
 
   private static IEnumerable<object[]> EdgeDirectionAndEdgesForFiveNodes()
   {
-    yield return new object[] { EdgeDirection.None, System.Array.Empty<(int, int)>() };
+    yield return new object[] { EdgeDirection.None, Array.Empty<(int, int)>() };
     yield return new object[]
     {
       EdgeDirection.Forward,
@@ -83,7 +84,7 @@ public class CompleteGraphCreationTest
         (1, 2), (1, 3), (1, 4),
         (2, 3), (2, 4),
         (3, 4),
-      }
+      },
     };
     yield return new object[]
     {
@@ -94,7 +95,7 @@ public class CompleteGraphCreationTest
         (2, 0), (2, 1),
         (3, 0), (3, 1), (3, 2),
         (4, 0), (4, 1), (4, 2), (4, 3),
-      }
+      },
     };
     yield return new object[]
     {
@@ -106,7 +107,7 @@ public class CompleteGraphCreationTest
         (2, 0), (2, 1), (2, 3), (2, 4),
         (3, 0), (3, 1), (3, 2), (3, 4),
         (4, 0), (4, 1), (4, 2), (4, 3),
-      }
+      },
     };
   }
 }

@@ -15,7 +15,6 @@ internal static class GraphConvenienceExtensions
     if (direction == EdgeDirection.None) return;
 
     if (direction.HasFlag(EdgeDirection.Forward))
-    {
       graph.AddEdge(lowerIndex, upperIndex, createEdgeData(new IndexedGraphEdgeDataCreationInput<TIndex, TNodeData>
       {
         StartIndex = lowerIndex,
@@ -23,10 +22,8 @@ internal static class GraphConvenienceExtensions
         StartNodeData = graph[lowerIndex].Data,
         EndNodeData = graph[upperIndex].Data,
       }));
-    }
 
     if (direction.HasFlag(EdgeDirection.Backward))
-    {
       graph.AddEdge(upperIndex, lowerIndex, createEdgeData(new IndexedGraphEdgeDataCreationInput<TIndex, TNodeData>
       {
         StartIndex = upperIndex,
@@ -34,14 +31,13 @@ internal static class GraphConvenienceExtensions
         StartNodeData = graph[upperIndex].Data,
         EndNodeData = graph[lowerIndex].Data,
       }));
-    }
   }
 
   internal static void AddEdgesForDirection<TNodeData, TEdgeData>(
     this Graph<TNodeData, TEdgeData> graph,
     EdgeDirection direction,
-    Node<TNodeData,TEdgeData> lowerNode,
-    Node<TNodeData,TEdgeData> upperNode,
+    Node<TNodeData, TEdgeData> lowerNode,
+    Node<TNodeData, TEdgeData> upperNode,
     Func<TNodeData, TNodeData, TEdgeData> createEdgeData
   )
   {

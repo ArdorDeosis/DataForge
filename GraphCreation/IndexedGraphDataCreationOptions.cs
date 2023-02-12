@@ -23,7 +23,7 @@ public abstract class IndexedGraphDataCreationOptions<TIndex, TNodeData, TEdgeDa
   /// <summary>
   /// Function to create edge data based on the indices and data of the nodes the edge connects.
   /// <code>TEdgeData CreateEdgeData(IndexedGraphEdgeDataCreationInput&lt;TIndex,TNodeData&gt; nodeData)</code>
-  /// It expects an <see cref="IndexedGraphEdgeDataCreationInput{TIndex,TNodeData}"/> object as input and returns the
+  /// It expects an <see cref="IndexedGraphEdgeDataCreationInput{TIndex,TNodeData}" /> object as input and returns the
   /// edge's data.
   /// </summary>
   public /*required*/

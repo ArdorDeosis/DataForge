@@ -10,7 +10,9 @@ internal static partial class TestData
   {
     internal static class Coordinates
     {
-      /// <summary><tt>[size, expectedCoordinates]</tt></summary>
+      /// <summary>
+      /// <tt>[size, expectedCoordinates]</tt>
+      /// </summary>
       internal static IEnumerable<object[]> ForSize()
       {
         yield return new object[]
@@ -60,7 +62,9 @@ internal static partial class TestData
         };
       }
 
-      /// <summary><tt>[size, offset, expectedCoordinates]</tt></summary>
+      /// <summary>
+      /// <tt>[size, offset, expectedCoordinates]</tt>
+      /// </summary>
       internal static IEnumerable<object[]> ForSizeAndOffset()
       {
         yield return new object[]
@@ -116,7 +120,9 @@ internal static partial class TestData
         };
       }
 
-      /// <summary><tt>[dimensionDefinition, expectedCoordinates]</tt></summary>
+      /// <summary>
+      /// <tt>[dimensionDefinition, expectedCoordinates]</tt>
+      /// </summary>
       internal static IEnumerable<object[]> ForDimensionDefinition()
       {
         // ReSharper disable once InvokeAsExtensionMethod
@@ -133,7 +139,9 @@ internal static partial class TestData
 
     internal static class EdgeInformation
     {
-      /// <summary><tt>[size, expectedEdgeInfo]</tt></summary>
+      /// <summary>
+      /// <tt>[size, expectedEdgeInfo]</tt>
+      /// </summary>
       internal static IEnumerable<object[]> ForSize()
       {
         yield return new object[]
@@ -210,7 +218,9 @@ internal static partial class TestData
         };
       }
 
-      /// <summary><tt>[size, offset, expectedEdgeInfo]</tt></summary>
+      /// <summary>
+      /// <tt>[size, offset, expectedEdgeInfo]</tt>
+      /// </summary>
       internal static IEnumerable<object[]> ForSizeAndOffset()
       {
         yield return new object[]
@@ -293,7 +303,9 @@ internal static partial class TestData
         };
       }
 
-      /// <summary><tt>[size, expectedEdgeInfo]</tt></summary>
+      /// <summary>
+      /// <tt>[size, expectedEdgeInfo]</tt>
+      /// </summary>
       internal static IEnumerable<object[]> ForSizeAllWrapped()
       {
         yield return new object[]
@@ -423,7 +435,9 @@ internal static partial class TestData
         };
       }
 
-      /// <summary><tt>[size, offset, expectedEdgeInfo]</tt></summary>
+      /// <summary>
+      /// <tt>[size, offset, expectedEdgeInfo]</tt>
+      /// </summary>
       internal static IEnumerable<object[]> ForSizeAndOffsetAllWrapped()
       {
         yield return new object[]
@@ -561,7 +575,9 @@ internal static partial class TestData
         };
       }
 
-      /// <summary><tt>[size, wrap, expectedEdgeInfo]</tt></summary>
+      /// <summary>
+      /// <tt>[size, wrap, expectedEdgeInfo]</tt>
+      /// </summary>
       internal static IEnumerable<object[]> ForSizeAndWrap()
       {
         yield return new object[]
@@ -750,7 +766,9 @@ internal static partial class TestData
         };
       }
 
-      /// <summary><tt>[size, offset, wrap, expectedEdgeInfo]</tt></summary>
+      /// <summary>
+      /// <tt>[size, offset, wrap, expectedEdgeInfo]</tt>
+      /// </summary>
       internal static IEnumerable<object[]> ForSizeAndOffsetAndWrap()
       {
         yield return new object[]
@@ -947,9 +965,12 @@ internal static partial class TestData
         };
       }
 
-      /// <summary><tt>[dimensionDefinition, expectedCoordinates]</tt></summary>
-      internal static IEnumerable<object[]> ForDimensionDefinition() =>
-        ForSize()
+      /// <summary>
+      /// <tt>[dimensionDefinition, expectedCoordinates]</tt>
+      /// </summary>
+      internal static IEnumerable<object[]> ForDimensionDefinition()
+      {
+        return ForSize()
           .Select(data => new[] { MakeGridDimensionData((int[])data[0]).ToArray(), data[1] })
           .Concat(
             ForSizeAndOffset()
@@ -968,6 +989,7 @@ internal static partial class TestData
               .Select(data => new[]
                 { MakeGridDimensionData((int[])data[0], (int[])data[1], (bool[])data[2]).ToArray(), data[3] }))
           .ToArray();
+      }
     }
   }
 }

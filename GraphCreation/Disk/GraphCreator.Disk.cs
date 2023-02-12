@@ -5,12 +5,12 @@ namespace DataForge.GraphCreation;
 public static partial class GraphCreator
 {
   /// <summary>
-  /// Creates a graph with a disk structure. The <paramref name="options"/> define the number of
-  /// <see cref="DiskGraphCreationOptions{TNodeData,TEdgeData}.RingCount">rings</see> and 
+  /// Creates a graph with a disk structure. The <paramref name="options" /> define the number of
+  /// <see cref="DiskGraphCreationOptions{TNodeData,TEdgeData}.RingCount">rings</see> and
   /// <see cref="DiskGraphCreationOptions{TNodeData,TEdgeData}.MeridianCount">meridians</see>, edge directions and
   /// whether a center node should be created. The
-  /// <see cref="DiskGraphCreationOptions{TNodeData,TEdgeData}.CreateNodeData"/> and
-  /// <see cref="DiskGraphCreationOptions{TNodeData,TEdgeData}.CreateEdgeData"/> functions are used to produce data for
+  /// <see cref="DiskGraphCreationOptions{TNodeData,TEdgeData}.CreateNodeData" /> and
+  /// <see cref="DiskGraphCreationOptions{TNodeData,TEdgeData}.CreateEdgeData" /> functions are used to produce data for
   /// the nodes and edges in the graph depending on their position on the disk.
   /// </summary>
   /// <param name="options">Definition of the disk structure.</param>
@@ -23,12 +23,12 @@ public static partial class GraphCreator
 
   /// <summary>
   /// Creates an indexed graph with a disk structure. Nodes are indexed by their position on the disk represented as a
-  /// <see cref="DiskIndex"/>. The <paramref name="options"/> define the number of
-  /// <see cref="DiskGraphCreationOptions{TNodeData,TEdgeData}.RingCount">rings</see> and 
+  /// <see cref="DiskIndex" />. The <paramref name="options" /> define the number of
+  /// <see cref="DiskGraphCreationOptions{TNodeData,TEdgeData}.RingCount">rings</see> and
   /// <see cref="DiskGraphCreationOptions{TNodeData,TEdgeData}.MeridianCount">meridians</see>, edge directions and
   /// whether a center node should be created. The
-  /// <see cref="DiskGraphCreationOptions{TNodeData,TEdgeData}.CreateNodeData"/> and
-  /// <see cref="DiskGraphCreationOptions{TNodeData,TEdgeData}.CreateEdgeData"/> functions are used to produce data for
+  /// <see cref="DiskGraphCreationOptions{TNodeData,TEdgeData}.CreateNodeData" /> and
+  /// <see cref="DiskGraphCreationOptions{TNodeData,TEdgeData}.CreateEdgeData" /> functions are used to produce data for
   /// the nodes and edges in the graph depending on their position on the disk.
   /// </summary>
   /// <param name="options">Definition of the disk structure.</param>
@@ -49,33 +49,27 @@ public static partial class GraphCreator
         var index = new DiskIndex(meridian, ring);
         graph.AddNode(index, options.CreateNodeData(index));
         if (meridian > 0)
-        {
           graph.AddEdgesForDirection(
             options.RingEdgeDirection,
             new DiskIndex(meridian - 1, ring),
             index,
             options.CreateEdgeData
           );
-        }
 
         if (ring > 1)
-        {
           graph.AddEdgesForDirection(
             options.MeridianEdgeDirection,
             new DiskIndex(meridian, ring - 1),
             index,
             options.CreateEdgeData
           );
-        }
         else if (options.MakeCenterNode)
-        {
           graph.AddEdgesForDirection(
             options.MeridianEdgeDirection,
             centerIndex,
             new DiskIndex(meridian, 1),
             options.CreateEdgeData
           );
-        }
       }
 
       graph.AddEdgesForDirection(

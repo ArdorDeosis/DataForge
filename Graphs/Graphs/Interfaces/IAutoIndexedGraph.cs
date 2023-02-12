@@ -20,7 +20,8 @@ public interface IAutoIndexedGraph<TIndex, TNodeData, TEdgeData> :
   IIndexedNode<TIndex, TNodeData, TEdgeData> AddNode(TNodeData data);
 
   /// <summary>
-  /// Attempts to add a new indexed node to the graph with the specified data, and assigns the next available index to the new node.
+  /// Attempts to add a new indexed node to the graph with the specified data, and assigns the next available index to the
+  /// new node.
   /// </summary>
   /// <param name="data">The data to store in the new node.</param>
   /// <param name="node">The newly added indexed node, or null if the node could not be added.</param>

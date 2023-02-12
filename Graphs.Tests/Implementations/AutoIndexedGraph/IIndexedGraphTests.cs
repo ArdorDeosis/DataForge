@@ -7,8 +7,7 @@ namespace DataForge.Graphs.Tests.Implementations.AutoIndexedGraph;
 // ReSharper disable once InconsistentNaming
 public class IIndexedGraphTests : IIndexedGraphTests<AutoIndexedGraph<int, int, int>>
 {
-  protected override AutoIndexedGraph<int, int, int> EmptyGraph =>
-    new AutoIndexedGraph<int, int, int>(new IncrementalIndexProvider<int, int>(0));
+  protected override AutoIndexedGraph<int, int, int> EmptyGraph => new(new IncrementalIndexProvider<int, int>(0));
 
   protected override (AutoIndexedGraph<int, int, int> graph, IndexedNode<int, int, int> expectedNode) GraphWithNode
   {

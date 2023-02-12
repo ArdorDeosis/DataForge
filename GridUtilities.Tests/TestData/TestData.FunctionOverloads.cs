@@ -75,9 +75,7 @@ internal static partial class TestData
       foreach (var function in EdgeInformationFunctionsWithOffsetAndSingleWrap()
                  .Select<Func<int[], int[], bool, GridEdgeInformation[]>, Func<int[], bool, GridEdgeInformation[]>>(
                    function => (size, wrapAll) => function(size, new int[size.Length], wrapAll)))
-      {
         yield return function;
-      }
     }
 
     internal static IEnumerable<Func<int[], bool[], GridEdgeInformation[]>>
@@ -88,9 +86,7 @@ internal static partial class TestData
       foreach (var function in EdgeInformationFunctionsWithOffsetAndWrap()
                  .Select<Func<int[], int[], bool[], GridEdgeInformation[]>, Func<int[], bool[], GridEdgeInformation[]>>(
                    function => (size, wrap) => function(size, new int[size.Length], wrap)))
-      {
         yield return function;
-      }
     }
 
     internal static IEnumerable<Func<int[], int[], bool, GridEdgeInformation[]>>

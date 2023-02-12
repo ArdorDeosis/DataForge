@@ -1,7 +1,7 @@
 ﻿namespace DataForge.Graphs;
 
 /// <summary>
-/// A generic <see cref="IIndexProvider{TData,TIndex}"/> that uses a generator function to generate an index from
+/// A generic <see cref="IIndexProvider{TData,TIndex}" /> that uses a generator function to generate an index from
 /// provided data.
 /// </summary>
 /// <inheritdoc />

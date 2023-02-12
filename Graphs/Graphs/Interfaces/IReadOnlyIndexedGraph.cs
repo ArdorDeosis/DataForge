@@ -46,8 +46,7 @@ public interface IReadOnlyIndexedGraph<TIndex, TNodeData, TEdgeData> :
   /// </summary>
   /// <param name="index">The index of the node to retrieve.</param>
   /// <returns>The indexed node at the specified index, or null if no such node exists.</returns>
-  IIndexedNode<TIndex, TNodeData, TEdgeData>? GetNodeOrNull(TIndex index)=>
-    Contains(index) ? this[index] : null;
+  IIndexedNode<TIndex, TNodeData, TEdgeData>? GetNodeOrNull(TIndex index) => Contains(index) ? this[index] : null;
 
   /// <summary>
   /// Attempts to retrieve the indexed node at the specified index.

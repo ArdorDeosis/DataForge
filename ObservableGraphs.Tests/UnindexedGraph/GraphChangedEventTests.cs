@@ -7,20 +7,21 @@ namespace DataForge.ObservableGraphs.Tests.UnindexedGraph;
 [TestFixture]
 public class GraphChangedEventTests
 {
-#pragma warning disable CS8618 // field not initialized warning; is initialized in setup method
-  private static ObservableGraph<int, int> graph;
-#pragma warning restore CS8618
-  private static readonly List<GraphChangedEventArgs<int, int>> EventList = new();
-
   [SetUp]
   public void Setup()
   {
     graph = new ObservableGraph<int, int>();
     EventList.Clear();
   }
+#pragma warning disable CS8618 // field not initialized warning; is initialized in setup method
+  private static ObservableGraph<int, int> graph;
+#pragma warning restore CS8618
+  private static readonly List<GraphChangedEventArgs<int, int>> EventList = new();
 
-  private static void LogEvent(object? sender, GraphChangedEventArgs<int, int> eventArgs) =>
+  private static void LogEvent(object? sender, GraphChangedEventArgs<int, int> eventArgs)
+  {
     EventList.Add(eventArgs);
+  }
 
   public delegate Node<int, int> AddNode(ObservableGraph<int, int> graph, int data);
 
@@ -242,6 +243,7 @@ public class GraphChangedEventTests
   {
     // ARRANGE
     bool Predicate(int data) => data > 0;
+
     var nodes = graph.AddNodes(0xC0FFEE, 0xBEEF, 0, int.MinValue);
     graph.GraphChanged += LogEvent;
 
@@ -262,6 +264,7 @@ public class GraphChangedEventTests
   {
     // ARRANGE
     bool Predicate(int data) => data > 0;
+
     var node0 = graph.AddNode(0);
     var node1 = graph.AddNode(1);
     var edgesToRemove = new[]
@@ -280,7 +283,7 @@ public class GraphChangedEventTests
     Assert.That(EventList, Has.Count.EqualTo(1));
     var eventArgs = EventList[0];
     Assert.That(eventArgs.AddedNodes, Is.Empty);
-    Assert.That(eventArgs.RemovedNodes, Is.EquivalentTo(new []{node1}));
+    Assert.That(eventArgs.RemovedNodes, Is.EquivalentTo(new[] { node1 }));
     Assert.That(eventArgs.AddedEdges, Is.Empty);
     Assert.That(eventArgs.RemovedEdges, Is.EquivalentTo(edgesToRemove));
   }
@@ -290,6 +293,7 @@ public class GraphChangedEventTests
   {
     // ARRANGE
     bool Predicate(int data) => data > 0;
+
     var data = new[] { 0xC0FFEE, 0xBEEF, 0, int.MinValue };
     var edges = data.Select(value => graph.AddEdge(
       graph.AddNode(default),

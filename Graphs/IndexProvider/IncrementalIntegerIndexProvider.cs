@@ -3,7 +3,7 @@
 namespace DataForge.Graphs;
 
 /// <summary>
-/// A generic <see cref="IIndexProvider{TData,TIndex}"/> generating increasing indices.
+/// A generic <see cref="IIndexProvider{TData,TIndex}" /> generating increasing indices.
 /// </summary>
 /// <inheritdoc />
 public sealed class IncrementalIndexProvider<TData, TIndex>
@@ -12,10 +12,16 @@ public sealed class IncrementalIndexProvider<TData, TIndex>
 {
   private TIndex nextIndex;
 
-  public IncrementalIndexProvider(TIndex startAt) => nextIndex = startAt;
+  public IncrementalIndexProvider(TIndex startAt)
+  {
+    nextIndex = startAt;
+  }
 
   /// <inheritdoc />
-  public void Move() => ++nextIndex;
+  public void Move()
+  {
+    ++nextIndex;
+  }
 
   /// <inheritdoc />
   public TIndex GetCurrentIndex(TData data) => nextIndex;

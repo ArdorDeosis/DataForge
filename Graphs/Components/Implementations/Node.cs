@@ -14,6 +14,25 @@ public sealed class Node<TNodeData, TEdgeData> :
     this.data = data;
   }
 
+  public IReadOnlyCollection<Edge<TNodeData, TEdgeData>> Edges => IsValid
+    ? Graph.IncomingEdges[this].Union(Graph.OutgoingEdges[this]).ToHashSet()
+    : throw ComponentInvalidException;
+
+  public IReadOnlyCollection<Edge<TNodeData, TEdgeData>> IncomingEdges => IsValid
+    ? Graph.IncomingEdges[this]
+    : throw ComponentInvalidException;
+
+  public IReadOnlyCollection<Edge<TNodeData, TEdgeData>> OutgoingEdges => IsValid
+    ? Graph.OutgoingEdges[this]
+    : throw ComponentInvalidException;
+
+  public IReadOnlyCollection<Node<TNodeData, TEdgeData>> Neighbours => IsValid
+    ? IncomingEdges.Select(edge => edge.Origin).Concat(OutgoingEdges.Select(edge => edge.Destination))
+      .Where(node => node != this).ToHashSet()
+    : throw ComponentInvalidException;
+
+  protected override string Description => "Node";
+
   public TNodeData Data
   {
     get => data;
@@ -24,29 +43,11 @@ public sealed class Node<TNodeData, TEdgeData> :
     }
   }
 
-  public IReadOnlyCollection<Edge<TNodeData, TEdgeData>> Edges => IsValid
-    ? Graph.IncomingEdges[this].Union(Graph.OutgoingEdges[this]).ToHashSet()
-    : throw ComponentInvalidException;
-
   IReadOnlyCollection<IEdge<TNodeData, TEdgeData>> INode<TNodeData, TEdgeData>.Edges => Edges;
-
-  public IReadOnlyCollection<Edge<TNodeData, TEdgeData>> IncomingEdges => IsValid
-    ? Graph.IncomingEdges[this]
-    : throw ComponentInvalidException;
 
   IReadOnlyCollection<IEdge<TNodeData, TEdgeData>> INode<TNodeData, TEdgeData>.IncomingEdges => IncomingEdges;
 
-  public IReadOnlyCollection<Edge<TNodeData, TEdgeData>> OutgoingEdges => IsValid
-    ? Graph.OutgoingEdges[this]
-    : throw ComponentInvalidException;
-
   IReadOnlyCollection<IEdge<TNodeData, TEdgeData>> INode<TNodeData, TEdgeData>.OutgoingEdges => OutgoingEdges;
 
-  public IReadOnlyCollection<Node<TNodeData, TEdgeData>> Neighbours => IsValid
-    ? IncomingEdges.Select(edge => edge.Origin).Concat(OutgoingEdges.Select(edge => edge.Destination))
-      .Where(node => node != this).ToHashSet()
-    : throw ComponentInvalidException;
-
   IReadOnlyCollection<INode<TNodeData, TEdgeData>> INode<TNodeData, TEdgeData>.Neighbours => Neighbours;
-  protected override string Description => "Node";
 }

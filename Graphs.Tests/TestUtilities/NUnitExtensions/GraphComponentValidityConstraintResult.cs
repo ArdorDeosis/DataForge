@@ -7,8 +7,10 @@ internal sealed class GraphComponentValidityConstraintResult : ConstraintResult
   public GraphComponentValidityConstraintResult(IConstraint constraint, object actualValue, bool isSuccess) : base(
     constraint, actualValue, isSuccess) { }
 
-  public override void WriteActualValueTo(MessageWriter writer) =>
+  public override void WriteActualValueTo(MessageWriter writer)
+  {
     writer.WriteActualValue(new WrapperForPrinting(ActualValue));
+  }
 
   private readonly struct WrapperForPrinting
   {
@@ -19,13 +21,15 @@ internal sealed class GraphComponentValidityConstraintResult : ConstraintResult
       this.wrappedObject = wrappedObject;
     }
 
-    public override string ToString() =>
-      wrappedObject switch
+    public override string ToString()
+    {
+      return wrappedObject switch
       {
         GraphComponent { IsValid: true } => $"valid {nameof(GraphComponent)}",
         GraphComponent { IsValid: false } => $"invalid {nameof(GraphComponent)}",
         null => "null",
         _ => $"not a {nameof(GraphComponent)}",
       };
+    }
   }
 }

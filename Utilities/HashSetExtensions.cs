@@ -8,5 +8,5 @@ public static class HashSetExtensions
   /// <typeparam name="T">The type of the elements in the hash set.</typeparam>
   /// <param name="set">The hash set to wrap.</param>
   /// <returns>A read-only wrapper for the specified hash set.</returns>
-  public static ReadOnlyHashSet<T> ToReadOnly<T>(this HashSet<T> set) => new(set);
+  public static ReadOnlyHashSet<T> ToReadOnly<T>(this HashSet<T> set) => new ReadOnlyHashSet<T>(set);
 }

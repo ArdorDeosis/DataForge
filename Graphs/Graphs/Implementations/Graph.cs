@@ -5,8 +5,6 @@ namespace DataForge.Graphs;
 
 public sealed class Graph<TNodeData, TEdgeData> : IUnindexedGraph<TNodeData, TEdgeData>
 {
-  #region Fields
-
   internal readonly MultiValueDictionary<Node<TNodeData, TEdgeData>, Edge<TNodeData, TEdgeData>>
     IncomingEdges = new();
 
@@ -17,21 +15,11 @@ public sealed class Graph<TNodeData, TEdgeData> : IUnindexedGraph<TNodeData, TEd
 
   private readonly HashSet<Edge<TNodeData, TEdgeData>> edges = new();
 
-  #endregion
-
-  #region Constructors
-
   public Graph()
   {
     Nodes = nodes.InReadOnlyWrapper();
     Edges = edges.InReadOnlyWrapper();
   }
-
-  #endregion
-
-  #region Data Access
-
-  #region Nodes
 
   public IReadOnlyCollection<Node<TNodeData, TEdgeData>> Nodes { get; }
 
@@ -41,10 +29,6 @@ public sealed class Graph<TNodeData, TEdgeData> : IUnindexedGraph<TNodeData, TEd
 
   public bool Contains(INode<TNodeData, TEdgeData> node) => nodes.Contains(node);
 
-  #endregion
-
-  #region Edges
-
   public IReadOnlyCollection<Edge<TNodeData, TEdgeData>> Edges { get; }
 
   IReadOnlyCollection<IEdge<TNodeData, TEdgeData>> IReadOnlyUnindexedGraph<TNodeData, TEdgeData>.Edges => Edges;
@@ -53,21 +37,9 @@ public sealed class Graph<TNodeData, TEdgeData> : IUnindexedGraph<TNodeData, TEd
 
   public bool Contains(IEdge<TNodeData, TEdgeData> edge) => edges.Contains(edge);
 
-  #endregion
-
-  #region Graph Metrics
-
   public int Order => nodes.Count;
 
   public int Size => edges.Count;
-
-  #endregion
-
-  #endregion
-
-  #region Data Modification
-
-  #region Add Nodes
 
   public Node<TNodeData, TEdgeData> AddNode(TNodeData data)
   {
@@ -82,12 +54,7 @@ public sealed class Graph<TNodeData, TEdgeData> : IUnindexedGraph<TNodeData, TEd
   public IEnumerable<Node<TNodeData, TEdgeData>> AddNodes(IEnumerable<TNodeData> data) =>
     data.Select(AddNode).ToArray();
 
-  public IEnumerable<Node<TNodeData, TEdgeData>> AddNodes(params TNodeData[] data) =>
-    data.Select(AddNode).ToArray();
-
-  #endregion
-
-  #region Remove Nodes
+  public IEnumerable<Node<TNodeData, TEdgeData>> AddNodes(params TNodeData[] data) => data.Select(AddNode).ToArray();
 
   public bool RemoveNode(INode<TNodeData, TEdgeData> node)
   {
@@ -107,10 +74,6 @@ public sealed class Graph<TNodeData, TEdgeData> : IUnindexedGraph<TNodeData, TEd
       .ToArray()
       .Where(RemoveNode)
       .Count();
-
-  #endregion
-
-  #region Add Edges
 
   public Edge<TNodeData, TEdgeData> AddEdge(Node<TNodeData, TEdgeData> origin, Node<TNodeData, TEdgeData> destination,
     TEdgeData data)
@@ -143,10 +106,6 @@ public sealed class Graph<TNodeData, TEdgeData> : IUnindexedGraph<TNodeData, TEd
     return edge is not null;
   }
 
-  #endregion
-
-  #region Remove Edges
-
   public bool RemoveEdge(IEdge<TNodeData, TEdgeData> edge)
   {
     if (edge is not Edge<TNodeData, TEdgeData> castEdge || !edges.Remove(castEdge))
@@ -157,12 +116,14 @@ public sealed class Graph<TNodeData, TEdgeData> : IUnindexedGraph<TNodeData, TEd
     return true;
   }
 
-  public int RemoveEdgesWhere(Predicate<TEdgeData> predicate) =>
-    edges
+  public int RemoveEdgesWhere(Predicate<TEdgeData> predicate)
+  {
+    return edges
       .Where(edge => predicate(edge.Data))
       .ToArray()
       .Where(RemoveEdge)
       .Count();
+  }
 
   public void ClearEdges()
   {
@@ -172,10 +133,6 @@ public sealed class Graph<TNodeData, TEdgeData> : IUnindexedGraph<TNodeData, TEd
     IncomingEdges.Clear();
     OutgoingEdges.Clear();
   }
-
-  #endregion
-
-  #region Clear
 
   public void Clear()
   {
@@ -188,12 +145,6 @@ public sealed class Graph<TNodeData, TEdgeData> : IUnindexedGraph<TNodeData, TEd
     IncomingEdges.Clear();
     OutgoingEdges.Clear();
   }
-
-  #endregion
-
-  #endregion
-
-  #region Clone & Transformation
 
   public Graph<TNodeData, TEdgeData> Clone() => Transform(data => data, data => data);
 
@@ -214,10 +165,6 @@ public sealed class Graph<TNodeData, TEdgeData> : IUnindexedGraph<TNodeData, TEd
       graph.AddEdge(nodeMap[edge.Origin], nodeMap[edge.Destination], edgeDataTransformation(edge.Data));
     return graph;
   }
-
-  #endregion
-
-  #region To Indexed Graph
 
   public IndexedGraph<TIndex, TNodeData, TEdgeData> ToIndexedGraph<TIndex>(
     Func<TNodeData, TIndex> indexGeneratorFunction, IEqualityComparer<TIndex>? indexEqualityComparer = null)
@@ -368,6 +315,4 @@ public sealed class Graph<TNodeData, TEdgeData> : IUnindexedGraph<TNodeData, TEd
       indexedGraph.AddEdge(nodeMap[edge.Origin], nodeMap[edge.Destination], edgeDataTransformation(edge.Data));
     return indexedGraph;
   }
-  
-  #endregion
 }

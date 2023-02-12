@@ -31,7 +31,7 @@ internal class EdgeTests
   public void EdgeHasExpectedData(IEdge<int, int> edge)
   {
     // ASSERT
-    Assert.That(edge.Data, Is.EqualTo(EdgeData));
+    Assert.That(edge.Data, NUnit.Framework.Is.EqualTo(EdgeData));
   }
 
   [TestCaseSource(nameof(Edges))]
@@ -42,14 +42,14 @@ internal class EdgeTests
     edge.Data = newData;
 
     // ASSERT
-    Assert.That(edge.Data, Is.EqualTo(newData));
+    Assert.That(edge.Data, NUnit.Framework.Is.EqualTo(newData));
   }
 
   [TestCaseSource(nameof(InvalidEdges))]
   public void InvalidEdge_DataIsAccessible(IEdge<int, int> edge)
   {
     // ASSERT
-    Assert.That(edge.Data, Is.EqualTo(EdgeData));
+    Assert.That(edge.Data, NUnit.Framework.Is.EqualTo(EdgeData));
   }
 
   [TestCaseSource(nameof(InvalidEdges))]
