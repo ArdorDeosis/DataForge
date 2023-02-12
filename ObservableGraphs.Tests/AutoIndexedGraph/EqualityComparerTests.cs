@@ -1,9 +1,7 @@
-﻿using DataForge.Graphs;
-using DataForge.Graphs.Observable;
-using DataForge.Graphs.Tests;
+﻿using DataForge.Graphs.Tests;
 using NUnit.Framework;
 
-namespace DataForge.ObservableGraphs.Tests.AutoIndexedGraph;
+namespace DataForge.Graphs.Observable.Tests.AutoIndexedGraph;
 
 internal class EqualityComparerTests
 {

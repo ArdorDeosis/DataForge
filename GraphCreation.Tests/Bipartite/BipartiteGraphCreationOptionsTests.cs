@@ -14,6 +14,7 @@ internal class BipartiteGraphCreationOptionsTests
     {
       NodeDataSetA = Array.Empty<int>(),
       NodeDataSetB = Array.Empty<int>(),
+      CreateEdgeData = (_, _) => default,
     };
 
     // ASSERT

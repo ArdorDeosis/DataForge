@@ -1,9 +1,7 @@
-﻿using DataForge.Graphs;
-using DataForge.Graphs.Observable;
-using DataForge.Graphs.Tests.Interfaces;
+﻿using DataForge.Graphs.Tests.Interfaces;
 using NUnit.Framework;
 
-namespace DataForge.ObservableGraphs.Tests.IndexedGraph;
+namespace DataForge.Graphs.Observable.Tests.IndexedGraph;
 
 [TestFixture]
 // ReSharper disable once InconsistentNaming

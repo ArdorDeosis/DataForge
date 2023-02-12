@@ -1,8 +1,6 @@
-﻿using DataForge.Graphs;
-using DataForge.Graphs.Observable;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
-namespace DataForge.ObservableGraphs.Tests.UnindexedGraph;
+namespace DataForge.Graphs.Observable.Tests.UnindexedGraph;
 
 [TestFixture]
 public class GraphChangedEventTests

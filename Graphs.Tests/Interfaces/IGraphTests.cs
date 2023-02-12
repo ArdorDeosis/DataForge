@@ -303,4 +303,45 @@ public abstract class IGraphTests<TGraph> where TGraph : IGraph<int, int>
     // ASSERT
     Assert.That(edges, AreAll.Invalid);
   }
+
+  [Test]
+  public void ClearEdges_EdgesAreRemoved()
+  {
+    // ARRANGE
+    var (graph, _) = GraphWithEdges;
+
+    // ACT
+    graph.ClearEdges();
+
+    // ASSERT
+    Assert.That(graph.Edges, Is.Empty);
+  }
+
+  [Test]
+  public void ClearEdges_EdgesAreInvalidated()
+  {
+    // ARRANGE
+    var (graph, edges) = GraphWithEdges;
+
+    // ACT
+    graph.ClearEdges();
+
+    // ASSERT
+    Assert.That(edges, AreAll.Invalid);
+  }
+
+  [Test]
+  public void ClearEdges_NodesAreNotRemoved()
+  {
+    // ARRANGE
+    var (graph, _) = GraphWithEdges;
+    var nodes = graph.Nodes.ToArray();
+
+    // ACT
+    graph.ClearEdges();
+
+    // ASSERT
+    Assert.That(graph.Nodes, Is.EquivalentTo(nodes));
+    Assert.That(nodes, AreAll.Valid);
+  }
 }
