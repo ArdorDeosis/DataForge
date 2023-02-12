@@ -7,8 +7,7 @@ namespace DataForge.GraphCreation;
 /// <summary>
 /// Information about one dimension in a grid graph.
 /// </summary>
-/// TODO: use required keyword in C# 11
-/// TODO: use field keyword in C# 12 (hopefully)
+/// /// TODO: use field keyword in C# 12 (hopefully)
 [PublicAPI]
 public class GridGraphDimensionInformation
 {
@@ -17,7 +16,7 @@ public class GridGraphDimensionInformation
   /// <summary>
   /// Length of this dimension.
   /// </summary>
-  public /*required*/ int Length
+  public required int Length
   {
     get => length;
     init => length = Guard.Against.NegativeOrZero(value, nameof(Length));

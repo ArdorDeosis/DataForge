@@ -7,18 +7,15 @@ namespace DataForge.GraphCreation;
 /// </summary>
 /// <typeparam name="TNodeData">Type of the data the nodes are holding.</typeparam>
 /// <typeparam name="TEdgeData">Type of the data the edges are holding.</typeparam>
-/// TODO: use required keyword in C# 11
 [PublicAPI]
 public sealed class MultipartiteGraphCreationOptions<TNodeData, TEdgeData>
   : UnindexedGraphEdgeDataCreationOption<TNodeData, TEdgeData>
 {
-#pragma warning disable CS8618 // this should be unnecessary once the required keyword is in use
   /// <summary>
   /// A collection of collections of node data. Edges are potentially created between all nodes except for nodes of the
   /// same collection.
   /// </summary>
-  public /*required*/ IEnumerable<IEnumerable<TNodeData>> NodeDataSets { get; init; }
-#pragma warning restore CS8618
+  public required IEnumerable<IEnumerable<TNodeData>> NodeDataSets { get; init; }
 
 
   /// <summary>

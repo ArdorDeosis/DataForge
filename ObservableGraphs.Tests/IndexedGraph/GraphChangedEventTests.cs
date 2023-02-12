@@ -15,7 +15,6 @@ public class GraphChangedEventTests
   }
 #pragma warning disable CS8618 // field not initialized warning; is initialized in setup method
   private static ObservableIndexedGraph<int, int, int> graph;
-#pragma warning restore CS8618
   private static readonly List<IndexedGraphChangedEventArgs<int, int, int>> EventList = new();
 
   private static void LogEvent(object? sender, IndexedGraphChangedEventArgs<int, int, int> eventArgs)

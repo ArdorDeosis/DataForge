@@ -13,20 +13,20 @@ public readonly struct IndexedGraphEdgeDataCreationInput<TIndex, TNodeData> wher
   /// <summary>
   /// Index of the node the edge is coming from.
   /// </summary>
-  public /*required*/ TIndex StartIndex { get; init; }
+  public required TIndex StartIndex { get; init; }
 
   /// <summary>
   /// Index of the node the edge is going to.
   /// </summary>
-  public /*required*/ TIndex EndIndex { get; init; }
+  public required TIndex EndIndex { get; init; }
 
   /// <summary>
   /// Data of the node the edge is coming from.
   /// </summary>
-  public /*required*/ TNodeData StartNodeData { get; init; }
+  public required TNodeData StartNodeData { get; init; }
 
   /// <summary>
   /// Data of the node the edge is going to.
   /// </summary>
-  public /*required*/ TNodeData EndNodeData { get; init; }
+  public required TNodeData EndNodeData { get; init; }
 }

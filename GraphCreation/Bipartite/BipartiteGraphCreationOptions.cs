@@ -21,7 +21,6 @@ public sealed class BipartiteGraphCreationOptions<TNodeData, TEdgeData>
   /// Second set of node data to create nodes from.
   /// </summary>
   public required IEnumerable<TNodeData> NodeDataSetB { get; init; }
-#pragma warning restore CS8618
 
   /// <summary>
   /// Function to determine whether an edge should be created between two nodes.

@@ -8,8 +8,7 @@ namespace DataForge.GraphCreation;
 /// </summary>
 /// <typeparam name="TNodeData">Type of the data the nodes are holding.</typeparam>
 /// <typeparam name="TEdgeData">Type of the data the edges are holding.</typeparam>
-/// TODO: use required keyword in C# 11
-/// TODO: use field keyword in C# 12 (hopefully)
+/// /// TODO: use field keyword in C# 12 (hopefully)
 [PublicAPI]
 public sealed class DiskGraphCreationOptions<TNodeData, TEdgeData>
   : IndexedGraphDataCreationOptions<DiskIndex, TNodeData, TEdgeData>
@@ -20,7 +19,7 @@ public sealed class DiskGraphCreationOptions<TNodeData, TEdgeData>
   /// <summary>
   /// The number of meridians (rays from the center) of the graph.
   /// </summary>
-  public /*required*/ int MeridianCount
+  public required int MeridianCount
   {
     get => meridianCount;
     init => meridianCount = Guard.Against.NegativeOrZero(value, nameof(MeridianCount));
@@ -29,7 +28,7 @@ public sealed class DiskGraphCreationOptions<TNodeData, TEdgeData>
   /// <summary>
   /// The number of rings around the center.
   /// </summary>
-  public /*required*/ int RingCount
+  public required int RingCount
   {
     get => ringCount;
     init => ringCount = Guard.Against.NegativeOrZero(value, nameof(RingCount));
