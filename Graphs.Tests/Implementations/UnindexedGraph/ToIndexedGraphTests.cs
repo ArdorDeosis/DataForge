@@ -56,9 +56,9 @@ internal class ToIndexedGraphTests
     // ASSERT
     foreach (var indexedGraph in indexedGraphs)
     {
-      Assert.That(indexedGraph.Indices, Is.EquivalentTo(indices));
+      Assert.That(indexedGraph.Indices, NUnit.Framework.Is.EquivalentTo(indices));
       foreach (var index in indices)
-        Assert.That(indexedGraph[index].Data, Is.EqualTo(index));
+        Assert.That(indexedGraph[index].Data, NUnit.Framework.Is.EqualTo(index));
     }
   }
 
@@ -83,9 +83,9 @@ internal class ToIndexedGraphTests
     // ASSERT
     foreach (var indexedGraph in indexedGraphs)
     {
-      Assert.That(indexedGraph.Indices, Is.EquivalentTo(new[] { 0, 1 }));
-      Assert.That(indexedGraph[0].Data, Is.EqualTo(data[0]));
-      Assert.That(indexedGraph[1].Data, Is.EqualTo(data[1]));
+      Assert.That(indexedGraph.Indices, NUnit.Framework.Is.EquivalentTo(new[] { 0, 1 }));
+      Assert.That(indexedGraph[0].Data, NUnit.Framework.Is.EqualTo(data[0]));
+      Assert.That(indexedGraph[1].Data, NUnit.Framework.Is.EqualTo(data[1]));
     }
   }
 
@@ -109,12 +109,12 @@ internal class ToIndexedGraphTests
     // ASSERT
     foreach (var indexedGraph in indexedGraphs)
     {
-      Assert.That(indexedGraph.Nodes.Select(node => node.Data), Is.EquivalentTo(nodeData));
+      Assert.That(indexedGraph.Nodes.Select(node => node.Data), NUnit.Framework.Is.EquivalentTo(nodeData));
       foreach (var originalNode in graph.Nodes)
       {
         var clonedNode = indexedGraph[originalNode.Data];
         var expectedData = originalNode.Data;
-        Assert.That(clonedNode.Data, Is.EqualTo(expectedData));
+        Assert.That(clonedNode.Data, NUnit.Framework.Is.EqualTo(expectedData));
       }
     }
   }
@@ -142,12 +142,13 @@ internal class ToIndexedGraphTests
     // ASSERT
     foreach (var indexedGraph in indexedGraphs)
     {
-      Assert.That(indexedGraph.Nodes.Select(node => node.Data), Is.EquivalentTo(nodeData.Select(CloneData)));
+      Assert.That(indexedGraph.Nodes.Select(node => node.Data),
+        NUnit.Framework.Is.EquivalentTo(nodeData.Select(CloneData)));
       foreach (var originalNode in graph.Nodes)
       {
         var clonedNode = indexedGraph[originalNode.Data];
         var expectedData = CloneData(originalNode.Data);
-        Assert.That(clonedNode.Data, Is.EqualTo(expectedData));
+        Assert.That(clonedNode.Data, NUnit.Framework.Is.EqualTo(expectedData));
       }
     }
   }
@@ -175,12 +176,12 @@ internal class ToIndexedGraphTests
     // ASSERT
     foreach (var indexedGraph in indexedGraphs)
     {
-      Assert.That(indexedGraph.Edges.Select(edge => edge.Data), Is.EquivalentTo(edgeData));
+      Assert.That(indexedGraph.Edges.Select(edge => edge.Data), NUnit.Framework.Is.EquivalentTo(edgeData));
       foreach (var originalEdge in graph.Edges)
       {
         var clonedEdge = indexedGraph.Edges.First(edge => edge.OriginIndex == originalEdge.Origin.Data);
         var expectedData = originalEdge.Data;
-        Assert.That(clonedEdge.Data, Is.EqualTo(expectedData));
+        Assert.That(clonedEdge.Data, NUnit.Framework.Is.EqualTo(expectedData));
       }
     }
   }
@@ -211,12 +212,13 @@ internal class ToIndexedGraphTests
     // ASSERT
     foreach (var indexedGraph in indexedGraphs)
     {
-      Assert.That(indexedGraph.Edges.Select(edge => edge.Data), Is.EquivalentTo(edgeData.Select(CloneData)));
+      Assert.That(indexedGraph.Edges.Select(edge => edge.Data),
+        NUnit.Framework.Is.EquivalentTo(edgeData.Select(CloneData)));
       foreach (var originalEdge in graph.Edges)
       {
         var clonedEdge = indexedGraph.Edges.First(edge => edge.OriginIndex == originalEdge.Origin.Data);
         var expectedData = CloneData(originalEdge.Data);
-        Assert.That(clonedEdge.Data, Is.EqualTo(expectedData));
+        Assert.That(clonedEdge.Data, NUnit.Framework.Is.EqualTo(expectedData));
       }
     }
   }

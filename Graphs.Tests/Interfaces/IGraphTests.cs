@@ -110,6 +110,7 @@ public abstract class IGraphTests<TGraph> where TGraph : IGraph<int, int>
     // ARRANGE
     var data = new[] { -1, int.MinValue, 1, 0xC0FFEE };
     var (graph, _) = GraphWithNodesWithData(data);
+
     bool Predicate(int value) => value <= 0;
 
     // ACT
@@ -126,7 +127,9 @@ public abstract class IGraphTests<TGraph> where TGraph : IGraph<int, int>
     // ARRANGE
     var data = new[] { -1, int.MinValue, 1, 0xC0FFEE };
     var (graph, nodes) = GraphWithNodesWithData(data);
+
     bool Predicate(int value) => value <= 0;
+
     var expectedRemovedNodeCount = data.Count(Predicate);
 
     // ACT
@@ -158,6 +161,7 @@ public abstract class IGraphTests<TGraph> where TGraph : IGraph<int, int>
     // ARRANGE
     var data = new[] { -1, int.MinValue, 1, 0xC0FFEE };
     var (graph, nodes) = GraphWithNodesWithData(data);
+
     bool Predicate(int value) => value <= 0;
 
     // ACT
@@ -173,6 +177,7 @@ public abstract class IGraphTests<TGraph> where TGraph : IGraph<int, int>
     // ARRANGE
     var data = new[] { -1, int.MinValue, 1, 0xC0FFEE };
     var (graph, _) = GraphWithEdgesWithData(data);
+
     bool Predicate(int value) => value <= 0;
 
     // ACT
@@ -189,6 +194,7 @@ public abstract class IGraphTests<TGraph> where TGraph : IGraph<int, int>
     // ARRANGE
     var data = new[] { -1, int.MinValue, 1, 0xC0FFEE };
     var (graph, edges) = GraphWithEdgesWithData(data);
+
     bool Predicate(int value) => value <= 0;
 
     // ACT
@@ -296,5 +302,46 @@ public abstract class IGraphTests<TGraph> where TGraph : IGraph<int, int>
 
     // ASSERT
     Assert.That(edges, AreAll.Invalid);
+  }
+
+  [Test]
+  public void ClearEdges_EdgesAreRemoved()
+  {
+    // ARRANGE
+    var (graph, _) = GraphWithEdges;
+
+    // ACT
+    graph.ClearEdges();
+
+    // ASSERT
+    Assert.That(graph.Edges, Is.Empty);
+  }
+
+  [Test]
+  public void ClearEdges_EdgesAreInvalidated()
+  {
+    // ARRANGE
+    var (graph, edges) = GraphWithEdges;
+
+    // ACT
+    graph.ClearEdges();
+
+    // ASSERT
+    Assert.That(edges, AreAll.Invalid);
+  }
+
+  [Test]
+  public void ClearEdges_NodesAreNotRemoved()
+  {
+    // ARRANGE
+    var (graph, _) = GraphWithEdges;
+    var nodes = graph.Nodes.ToArray();
+
+    // ACT
+    graph.ClearEdges();
+
+    // ASSERT
+    Assert.That(graph.Nodes, Is.EquivalentTo(nodes));
+    Assert.That(nodes, AreAll.Valid);
   }
 }

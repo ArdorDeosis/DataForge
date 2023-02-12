@@ -23,7 +23,6 @@ public static partial class GraphCreator
     for (var lowerSet = 0; lowerSet < nodeSets.Length; lowerSet++)
     {
       for (var upperSet = lowerSet + 1; upperSet < nodeSets.Length; upperSet++)
-      {
         foreach (var lowerNode in nodeSets[lowerSet])
         {
           foreach (var upperNode in nodeSets[upperSet])
@@ -34,7 +33,6 @@ public static partial class GraphCreator
               graph.AddEdge(upperNode, lowerNode, options.CreateEdgeData(upperNode.Data, lowerNode.Data));
           }
         }
-      }
     }
 
     return graph;

@@ -19,6 +19,8 @@ public sealed class IndexedEdge<TIndex, TNodeData, TEdgeData> :
     this.data = data;
   }
 
+  protected override string Description => "Edge";
+
   public TEdgeData Data
   {
     get => data;
@@ -36,8 +38,6 @@ public sealed class IndexedEdge<TIndex, TNodeData, TEdgeData> :
     IsValid ? Graph.GetNode(DestinationIndex) : throw ComponentInvalidException;
 
   INode<TNodeData, TEdgeData> IEdge<TNodeData, TEdgeData>.Origin => Origin;
-  
+
   INode<TNodeData, TEdgeData> IEdge<TNodeData, TEdgeData>.Destination => Destination;
-  
-  protected override string Description => "Edge";
 }

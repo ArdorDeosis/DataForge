@@ -8,8 +8,7 @@ namespace DataForge.GraphCreation;
 /// </summary>
 /// <typeparam name="TNodeData">Type of the data the nodes are holding.</typeparam>
 /// <typeparam name="TEdgeData">Type of the data the edges are holding.</typeparam>
-/// TODO: use required keyword in C# 11
-/// TODO: use field keyword in C# 12 (hopefully)
+/// /// TODO: use field keyword in C# 12 (hopefully)
 [PublicAPI]
 public sealed class StarGraphCreationOptions<TNodeData, TEdgeData>
   : IndexedGraphDataCreationOptions<StarIndex, TNodeData, TEdgeData>
@@ -19,7 +18,7 @@ public sealed class StarGraphCreationOptions<TNodeData, TEdgeData>
   /// <summary>
   /// Number of rays of the star.
   /// </summary>
-  public /*required*/ int RayCount
+  public required int RayCount
   {
     get => rayCount;
     init => rayCount = Guard.Against.Negative(value, nameof(RayCount));
@@ -35,8 +34,9 @@ public sealed class StarGraphCreationOptions<TNodeData, TEdgeData>
   /// <summary>
   /// Function to calculate the length of a ray based on its index. Rays are numbered from 0 to
   /// <see cref="StarGraphCreationOptions{TNodeData,TEdgeData}.RayCount">
-  /// StarGraphCreationOption&lt;TNodeData,TEdgeData&gt;.RayCount</see> - 1.
+  ///   StarGraphCreationOption&lt;TNodeData,TEdgeData&gt;.RayCount
+  /// </see>
+  /// - 1.
   /// </summary>
-  public /*required*/ Func<int, int> CalculateRayLength { get; init; }
-#pragma warning restore CS8618
+  public required Func<int, int> CalculateRayLength { get; init; }
 }

@@ -24,7 +24,7 @@ public interface IUnindexedGraph<TNodeData, TEdgeData> : IReadOnlyUnindexedGraph
   /// <returns>An enumerable containing the newly added nodes.</returns>
   IEnumerable<INode<TNodeData, TEdgeData>> AddNodes(IEnumerable<TNodeData> data) => data.Select(AddNode).ToArray();
 
-  /// <inheritdoc cref="AddNodes(System.Collections.Generic.IEnumerable{TNodeData})"/>
+  /// <inheritdoc cref="AddNodes(System.Collections.Generic.IEnumerable{TNodeData})" />
   IEnumerable<INode<TNodeData, TEdgeData>> AddNodes(params TNodeData[] data) => data.Select(AddNode).ToArray();
 
   /// <summary>
@@ -39,7 +39,8 @@ public interface IUnindexedGraph<TNodeData, TEdgeData> : IReadOnlyUnindexedGraph
     TEdgeData data);
 
   /// <summary>
-  /// Attempts to add a new edge to the graph connecting the specified origin and destination nodes with the specified data.
+  /// Attempts to add a new edge to the graph connecting the specified origin and destination nodes with the specified
+  /// data.
   /// </summary>
   /// <param name="origin">The origin node of the new edge.</param>
   /// <param name="destination">The destination node of the new edge.</param>

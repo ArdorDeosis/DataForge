@@ -18,6 +18,12 @@ public sealed class ReadOnlyHashSet<T> : IReadOnlySet<T>, ISerializable, IDeseri
   public static ReadOnlyHashSet<T> Empty => new(new HashSet<T>());
 
   /// <inheritdoc />
+  public void OnDeserialization(object? sender)
+  {
+    set.OnDeserialization(sender);
+  }
+
+  /// <inheritdoc />
   public IEnumerator<T> GetEnumerator() => set.GetEnumerator();
 
   /// <inheritdoc />
@@ -48,8 +54,8 @@ public sealed class ReadOnlyHashSet<T> : IReadOnlySet<T>, ISerializable, IDeseri
   public int Count => set.Count;
 
   /// <inheritdoc />
-  public void GetObjectData(SerializationInfo info, StreamingContext context) => set.GetObjectData(info, context);
-
-  /// <inheritdoc />
-  public void OnDeserialization(object? sender) => set.OnDeserialization(sender);
+  public void GetObjectData(SerializationInfo info, StreamingContext context)
+  {
+    set.GetObjectData(info, context);
+  }
 }

@@ -1,3 +1,3 @@
 ﻿using System.Runtime.CompilerServices;
 
-[assembly:InternalsVisibleTo("GridUtilities.Tests")]
+[assembly: InternalsVisibleTo("GridUtilities.Tests")]

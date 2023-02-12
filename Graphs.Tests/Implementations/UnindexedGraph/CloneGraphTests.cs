@@ -16,8 +16,10 @@ internal class CloneGraphTests
     var clonedGraph = graph.Clone();
 
     // ASSERT
-    Assert.That(clonedGraph.Nodes.Select(node => node.Data), Is.EquivalentTo(graph.Nodes.Select(node => node.Data)));
-    Assert.That(clonedGraph.Edges.Select(edge => edge.Data), Is.EquivalentTo(graph.Edges.Select(edge => edge.Data)));
+    Assert.That(clonedGraph.Nodes.Select(node => node.Data),
+      NUnit.Framework.Is.EquivalentTo(graph.Nodes.Select(node => node.Data)));
+    Assert.That(clonedGraph.Edges.Select(edge => edge.Data),
+      NUnit.Framework.Is.EquivalentTo(graph.Edges.Select(edge => edge.Data)));
   }
 
   [Test]
@@ -58,7 +60,7 @@ internal class CloneGraphTests
     var clonedGraph = graph.Clone(data => -data, data => -data);
 
     // ASSERT
-    Assert.That(clonedGraph.Nodes.Select(node => node.Data), Is.EquivalentTo(new[] { -1, -2 }));
-    Assert.That(clonedGraph.Edges.Select(edge => edge.Data), Is.EquivalentTo(new[] { -3 }));
+    Assert.That(clonedGraph.Nodes.Select(node => node.Data), NUnit.Framework.Is.EquivalentTo(new[] { -1, -2 }));
+    Assert.That(clonedGraph.Edges.Select(edge => edge.Data), NUnit.Framework.Is.EquivalentTo(new[] { -3 }));
   }
 }

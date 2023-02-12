@@ -8,12 +8,12 @@
 public interface IIndexProvider<in TData, out TIndex> where TIndex : notnull
 {
   /// <summary>
-  /// Moves the internal state of the index provider to the next index.  
+  /// Moves the internal state of the index provider to the next index.
   /// </summary>
   void Move();
-  
+
   /// <summary>
-  /// Returns the current index for the provided data without changing the internal state of the index provider.  
+  /// Returns the current index for the provided data without changing the internal state of the index provider.
   /// </summary>
   /// <remarks>
   /// This is used to retrieve an index and check whether it exists in a graph before changing the internal state of

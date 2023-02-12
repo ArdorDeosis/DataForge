@@ -26,7 +26,7 @@ internal class NodeTests
   public void NodeHasExpectedData(INode<int, int> node)
   {
     // ASSERT
-    Assert.That(node.Data, Is.EqualTo(NodeData));
+    Assert.That(node.Data, NUnit.Framework.Is.EqualTo(NodeData));
   }
 
   [TestCaseSource(nameof(Nodes))]
@@ -37,14 +37,14 @@ internal class NodeTests
     node.Data = newData;
 
     // ASSERT
-    Assert.That(node.Data, Is.EqualTo(newData));
+    Assert.That(node.Data, NUnit.Framework.Is.EqualTo(newData));
   }
 
   [TestCaseSource(nameof(InvalidNodes))]
   public void InvalidNode_DataIsAccessible(INode<int, int> node)
   {
     // ASSERT
-    Assert.That(node.Data, Is.EqualTo(NodeData));
+    Assert.That(node.Data, NUnit.Framework.Is.EqualTo(NodeData));
   }
 
   [TestCaseSource(nameof(InvalidNodes))]
@@ -63,7 +63,7 @@ internal class NodeTests
     var node = graph.AddNode(index, 0);
 
     // ASSERT
-    Assert.That(node.Index, Is.EqualTo(index));
+    Assert.That(node.Index, NUnit.Framework.Is.EqualTo(index));
   }
 
   [Test]
@@ -88,7 +88,7 @@ internal class NodeTests
     var node = graph.AddNode(index, 0);
 
     // ASSERT
-    Assert.That(node.TryGetIndex(out _), Is.True);
+    Assert.That(node.TryGetIndex(out _), NUnit.Framework.Is.True);
   }
 
   [Test]
@@ -103,7 +103,7 @@ internal class NodeTests
     node.TryGetIndex(out var retrievedIndex);
 
     // ASSERT
-    Assert.That(retrievedIndex, Is.EqualTo(index));
+    Assert.That(retrievedIndex, NUnit.Framework.Is.EqualTo(index));
   }
 
   [Test]
@@ -116,6 +116,6 @@ internal class NodeTests
     graph.RemoveNode(index);
 
     // ASSERT
-    Assert.That(node.TryGetIndex(out _), Is.False);
+    Assert.That(node.TryGetIndex(out _), NUnit.Framework.Is.False);
   }
 }

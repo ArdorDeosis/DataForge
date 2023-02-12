@@ -23,8 +23,8 @@ internal class TransformTests
     // ASSERT
     foreach (var transformedGraph in transformedGraphs)
     {
-      Assert.That(transformedGraph.Indices, Is.EquivalentTo(indices));
-      Assert.That(transformedGraph.Indices, Is.EquivalentTo(graph.Indices));
+      Assert.That(transformedGraph.Indices, NUnit.Framework.Is.EquivalentTo(indices));
+      Assert.That(transformedGraph.Indices, NUnit.Framework.Is.EquivalentTo(graph.Indices));
     }
   }
 
@@ -106,6 +106,7 @@ internal class TransformTests
     graph.AddNode(index2, 0);
     foreach (var edgeConnection in edgeConnections)
       graph.AddEdge(edgeConnection.Item1, edgeConnection.Item2, 0);
+
     string TransformData(int data) => data.ToString();
 
     // ACT
@@ -117,11 +118,9 @@ internal class TransformTests
     // ASSERT
     foreach (var transformedGraph in transformedGraphs)
       foreach (var edgeConnection in edgeConnections)
-      {
         Assert.That(transformedGraph.Edges.Count(edge =>
             edge.OriginIndex == TransformData(edgeConnection.Item1) &&
             edge.DestinationIndex == TransformData(edgeConnection.Item2)),
-          Is.EqualTo(1));
-      }
+          NUnit.Framework.Is.EqualTo(1));
   }
 }

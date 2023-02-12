@@ -6,13 +6,7 @@ public sealed class ObservableAutoIndexedGraph<TIndex, TNodeData, TEdgeData> :
   IObservableIndexedGraph<TIndex, TNodeData, TEdgeData>,
   IAutoIndexedGraph<TIndex, TNodeData, TEdgeData> where TIndex : notnull
 {
-  #region Fields
-
   private readonly AutoIndexedGraph<TIndex, TNodeData, TEdgeData> graph;
-
-  #endregion
-
-  #region Constructors
 
   public ObservableAutoIndexedGraph(Func<TNodeData, TIndex> indexGeneratorFunction,
     IEqualityComparer<TIndex>? nodeIndexEqualityComparer = null)
@@ -27,100 +21,21 @@ public sealed class ObservableAutoIndexedGraph<TIndex, TNodeData, TEdgeData> :
     : this(new StatelessIndexProvider<TNodeData, TIndex>(indexGeneratorFunction),
       nodeIndexEqualityComparerFactoryMethod) { }
 
-  public ObservableAutoIndexedGraph(IIndexProvider<TNodeData, TIndex> indexProvider,
+  public ObservableAutoIndexedGraph(
+    IIndexProvider<TNodeData, TIndex> indexProvider,
     Func<IEqualityComparer<TIndex>?> nodeIndexEqualityComparerFactoryMethod)
   {
     graph = new AutoIndexedGraph<TIndex, TNodeData, TEdgeData>(indexProvider, nodeIndexEqualityComparerFactoryMethod);
   }
 
-  #endregion
-
-  #region Events
-
-  public event EventHandler<IndexedGraphChangedEventArgs<TIndex, TNodeData, TEdgeData>>? GraphChanged;
-
-  #endregion
-
-  #region Data Access
-
-  #region Nodes
-
   public IReadOnlyCollection<IndexedNode<TIndex, TNodeData, TEdgeData>> Nodes => graph.Nodes;
-
-  IReadOnlyCollection<IIndexedNode<TIndex, TNodeData, TEdgeData>> IReadOnlyIndexedGraph<TIndex, TNodeData, TEdgeData>.
-    Nodes => graph.Nodes;
-
-  IReadOnlyCollection<INode<TNodeData, TEdgeData>> IReadOnlyGraph<TNodeData, TEdgeData>.Nodes => graph.Nodes;
 
   public IndexedNode<TIndex, TNodeData, TEdgeData> this[TIndex index] => graph[index];
 
-  IIndexedNode<TIndex, TNodeData, TEdgeData> IReadOnlyIndexedGraph<TIndex, TNodeData, TEdgeData>.this[TIndex index] =>
-    this[index];
-
-  public IndexedNode<TIndex, TNodeData, TEdgeData> GetNode(TIndex index) => graph.GetNode(index);
-
-  public IndexedNode<TIndex, TNodeData, TEdgeData>? GetNodeOrNull(TIndex index) => graph.GetNodeOrNull(index);
-
-  public bool TryGetNode(TIndex index, [NotNullWhen(true)] out IndexedNode<TIndex, TNodeData, TEdgeData>? node) =>
-    graph.TryGetNode(index, out node);
-
-  public bool Contains(INode<TNodeData, TEdgeData> node) => graph.Contains(node);
-
-  #endregion
-
-  #region Edges
-
   public IReadOnlyCollection<IndexedEdge<TIndex, TNodeData, TEdgeData>> Edges => graph.Edges;
-
-  IReadOnlyCollection<IIndexedEdge<TIndex, TNodeData, TEdgeData>> IReadOnlyIndexedGraph<TIndex, TNodeData, TEdgeData>.
-    Edges => graph.Edges;
-
-  IReadOnlyCollection<IEdge<TNodeData, TEdgeData>> IReadOnlyGraph<TNodeData, TEdgeData>.Edges => graph.Edges;
-
-  public bool Contains(IEdge<TNodeData, TEdgeData> edge) => graph.Contains(edge);
-
-  #endregion
-
-  #region Indices
-
-  public IReadOnlyCollection<TIndex> Indices => graph.Indices;
-
-  public bool Contains(TIndex index) => graph.Contains(index);
-
-  #endregion
-
-  #region Graph Metrics
-
-  public int Order => graph.Order;
-
-
-  public int Size => graph.Size;
-
-  #endregion
-
-  #endregion
-
-  #region Data Modification
-
-  #region Add Nodes
-
-  public IndexedNode<TIndex, TNodeData, TEdgeData> AddNode(TNodeData data)
-  {
-    var node = graph.AddNode(data);
-    InvokeGraphChanged(new IndexedGraphChangedEventArgs<TIndex, TNodeData, TEdgeData> { AddedNodes = new[] { node } });
-    return node;
-  }
 
   IIndexedNode<TIndex, TNodeData, TEdgeData> IAutoIndexedGraph<TIndex, TNodeData, TEdgeData>.AddNode(TNodeData data) =>
     AddNode(data);
-
-  public bool TryAddNode(TNodeData data, [NotNullWhen(true)] out IndexedNode<TIndex, TNodeData, TEdgeData>? node)
-  {
-    if (!graph.TryAddNode(data, out node))
-      return false;
-    InvokeGraphChanged(new IndexedGraphChangedEventArgs<TIndex, TNodeData, TEdgeData> { AddedNodes = new[] { node } });
-    return true;
-  }
 
   bool IAutoIndexedGraph<TIndex, TNodeData, TEdgeData>.TryAddNode(TNodeData data,
     [NotNullWhen(true)] out IIndexedNode<TIndex, TNodeData, TEdgeData>? node)
@@ -137,11 +52,33 @@ public sealed class ObservableAutoIndexedGraph<TIndex, TNodeData, TEdgeData> :
     return false;
   }
 
-  #endregion
+  public event EventHandler<IndexedGraphChangedEventArgs<TIndex, TNodeData, TEdgeData>>? GraphChanged;
 
-  #region Remove Nodes
+  IReadOnlyCollection<IIndexedNode<TIndex, TNodeData, TEdgeData>>
+    IReadOnlyIndexedGraph<TIndex, TNodeData, TEdgeData>.Nodes => graph.Nodes;
 
-  public bool RemoveNode(IndexedNode<TIndex, TNodeData, TEdgeData> node) => node.IsValid && RemoveNode(node.Index);
+  IReadOnlyCollection<INode<TNodeData, TEdgeData>> IReadOnlyGraph<TNodeData, TEdgeData>.Nodes => graph.Nodes;
+
+  IIndexedNode<TIndex, TNodeData, TEdgeData>
+    IReadOnlyIndexedGraph<TIndex, TNodeData, TEdgeData>.this[TIndex index] => this[index];
+
+  public bool Contains(INode<TNodeData, TEdgeData> node) => graph.Contains(node);
+
+  IReadOnlyCollection<IIndexedEdge<TIndex, TNodeData, TEdgeData>>
+    IReadOnlyIndexedGraph<TIndex, TNodeData, TEdgeData>.Edges => graph.Edges;
+
+  IReadOnlyCollection<IEdge<TNodeData, TEdgeData>> IReadOnlyGraph<TNodeData, TEdgeData>.Edges => graph.Edges;
+
+  public bool Contains(IEdge<TNodeData, TEdgeData> edge) => graph.Contains(edge);
+
+  public IReadOnlyCollection<TIndex> Indices => graph.Indices;
+
+  public bool Contains(TIndex index) => graph.Contains(index);
+
+  public int Order => graph.Order;
+
+
+  public int Size => graph.Size;
 
   public bool RemoveNode(IIndexedNode<TIndex, TNodeData, TEdgeData> node) =>
     node is IndexedNode<TIndex, TNodeData, TEdgeData> indexedNode && RemoveNode(indexedNode);
@@ -150,21 +87,6 @@ public sealed class ObservableAutoIndexedGraph<TIndex, TNodeData, TEdgeData> :
     node is IndexedNode<TIndex, TNodeData, TEdgeData> indexedNode && RemoveNode(indexedNode);
 
   public bool RemoveNode(TIndex index) => RemoveNode(index, out _);
-
-  public bool RemoveNode(TIndex index, [NotNullWhen(true)] out IndexedNode<TIndex, TNodeData, TEdgeData>? node)
-  {
-    if (!graph.TryGetNode(index, out node))
-      return false;
-    var eventArgs = new IndexedGraphChangedEventArgs<TIndex, TNodeData, TEdgeData>
-    {
-      RemovedEdges = node.Edges,
-      RemovedNodes = new[] { node },
-    };
-    if (!graph.RemoveNode(index))
-      return false;
-    InvokeGraphChanged(eventArgs);
-    return true;
-  }
 
   bool IIndexedGraph<TIndex, TNodeData, TEdgeData>.RemoveNode(TIndex index,
     [NotNullWhen(true)] out IIndexedNode<TIndex, TNodeData, TEdgeData>? node)
@@ -191,41 +113,9 @@ public sealed class ObservableAutoIndexedGraph<TIndex, TNodeData, TEdgeData> :
     return nodesToRemove.Length;
   }
 
-  #endregion
-
-  #region Add Edges
-
-  public IndexedEdge<TIndex, TNodeData, TEdgeData> AddEdge(TIndex origin, TIndex destination, TEdgeData data)
-  {
-    var edge = graph.AddEdge(origin, destination, data);
-    InvokeGraphChanged(new IndexedGraphChangedEventArgs<TIndex, TNodeData, TEdgeData> { AddedEdges = new[] { edge } });
-    return edge;
-  }
-
-  IIndexedEdge<TIndex, TNodeData, TEdgeData> IIndexedGraph<TIndex, TNodeData, TEdgeData>.AddEdge(TIndex origin,
-    TIndex destination, TEdgeData data) =>
+  IIndexedEdge<TIndex, TNodeData, TEdgeData>
+    IIndexedGraph<TIndex, TNodeData, TEdgeData>.AddEdge(TIndex origin, TIndex destination, TEdgeData data) =>
     AddEdge(origin, destination, data);
-
-  public bool TryAddEdge(TIndex origin, TIndex destination, TEdgeData data,
-    [NotNullWhen(true)] out IndexedEdge<TIndex, TNodeData, TEdgeData>? edge)
-  {
-    if (!graph.TryAddEdge(origin, destination, data, out edge)) return false;
-    InvokeGraphChanged(new IndexedGraphChangedEventArgs<TIndex, TNodeData, TEdgeData> { AddedEdges = new[] { edge } });
-    return true;
-  }
-
-  #endregion
-
-  #region Remove Edges
-
-  public bool RemoveEdge(IndexedEdge<TIndex, TNodeData, TEdgeData> edge)
-  {
-    var result = graph.RemoveEdge(edge);
-    if (result)
-      InvokeGraphChanged(new IndexedGraphChangedEventArgs<TIndex, TNodeData, TEdgeData>
-        { RemovedEdges = new[] { edge } });
-    return result;
-  }
 
   public bool RemoveEdge(IIndexedEdge<TIndex, TNodeData, TEdgeData> edge) =>
     edge is IndexedEdge<TIndex, TNodeData, TEdgeData> indexedEdge && RemoveEdge(indexedEdge);
@@ -251,10 +141,6 @@ public sealed class ObservableAutoIndexedGraph<TIndex, TNodeData, TEdgeData> :
     InvokeGraphChanged(eventArgs);
   }
 
-  #endregion
-
-  #endregion
-
   public void Clear()
   {
     var eventArgs = new IndexedGraphChangedEventArgs<TIndex, TNodeData, TEdgeData>
@@ -266,6 +152,122 @@ public sealed class ObservableAutoIndexedGraph<TIndex, TNodeData, TEdgeData> :
     InvokeGraphChanged(eventArgs);
   }
 
-  private void InvokeGraphChanged(IndexedGraphChangedEventArgs<TIndex, TNodeData, TEdgeData> eventArgs) =>
+  public IndexedNode<TIndex, TNodeData, TEdgeData> GetNode(TIndex index) => graph.GetNode(index);
+
+  public IndexedNode<TIndex, TNodeData, TEdgeData>? GetNodeOrNull(TIndex index) => graph.GetNodeOrNull(index);
+
+  public bool TryGetNode(TIndex index, [NotNullWhen(true)] out IndexedNode<TIndex, TNodeData, TEdgeData>? node) =>
+    graph.TryGetNode(index, out node);
+
+  public IndexedNode<TIndex, TNodeData, TEdgeData> AddNode(TNodeData data)
+  {
+    var node = graph.AddNode(data);
+    InvokeGraphChanged(new IndexedGraphChangedEventArgs<TIndex, TNodeData, TEdgeData> { AddedNodes = new[] { node } });
+    return node;
+  }
+
+  public bool TryAddNode(TNodeData data, [NotNullWhen(true)] out IndexedNode<TIndex, TNodeData, TEdgeData>? node)
+  {
+    if (!graph.TryAddNode(data, out node))
+      return false;
+    InvokeGraphChanged(new IndexedGraphChangedEventArgs<TIndex, TNodeData, TEdgeData> { AddedNodes = new[] { node } });
+    return true;
+  }
+
+  public bool RemoveNode(IndexedNode<TIndex, TNodeData, TEdgeData> node) => node.IsValid && RemoveNode(node.Index);
+
+  public bool RemoveNode(TIndex index, [NotNullWhen(true)] out IndexedNode<TIndex, TNodeData, TEdgeData>? node)
+  {
+    if (!graph.TryGetNode(index, out node))
+      return false;
+    var eventArgs = new IndexedGraphChangedEventArgs<TIndex, TNodeData, TEdgeData>
+    {
+      RemovedEdges = node.Edges,
+      RemovedNodes = new[] { node },
+    };
+    if (!graph.RemoveNode(index))
+      return false;
+    InvokeGraphChanged(eventArgs);
+    return true;
+  }
+
+  public IndexedEdge<TIndex, TNodeData, TEdgeData> AddEdge(TIndex origin, TIndex destination, TEdgeData data)
+  {
+    var edge = graph.AddEdge(origin, destination, data);
+    InvokeGraphChanged(new IndexedGraphChangedEventArgs<TIndex, TNodeData, TEdgeData> { AddedEdges = new[] { edge } });
+    return edge;
+  }
+
+  public bool TryAddEdge(TIndex origin, TIndex destination, TEdgeData data,
+    [NotNullWhen(true)] out IndexedEdge<TIndex, TNodeData, TEdgeData>? edge)
+  {
+    if (!graph.TryAddEdge(origin, destination, data, out edge)) return false;
+    InvokeGraphChanged(new IndexedGraphChangedEventArgs<TIndex, TNodeData, TEdgeData> { AddedEdges = new[] { edge } });
+    return true;
+  }
+
+  public bool RemoveEdge(IndexedEdge<TIndex, TNodeData, TEdgeData> edge)
+  {
+    var result = graph.RemoveEdge(edge);
+    if (result)
+      InvokeGraphChanged(new IndexedGraphChangedEventArgs<TIndex, TNodeData, TEdgeData>
+        { RemovedEdges = new[] { edge } });
+    return result;
+  }
+
+  public ObservableIndexedGraph<TIndex, TNodeData, TEdgeData> ToIndexedGraph() =>
+    new ObservableIndexedGraph<TIndex, TNodeData, TEdgeData>(graph.ToIndexedGraph());
+
+  public ObservableIndexedGraph<TIndex, TNodeData, TEdgeData> ToIndexedGraph(
+    Func<TNodeData, TNodeData> cloneNodeData,
+    Func<TEdgeData, TEdgeData> cloneEdgeData) =>
+    new ObservableIndexedGraph<TIndex, TNodeData, TEdgeData>(graph.ToIndexedGraph(cloneNodeData, cloneEdgeData));
+
+  public ObservableIndexedGraph<TIndexTransformed, TNodeDataTransformed, TEdgeDataTransformed>
+    TransformToIndexedGraph<TIndexTransformed, TNodeDataTransformed, TEdgeDataTransformed>(
+      Func<TNodeData, TNodeDataTransformed> nodeDataTransformation,
+      Func<TEdgeData, TEdgeDataTransformed> edgeDataTransformation,
+      Func<TIndex, TIndexTransformed> indexTransformation,
+      IEqualityComparer<TIndexTransformed>? indexEqualityComparer = null
+    ) where TIndexTransformed : notnull =>
+    new ObservableIndexedGraph<TIndexTransformed, TNodeDataTransformed, TEdgeDataTransformed>(
+      graph.TransformToIndexedGraph(
+        nodeDataTransformation,
+        edgeDataTransformation,
+        indexTransformation,
+        indexEqualityComparer));
+
+  public ObservableIndexedGraph<TIndexTransformed, TNodeDataTransformed, TEdgeDataTransformed>
+    TransformToIndexedGraph<TIndexTransformed, TNodeDataTransformed, TEdgeDataTransformed>(
+      Func<TNodeData, TNodeDataTransformed> nodeDataTransformation,
+      Func<TEdgeData, TEdgeDataTransformed> edgeDataTransformation,
+      Func<TIndex, TIndexTransformed> indexTransformation,
+      Func<IEqualityComparer<TIndexTransformed>?> indexEqualityComparerFactoryMethod
+    ) where TIndexTransformed : notnull =>
+    new ObservableIndexedGraph<TIndexTransformed, TNodeDataTransformed, TEdgeDataTransformed>(
+      graph.TransformToIndexedGraph(
+        nodeDataTransformation,
+        edgeDataTransformation,
+        indexTransformation,
+        indexEqualityComparerFactoryMethod));
+
+  public ObservableGraph<TNodeData, TEdgeData> ToUnindexedGraph() =>
+    new ObservableGraph<TNodeData, TEdgeData>(graph.ToUnindexedGraph());
+
+  public ObservableGraph<TNodeData, TEdgeData> ToUnindexedGraph(
+    Func<TNodeData, TNodeData> cloneNodeData,
+    Func<TEdgeData, TEdgeData> cloneEdgeData) =>
+    new ObservableGraph<TNodeData, TEdgeData>(graph.ToUnindexedGraph(cloneNodeData, cloneEdgeData));
+
+  public ObservableGraph<TNodeDataTransformed, TEdgeDataTransformed>
+    TransformToUnindexedGraph<TNodeDataTransformed, TEdgeDataTransformed>(
+      Func<TNodeData, TNodeDataTransformed> nodeDataTransformation,
+      Func<TEdgeData, TEdgeDataTransformed> edgeDataTransformation) =>
+    new ObservableGraph<TNodeDataTransformed, TEdgeDataTransformed>(
+      graph.TransformToUnindexedGraph(nodeDataTransformation, edgeDataTransformation));
+
+  private void InvokeGraphChanged(IndexedGraphChangedEventArgs<TIndex, TNodeData, TEdgeData> eventArgs)
+  {
     GraphChanged?.Invoke(this, eventArgs);
+  }
 }

@@ -54,7 +54,8 @@ public class IReadOnlyGraphTests : IReadOnlyGraphTests<IndexedGraph<int, int, in
     }
   }
 
-  protected override (IndexedGraph<int, int, int> graph, IEdge<int, int> removedEdge) EmptyGraphWithRemovedEdge { 
+  protected override (IndexedGraph<int, int, int> graph, IEdge<int, int> removedEdge) EmptyGraphWithRemovedEdge
+  {
     get
     {
       var graph = new IndexedGraph<int, int, int>();
@@ -62,7 +63,8 @@ public class IReadOnlyGraphTests : IReadOnlyGraphTests<IndexedGraph<int, int, in
       var edge = graph.AddEdge(node.Index, node.Index, default);
       graph.RemoveEdge(edge);
       return (graph, edge);
-    } }
+    }
+  }
 
   protected override INode<int, int> NodeFromOtherGraph => GraphWithNodes.graph.Nodes.First();
   protected override IEdge<int, int> EdgeFromOtherGraph => GraphWithEdges.graph.Edges.First();

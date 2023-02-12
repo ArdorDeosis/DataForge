@@ -50,9 +50,9 @@ internal class TransformToIndexedGraphTests
     // ASSERT
     foreach (var indexedGraph in indexedGraphs)
     {
-      Assert.That(indexedGraph.Indices, Is.EquivalentTo(indices.Select(TransformIndex)));
+      Assert.That(indexedGraph.Indices, NUnit.Framework.Is.EquivalentTo(indices.Select(TransformIndex)));
       foreach (var index in indices)
-        Assert.That(indexedGraph[TransformIndex(index)].Data, Is.EqualTo(index));
+        Assert.That(indexedGraph[TransformIndex(index)].Data, NUnit.Framework.Is.EqualTo(index));
     }
   }
 
@@ -78,9 +78,9 @@ internal class TransformToIndexedGraphTests
     // ASSERT
     foreach (var indexedGraph in indexedGraphs)
     {
-      Assert.That(indexedGraph.Indices, Is.EquivalentTo(data.Select(value => value.ToString())));
+      Assert.That(indexedGraph.Indices, NUnit.Framework.Is.EquivalentTo(data.Select(value => value.ToString())));
       foreach (var value in data)
-        Assert.That(indexedGraph[TransformIndex(value)].Data, Is.EqualTo(value));
+        Assert.That(indexedGraph[TransformIndex(value)].Data, NUnit.Framework.Is.EqualTo(value));
     }
   }
 
@@ -108,12 +108,13 @@ internal class TransformToIndexedGraphTests
     // ASSERT
     foreach (var indexedGraph in indexedGraphs)
     {
-      Assert.That(indexedGraph.Nodes.Select(node => node.Data), Is.EquivalentTo(nodeData.Select(TransformData)));
+      Assert.That(indexedGraph.Nodes.Select(node => node.Data),
+        NUnit.Framework.Is.EquivalentTo(nodeData.Select(TransformData)));
       foreach (var originalNode in graph.Nodes)
       {
         var clonedNode = indexedGraph[originalNode.Data];
         var expectedData = TransformData(originalNode.Data);
-        Assert.That(clonedNode.Data, Is.EqualTo(expectedData));
+        Assert.That(clonedNode.Data, NUnit.Framework.Is.EqualTo(expectedData));
       }
     }
   }
@@ -144,12 +145,13 @@ internal class TransformToIndexedGraphTests
     // ASSERT
     foreach (var indexedGraph in indexedGraphs)
     {
-      Assert.That(indexedGraph.Edges.Select(edge => edge.Data), Is.EquivalentTo(edgeData.Select(TransformData)));
+      Assert.That(indexedGraph.Edges.Select(edge => edge.Data),
+        NUnit.Framework.Is.EquivalentTo(edgeData.Select(TransformData)));
       foreach (var originalEdge in graph.Edges)
       {
         var clonedEdge = indexedGraph.Edges.First(edge => edge.OriginIndex == originalEdge.Origin.Data);
         var expectedData = TransformData(originalEdge.Data);
-        Assert.That(clonedEdge.Data, Is.EqualTo(expectedData));
+        Assert.That(clonedEdge.Data, NUnit.Framework.Is.EqualTo(expectedData));
       }
     }
   }

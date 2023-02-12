@@ -5,8 +5,8 @@ namespace DataForge.Graphs;
 
 [PublicAPI]
 public sealed class IndexedNode<TIndex, TNodeData, TEdgeData> :
-  IndexedGraphComponent<TIndex, TNodeData, TEdgeData>, 
-  IIndexedNode<TIndex, TNodeData, TEdgeData> 
+  IndexedGraphComponent<TIndex, TNodeData, TEdgeData>,
+  IIndexedNode<TIndex, TNodeData, TEdgeData>
   where TIndex : notnull
 {
   private readonly TIndex index;
@@ -18,6 +18,8 @@ public sealed class IndexedNode<TIndex, TNodeData, TEdgeData> :
     this.index = index;
     this.data = data;
   }
+
+  protected override string Description => "Node";
 
   public TIndex Index => IsValid ? index : throw ComponentInvalidException;
 
@@ -62,6 +64,4 @@ public sealed class IndexedNode<TIndex, TNodeData, TEdgeData> :
     : throw ComponentInvalidException;
 
   IReadOnlyCollection<INode<TNodeData, TEdgeData>> INode<TNodeData, TEdgeData>.Neighbours => Neighbours;
-
-  protected override string Description => "Node";
 }

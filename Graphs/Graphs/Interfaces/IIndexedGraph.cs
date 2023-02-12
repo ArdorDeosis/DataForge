@@ -36,7 +36,8 @@ public interface IIndexedGraph<TIndex, TNodeData, TEdgeData> :
   bool RemoveNode(TIndex index, [NotNullWhen(true)] out IIndexedNode<TIndex, TNodeData, TEdgeData>? node);
 
   /// <summary>
-  /// Adds a new edge to the graph connecting the indexed nodes with the specified indices, and stores the specified data in the new edge.
+  /// Adds a new edge to the graph connecting the indexed nodes with the specified indices, and stores the specified data
+  /// in the new edge.
   /// </summary>
   /// <param name="origin">The index of the origin node of the new edge.</param>
   /// <param name="destination">The index of the destination node of the new edge.</param>

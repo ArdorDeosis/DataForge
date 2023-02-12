@@ -20,6 +20,14 @@ public sealed class Edge<TNodeData, TEdgeData> :
     this.data = data;
   }
 
+  public Node<TNodeData, TEdgeData> Origin =>
+    IsValid ? origin : throw ComponentInvalidException;
+
+  public Node<TNodeData, TEdgeData> Destination =>
+    IsValid ? destination : throw ComponentInvalidException;
+
+  protected override string Description => "Edge";
+
   public TEdgeData Data
   {
     get => data;
@@ -30,15 +38,7 @@ public sealed class Edge<TNodeData, TEdgeData> :
     }
   }
 
-  public Node<TNodeData, TEdgeData> Origin =>
-    IsValid ? origin : throw ComponentInvalidException;
-
-  public Node<TNodeData, TEdgeData> Destination =>
-    IsValid ? destination : throw ComponentInvalidException;
-
   INode<TNodeData, TEdgeData> IEdge<TNodeData, TEdgeData>.Origin => Origin;
-  
+
   INode<TNodeData, TEdgeData> IEdge<TNodeData, TEdgeData>.Destination => Destination;
-  
-  protected override string Description => "Edge";
 }

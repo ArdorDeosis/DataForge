@@ -17,17 +17,23 @@ internal class StarIndexTests
   }
 
   [Test]
-  public void Initializer_InvalidRayIndex_ThrowsArgumentException() =>
+  public void Initializer_InvalidRayIndex_ThrowsArgumentException()
+  {
     Assert.That(() => new StarIndex(-1, 1), Throws.ArgumentException);
+  }
 
   [TestCase(0)]
   [TestCase(-1)]
-  public void Initializer_InvalidDistanceIndex_ThrowsArgumentException(int invalidRayDistance) =>
+  public void Initializer_InvalidDistanceIndex_ThrowsArgumentException(int invalidRayDistance)
+  {
     Assert.That(() => new StarIndex(1, invalidRayDistance), Throws.ArgumentException);
+  }
 
   [TestCaseSource(nameof(StarIndicesAndExpectedIsCenter))]
-  public void IsCenter_ExpectedValue(StarIndex index, bool isCenter) =>
+  public void IsCenter_ExpectedValue(StarIndex index, bool isCenter)
+  {
     Assert.That(index.IsCenter, Is.EqualTo(isCenter));
+  }
 
   [TestCaseSource(nameof(EqualPairs))]
   public void Equals_ValueEquivalentPairs_True(StarIndex a, StarIndex b)
@@ -38,15 +44,22 @@ internal class StarIndexTests
   }
 
   [Test]
-  public void Equals_NullTreeIndex_False() => Assert.That(new StarIndex().Equals(null), Is.False);
+  public void Equals_NullTreeIndex_False()
+  {
+    Assert.That(new StarIndex().Equals(null), Is.False);
+  }
 
   [TestCaseSource(nameof(UnequalPairs))]
-  public void Equals_NonEquivalentPairs_False(StarIndex index, object? other) =>
+  public void Equals_NonEquivalentPairs_False(StarIndex index, object? other)
+  {
     Assert.That(index.Equals(other), Is.False);
+  }
 
   [TestCaseSource(nameof(EqualPairs))]
-  public void GetHashCode_SameValues_True(StarIndex a, StarIndex b) =>
+  public void GetHashCode_SameValues_True(StarIndex a, StarIndex b)
+  {
     Assert.That(a.GetHashCode(), Is.EqualTo(b.GetHashCode()));
+  }
 
   private static IEnumerable<object[]> EqualPairs()
   {

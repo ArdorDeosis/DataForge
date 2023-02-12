@@ -23,7 +23,7 @@ internal class ToUnindexedGraphTests
 
     // ASSERT
     foreach (var unindexedGraph in unindexedGraphs)
-      Assert.That(unindexedGraph.Nodes.Select(node => node.Data), Is.EquivalentTo(data));
+      Assert.That(unindexedGraph.Nodes.Select(node => node.Data), NUnit.Framework.Is.EquivalentTo(data));
   }
 
   [Test]
@@ -43,12 +43,12 @@ internal class ToUnindexedGraphTests
     var unindexedGraphs = new[]
     {
       graph.ToUnindexedGraph(),
-      graph.ToUnindexedGraph(n => n, n => n)
+      graph.ToUnindexedGraph(n => n, n => n),
     };
 
     // ASSERT
     foreach (var unindexedGraph in unindexedGraphs)
-      Assert.That(unindexedGraph.Edges.Select(edge => edge.Data), Is.EquivalentTo(data));
+      Assert.That(unindexedGraph.Edges.Select(edge => edge.Data), NUnit.Framework.Is.EquivalentTo(data));
   }
 
   [Test]
@@ -59,6 +59,7 @@ internal class ToUnindexedGraphTests
     var data = new[] { 0xC0FFEE, 0xBEEF, 0xF00D };
     foreach (var datum in data)
       graph.AddNode(datum, datum);
+
     int CopyData(int input) => -input;
 
     // ACT
@@ -66,7 +67,7 @@ internal class ToUnindexedGraphTests
 
     // ASSERT
     var clonedNodeData = clonedGraph.Nodes.Select(node => node.Data);
-    Assert.That(clonedNodeData, Is.EquivalentTo(data.Select(CopyData)));
+    Assert.That(clonedNodeData, NUnit.Framework.Is.EquivalentTo(data.Select(CopyData)));
   }
 
   [Test]
@@ -82,6 +83,7 @@ internal class ToUnindexedGraphTests
     graph.AddEdge(index1, index1, data[0]);
     graph.AddEdge(index1, index2, data[1]);
     graph.AddEdge(index2, index1, data[2]);
+
     int CopyData(int input) => -input;
 
     // ACT
@@ -89,7 +91,7 @@ internal class ToUnindexedGraphTests
 
     // ASSERT
     var clonedEdgeData = clonedGraph.Edges.Select(node => node.Data);
-    Assert.That(clonedEdgeData, Is.EquivalentTo(data.Select(CopyData)));
+    Assert.That(clonedEdgeData, NUnit.Framework.Is.EquivalentTo(data.Select(CopyData)));
   }
 
   [Test]
@@ -107,7 +109,9 @@ internal class ToUnindexedGraphTests
     };
     graph.AddNode(nodeData1, nodeData1);
     graph.AddNode(nodeData2, nodeData2);
+
     int MakeEdgeData(int origin, int destination) => origin + 2 * destination;
+
     foreach (var edgeConnection in edgeConnections)
       graph.AddEdge(edgeConnection.Item1, edgeConnection.Item2,
         MakeEdgeData(edgeConnection.Item1, edgeConnection.Item2));
@@ -122,7 +126,7 @@ internal class ToUnindexedGraphTests
     // ASSERT
     foreach (var clonedGraph in clonedGraphs)
       Assert.That(clonedGraph.Edges.Select(edge => MakeEdgeData(edge.Origin.Data, edge.Destination.Data)),
-        Is.EquivalentTo(edgeConnections.Select(edgeConnection =>
+        NUnit.Framework.Is.EquivalentTo(edgeConnections.Select(edgeConnection =>
           MakeEdgeData(edgeConnection.Item1, edgeConnection.Item2))));
   }
 }

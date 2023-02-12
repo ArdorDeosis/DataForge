@@ -9,6 +9,14 @@ namespace DataForge.GraphCreation;
 [PublicAPI]
 public sealed class StarIndex : IEquatable<StarIndex>
 {
+  public StarIndex() { }
+
+  public StarIndex(int ray, int distance)
+  {
+    Ray = Guard.Against.Negative(ray);
+    Distance = Guard.Against.NegativeOrZero(distance);
+  }
+
   /// <summary>
   /// The number of the ray the node is on.
   /// </summary>
@@ -24,15 +32,6 @@ public sealed class StarIndex : IEquatable<StarIndex>
   /// </summary>
   public bool IsCenter => Distance == 0;
 
-  public StarIndex()
-  { }
-
-  public StarIndex(int ray, int distance)
-  {
-    Ray = Guard.Against.Negative(ray);
-    Distance = Guard.Against.NegativeOrZero(distance);
-  }
-
   /// <inheritdoc />
   public bool Equals(StarIndex? other)
   {
@@ -44,7 +43,7 @@ public sealed class StarIndex : IEquatable<StarIndex>
   }
 
   /// <inheritdoc />
-  public override bool Equals(object? obj) => ReferenceEquals(this, obj) || obj is StarIndex other && Equals(other);
+  public override bool Equals(object? obj) => ReferenceEquals(this, obj) || (obj is StarIndex other && Equals(other));
 
   /// <inheritdoc />
   public override int GetHashCode() => HashCode.Combine(Ray, Distance);

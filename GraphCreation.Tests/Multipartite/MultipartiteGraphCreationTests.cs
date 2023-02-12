@@ -7,6 +7,27 @@ namespace DataForge.GraphCreation.Tests.Multipartite;
 
 internal class MultipartiteGraphCreationTests
 {
+  private static int[][] NodeDataSets =>
+    new[]
+    {
+      new[] { 0, 1 },
+      new[] { 0xC0FFEE, 0xBEEF },
+      new[] { int.MinValue, int.MaxValue },
+    };
+
+  private static (int, int)[] ForwardEdges =>
+    new[]
+    {
+      (0, 0xC0FFEE), (0, 0xBEEF),
+      (0, int.MinValue), (0, int.MaxValue),
+      (1, 0xC0FFEE), (1, 0xBEEF),
+      (1, int.MinValue), (1, int.MaxValue),
+      (0xC0FFEE, int.MinValue), (0xC0FFEE, int.MaxValue),
+      (0xBEEF, int.MinValue), (0xBEEF, int.MaxValue),
+    };
+
+  private static (int, int)[] BackwardEdges => ForwardEdges.Select(edge => (edge.Item2, edge.Item1)).ToArray();
+
   [Test]
   public void MultipartiteGraph_HasExpectedNodeData()
   {
@@ -91,27 +112,6 @@ internal class MultipartiteGraphCreationTests
     // ASSERT
     Assert.That(graph.Edges.Select(edge => (edge.Origin.Data, edge.Destination.Data)), Is.EquivalentTo(expectedEdges));
   }
-
-  private static int[][] NodeDataSets =>
-    new[]
-    {
-      new[] { 0, 1 },
-      new[] { 0xC0FFEE, 0xBEEF },
-      new[] { int.MinValue, int.MaxValue },
-    };
-
-  private static (int, int)[] ForwardEdges =>
-    new[]
-    {
-      (0, 0xC0FFEE), (0, 0xBEEF),
-      (0, int.MinValue), (0, int.MaxValue),
-      (1, 0xC0FFEE), (1, 0xBEEF),
-      (1, int.MinValue), (1, int.MaxValue),
-      (0xC0FFEE, int.MinValue), (0xC0FFEE, int.MaxValue),
-      (0xBEEF, int.MinValue), (0xBEEF, int.MaxValue),
-    };
-
-  private static (int, int)[] BackwardEdges => ForwardEdges.Select(edge => (edge.Item2, edge.Item1)).ToArray();
 
   private static IEnumerable<object[]> EdgeDirectionAndExpectedEdges()
   {

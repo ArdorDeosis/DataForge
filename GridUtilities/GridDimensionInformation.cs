@@ -7,6 +7,12 @@ namespace DataForge.GridUtilities;
 /// </summary>
 public sealed class GridDimensionInformation
 {
+  // TODO: not sure about this hybrid constructor/initializer approach
+  public GridDimensionInformation(int size)
+  {
+    Size = Guard.Against.NegativeOrZero(size);
+  }
+
   /// <summary> The length of the grid in this dimension. </summary>
   public int Size { get; }
 
@@ -15,10 +21,4 @@ public sealed class GridDimensionInformation
 
   /// <summary> Whether the grid wraps around in this dimension. </summary>
   public bool Wrap { get; init; }
-
-  // TODO: not sure about this hybrid constructor/initializer approach
-  public GridDimensionInformation(int size)
-  {
-    Size = Guard.Against.NegativeOrZero(size);
-  }
 }

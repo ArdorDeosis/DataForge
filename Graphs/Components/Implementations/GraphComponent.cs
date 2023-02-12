@@ -3,7 +3,7 @@
 public abstract class GraphComponent
 {
   public bool IsValid { get; private set; } = true;
-  
+
   protected abstract string Description { get; }
 
   private protected InvalidOperationException ComponentInvalidException =>

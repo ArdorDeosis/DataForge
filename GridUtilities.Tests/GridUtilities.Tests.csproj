@@ -24,7 +24,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\GraphCreation\GraphCreation.csproj" />
+        <ProjectReference Include="..\GraphCreation\GraphCreation.csproj"/>
     </ItemGroup>
 
 </Project>

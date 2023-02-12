@@ -7,6 +7,18 @@ namespace DataForge.GraphCreation.Tests.Bipartite;
 
 internal class BipartiteGraphCreationTests
 {
+  private static IEnumerable<int> NodeDataSetA => new[] { 0xC0FFEE, 0xBEEF };
+  private static IEnumerable<int> NodeDataSetB => new[] { int.MinValue, int.MaxValue };
+
+  private static (int, int)[] ForwardEdges =>
+    new[]
+    {
+      (0xC0FFEE, int.MinValue), (0xC0FFEE, int.MaxValue),
+      (0xBEEF, int.MinValue), (0xBEEF, int.MaxValue),
+    };
+
+  private static (int, int)[] BackwardEdges => ForwardEdges.Select(edge => (edge.Item2, edge.Item1)).ToArray();
+
   [Test]
   public void BipartiteGraph_HasExpectedNodeData()
   {
@@ -88,18 +100,6 @@ internal class BipartiteGraphCreationTests
     // ASSERT
     Assert.That(graph.Edges.Select(edge => (edge.Origin.Data, edge.Destination.Data)), Is.EquivalentTo(expectedEdges));
   }
-
-  private static IEnumerable<int> NodeDataSetA => new[] { 0xC0FFEE, 0xBEEF };
-  private static IEnumerable<int> NodeDataSetB => new[] { int.MinValue, int.MaxValue };
-
-  private static (int, int)[] ForwardEdges =>
-    new[]
-    {
-      (0xC0FFEE, int.MinValue), (0xC0FFEE, int.MaxValue),
-      (0xBEEF, int.MinValue), (0xBEEF, int.MaxValue),
-    };
-
-  private static (int, int)[] BackwardEdges => ForwardEdges.Select(edge => (edge.Item2, edge.Item1)).ToArray();
 
   private static IEnumerable<object[]> EdgeDirectionAndExpectedEdges()
   {

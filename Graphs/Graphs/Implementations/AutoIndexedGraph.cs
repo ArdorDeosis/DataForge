@@ -6,15 +6,9 @@ public sealed class AutoIndexedGraph<TIndex, TNodeData, TEdgeData> :
   IAutoIndexedGraph<TIndex, TNodeData, TEdgeData>
   where TIndex : notnull
 {
-  #region Fields
-
   private readonly IndexedGraph<TIndex, TNodeData, TEdgeData> graph;
 
   private readonly IIndexProvider<TNodeData, TIndex> indexProvider;
-
-  #endregion
-
-  #region Constructors
 
   public AutoIndexedGraph(Func<TNodeData, TIndex> indexGeneratorFunction,
     IEqualityComparer<TIndex>? nodeIndexEqualityComparer = null)
@@ -36,69 +30,44 @@ public sealed class AutoIndexedGraph<TIndex, TNodeData, TEdgeData> :
     graph = new IndexedGraph<TIndex, TNodeData, TEdgeData>(nodeIndexEqualityComparerFactoryMethod);
   }
 
-  #endregion
-
-  #region Data Access
-  
-  #region Nodes
-  
   public IReadOnlyCollection<IndexedNode<TIndex, TNodeData, TEdgeData>> Nodes => graph.Nodes;
 
-  IReadOnlyCollection<IIndexedNode<TIndex, TNodeData, TEdgeData>> IReadOnlyIndexedGraph<TIndex, TNodeData, TEdgeData>.
-    Nodes => graph.Nodes;
+  IReadOnlyCollection<IIndexedNode<TIndex, TNodeData, TEdgeData>>
+    IReadOnlyIndexedGraph<TIndex, TNodeData, TEdgeData>.Nodes => graph.Nodes;
 
   IReadOnlyCollection<INode<TNodeData, TEdgeData>> IReadOnlyGraph<TNodeData, TEdgeData>.Nodes => graph.Nodes;
-  
+
   public IndexedNode<TIndex, TNodeData, TEdgeData> this[TIndex index] => graph[index];
 
-  IIndexedNode<TIndex, TNodeData, TEdgeData> IReadOnlyIndexedGraph<TIndex, TNodeData, TEdgeData>.this[TIndex index] =>
-    graph[index];
-  
+  IIndexedNode<TIndex, TNodeData, TEdgeData>
+    IReadOnlyIndexedGraph<TIndex, TNodeData, TEdgeData>.this[TIndex index] => graph[index];
+
   public IndexedNode<TIndex, TNodeData, TEdgeData> GetNode(TIndex index) => graph[index];
 
   public IndexedNode<TIndex, TNodeData, TEdgeData>? GetNodeOrNull(TIndex index) => graph.GetNodeOrNull(index);
 
-  public bool TryGetNode(TIndex index, [NotNullWhen(true)] out IndexedNode<TIndex, TNodeData, TEdgeData>? node) =>
+  public bool TryGetNode(TIndex index,
+    [NotNullWhen(true)] out IndexedNode<TIndex, TNodeData, TEdgeData>? node) =>
     graph.TryGetNode(index, out node);
 
   public bool Contains(INode<TNodeData, TEdgeData> node) => graph.Contains(node);
 
-  #endregion
-
-  #region Edges
-
   public IReadOnlyCollection<IndexedEdge<TIndex, TNodeData, TEdgeData>> Edges => graph.Edges;
-  
-  IReadOnlyCollection<IIndexedEdge<TIndex, TNodeData, TEdgeData>> IReadOnlyIndexedGraph<TIndex, TNodeData, TEdgeData>.
-    Edges => graph.Edges;
+
+  IReadOnlyCollection<IIndexedEdge<TIndex, TNodeData, TEdgeData>>
+    IReadOnlyIndexedGraph<TIndex, TNodeData, TEdgeData>.Edges => graph.Edges;
 
   IReadOnlyCollection<IEdge<TNodeData, TEdgeData>> IReadOnlyGraph<TNodeData, TEdgeData>.Edges => graph.Edges;
-  
+
   public bool Contains(IEdge<TNodeData, TEdgeData> edge) => graph.Contains(edge);
 
-  #endregion
-
-  #region Indices
-
   public IReadOnlyCollection<TIndex> Indices => graph.Indices;
-  
+
   public bool Contains(TIndex index) => graph.Contains(index);
-
-  #endregion
-
-  #region Graph Metrics
 
   public int Order => graph.Order;
 
   public int Size => graph.Size;
-
-  #endregion
-  
-  #endregion
-
-  #region Data Modification
-
-  #region Add Nodes
 
   public IndexedNode<TIndex, TNodeData, TEdgeData> AddNode(TNodeData data)
   {
@@ -108,12 +77,13 @@ public sealed class AutoIndexedGraph<TIndex, TNodeData, TEdgeData> :
     return node;
   }
 
-  IIndexedNode<TIndex, TNodeData, TEdgeData> IAutoIndexedGraph<TIndex, TNodeData, TEdgeData>.AddNode(TNodeData data) => AddNode(data);
+  IIndexedNode<TIndex, TNodeData, TEdgeData> IAutoIndexedGraph<TIndex, TNodeData, TEdgeData>.AddNode(TNodeData data) =>
+    AddNode(data);
 
   public bool TryAddNode(TNodeData data, [NotNullWhen(true)] out IndexedNode<TIndex, TNodeData, TEdgeData>? node)
   {
     var nodeAdded = graph.TryAddNode(indexProvider.GetCurrentIndex(data), data, out node);
-    if(nodeAdded)
+    if (nodeAdded)
       indexProvider.Move();
     return nodeAdded;
   }
@@ -125,10 +95,6 @@ public sealed class AutoIndexedGraph<TIndex, TNodeData, TEdgeData> :
     return node is not null;
   }
 
-  #endregion
-
-  #region Remove Nodes
-
   public bool RemoveNode(TIndex index) => graph.RemoveNode(index, out _);
 
   public bool RemoveNode(TIndex index, [NotNullWhen(true)] out IndexedNode<TIndex, TNodeData, TEdgeData>? node) =>
@@ -139,18 +105,14 @@ public sealed class AutoIndexedGraph<TIndex, TNodeData, TEdgeData> :
     node = graph.RemoveNode(index, out var indexedNode) ? indexedNode : null;
     return node is not null;
   }
-  
+
   public bool RemoveNode(IIndexedNode<TIndex, TNodeData, TEdgeData> node) => graph.RemoveNode(node);
-  
+
   public bool RemoveNode(IndexedNode<TIndex, TNodeData, TEdgeData> node) => graph.RemoveNode(node);
 
   public bool RemoveNode(INode<TNodeData, TEdgeData> node) => graph.RemoveNode(node);
 
   public int RemoveNodesWhere(Predicate<TNodeData> predicate) => graph.RemoveNodesWhere(predicate);
-
-  #endregion
-
-  #region Add Edges
 
   public IndexedEdge<TIndex, TNodeData, TEdgeData> AddEdge(TIndex origin, TIndex destination, TEdgeData data) =>
     graph.AddEdge(origin, destination, data);
@@ -163,10 +125,6 @@ public sealed class AutoIndexedGraph<TIndex, TNodeData, TEdgeData> :
     [NotNullWhen(true)] out IndexedEdge<TIndex, TNodeData, TEdgeData>? edge) =>
     graph.TryAddEdge(origin, destination, data, out edge);
 
-  #endregion
-
-  #region Remove Edges
-
   public bool RemoveEdge(IndexedEdge<TIndex, TNodeData, TEdgeData> edge) => graph.RemoveEdge(edge);
 
   public bool RemoveEdge(IIndexedEdge<TIndex, TNodeData, TEdgeData> edge) => graph.RemoveEdge(edge);
@@ -177,19 +135,7 @@ public sealed class AutoIndexedGraph<TIndex, TNodeData, TEdgeData> :
 
   public void ClearEdges() => graph.ClearEdges();
 
-  #endregion
-
-  #region Clear
-
   public void Clear() => graph.Clear();
-
-  #endregion
-
-  #endregion
-
-  #region Transformation
-
-  #region To Indexed Graph
 
   public IndexedGraph<TIndex, TNodeData, TEdgeData> ToIndexedGraph() => graph.Clone();
 
@@ -205,8 +151,12 @@ public sealed class AutoIndexedGraph<TIndex, TNodeData, TEdgeData> :
       Func<TIndex, TIndexTransformed> indexTransformation,
       IEqualityComparer<TIndexTransformed>? indexEqualityComparer = null
     ) where TIndexTransformed : notnull =>
-    TransformToIndexedGraph(nodeDataTransformation, edgeDataTransformation, indexTransformation,
-      () => indexEqualityComparer);
+    TransformToIndexedGraph(
+      nodeDataTransformation,
+      edgeDataTransformation,
+      indexTransformation,
+      () => indexEqualityComparer
+    );
 
   public IndexedGraph<TIndexTransformed, TNodeDataTransformed, TEdgeDataTransformed>
     TransformToIndexedGraph<TIndexTransformed, TNodeDataTransformed, TEdgeDataTransformed>(
@@ -215,14 +165,15 @@ public sealed class AutoIndexedGraph<TIndex, TNodeData, TEdgeData> :
       Func<TIndex, TIndexTransformed> indexTransformation,
       Func<IEqualityComparer<TIndexTransformed>?> indexEqualityComparerFactoryMethod
     ) where TIndexTransformed : notnull =>
-    graph.Transform(nodeDataTransformation, edgeDataTransformation,
-      indexTransformation, indexEqualityComparerFactoryMethod);
+    graph.Transform(
+      nodeDataTransformation,
+      edgeDataTransformation,
+      indexTransformation,
+      indexEqualityComparerFactoryMethod
+    );
 
-  #endregion
-
-  #region To Unindexed Graph
-
-  public Graph<TNodeData, TEdgeData> ToUnindexedGraph() => ToUnindexedGraph(data => data, data => data);
+  public Graph<TNodeData, TEdgeData> ToUnindexedGraph() =>
+    ToUnindexedGraph(data => data, data => data);
 
   public Graph<TNodeData, TEdgeData> ToUnindexedGraph(
     Func<TNodeData, TNodeData> cloneNodeData,
@@ -234,8 +185,5 @@ public sealed class AutoIndexedGraph<TIndex, TNodeData, TEdgeData> :
     Func<TNodeData, TNodeDataTransformed> nodeDataTransformation,
     Func<TEdgeData, TEdgeDataTransformed> edgeDataTransformation) =>
     graph.TransformToUnindexedGraph(nodeDataTransformation, edgeDataTransformation);
-
-  #endregion
-
-  #endregion
+  /// 
 }

@@ -17,12 +17,16 @@ internal class TreeIndexTests
   }
 
   [Test]
-  public void Initializer_InvalidChildIndex_ThrowsArgumentException() =>
+  public void Initializer_InvalidChildIndex_ThrowsArgumentException()
+  {
     Assert.That(() => new TreeIndex(null!, -1), Throws.ArgumentException);
+  }
 
   [TestCaseSource(nameof(TreeIndicesAndExpectedDepths))]
-  public void Depth_ExpectedValue(TreeIndex index, int expectedDepth) =>
+  public void Depth_ExpectedValue(TreeIndex index, int expectedDepth)
+  {
     Assert.That(index.Depth, Is.EqualTo(expectedDepth));
+  }
 
   [TestCaseSource(nameof(EqualPairs))]
   public void Equals_ValueEquivalentPairs_True(TreeIndex a, TreeIndex b)
@@ -47,8 +51,10 @@ internal class TreeIndexTests
   }
 
   [TestCaseSource(nameof(EqualPairs))]
-  public void GetHashCode_SameValues_True(TreeIndex a, TreeIndex b) =>
+  public void GetHashCode_SameValues_True(TreeIndex a, TreeIndex b)
+  {
     Assert.That(a.GetHashCode(), Is.EqualTo(b.GetHashCode()));
+  }
 
   private static IEnumerable<object[]> EqualPairs()
   {

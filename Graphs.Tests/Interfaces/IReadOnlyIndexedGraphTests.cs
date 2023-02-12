@@ -7,6 +7,14 @@ namespace DataForge.Graphs.Tests.Interfaces;
 // ReSharper disable once InconsistentNaming
 public abstract class IReadOnlyIndexedGraphTests<TGraph> where TGraph : IReadOnlyIndexedGraph<int, int, int>
 {
+  [OneTimeSetUp]
+  public void EnsureUnrelatedIndex()
+  {
+    Assert.That(GraphWithNode.expectedNode.Index, NUnit.Framework.Is.Not.EqualTo(UnrelatedIndex));
+    Assert.That(GraphWithNodeIndices.expectedIndices, Does.Not.Contain(UnrelatedIndex));
+    Assert.That(EmptyGraphWithRemovedNodeIndex.removedIndex, NUnit.Framework.Is.Not.EqualTo(UnrelatedIndex));
+  }
+
   private const int UnrelatedIndex = 1375610840;
 
   /// <summary> An empty graph. </summary>
@@ -21,14 +29,6 @@ public abstract class IReadOnlyIndexedGraphTests<TGraph> where TGraph : IReadOnl
   /// <summary> An empty graph and a node index that has been in the graph but was removed. </summary>
   protected abstract (TGraph graph, int removedIndex) EmptyGraphWithRemovedNodeIndex { get; }
 
-  [OneTimeSetUp]
-  public void EnsureUnrelatedIndex()
-  {
-    Assert.That(GraphWithNode.expectedNode.Index, Is.Not.EqualTo(UnrelatedIndex));
-    Assert.That(GraphWithNodeIndices.expectedIndices, Does.Not.Contain(UnrelatedIndex));
-    Assert.That(EmptyGraphWithRemovedNodeIndex.removedIndex, Is.Not.EqualTo(UnrelatedIndex));
-  }
-
   [Test]
   public void Indices_EmptyGraph_IsEmpty()
   {
@@ -36,7 +36,7 @@ public abstract class IReadOnlyIndexedGraphTests<TGraph> where TGraph : IReadOnl
     var graph = EmptyGraph;
 
     // ASSERT
-    Assert.That(graph.Indices, Is.Empty);
+    Assert.That(graph.Indices, NUnit.Framework.Is.Empty);
   }
 
   [Test]
@@ -46,7 +46,7 @@ public abstract class IReadOnlyIndexedGraphTests<TGraph> where TGraph : IReadOnl
     var (graph, expectedIndices) = GraphWithNodeIndices;
 
     // ASSERT
-    Assert.That(graph.Indices, Is.EquivalentTo(expectedIndices));
+    Assert.That(graph.Indices, NUnit.Framework.Is.EquivalentTo(expectedIndices));
   }
 
   [Test]
@@ -67,8 +67,8 @@ public abstract class IReadOnlyIndexedGraphTests<TGraph> where TGraph : IReadOnl
     var (graph, expectedNode) = GraphWithNode;
 
     // ASSERT
-    Assert.That(graph[expectedNode.Index], Is.EqualTo(expectedNode));
-    Assert.That(graph.GetNode(expectedNode.Index), Is.EqualTo(expectedNode));
+    Assert.That(graph[expectedNode.Index], NUnit.Framework.Is.EqualTo(expectedNode));
+    Assert.That(graph.GetNode(expectedNode.Index), NUnit.Framework.Is.EqualTo(expectedNode));
   }
 
   [Test]
@@ -91,7 +91,7 @@ public abstract class IReadOnlyIndexedGraphTests<TGraph> where TGraph : IReadOnl
     var (graph, expectedNode) = GraphWithNode;
 
     // ASSERT
-    Assert.That(graph.GetNodeOrNull(expectedNode.Index), Is.EqualTo(expectedNode));
+    Assert.That(graph.GetNodeOrNull(expectedNode.Index), NUnit.Framework.Is.EqualTo(expectedNode));
   }
 
   [Test]
@@ -101,8 +101,8 @@ public abstract class IReadOnlyIndexedGraphTests<TGraph> where TGraph : IReadOnl
     var (graph, removedIndex) = EmptyGraphWithRemovedNodeIndex;
 
     // ASSERT
-    Assert.That(graph.GetNodeOrNull(removedIndex), Is.Null);
-    Assert.That(graph.GetNodeOrNull(UnrelatedIndex), Is.Null);
+    Assert.That(graph.GetNodeOrNull(removedIndex), NUnit.Framework.Is.Null);
+    Assert.That(graph.GetNodeOrNull(UnrelatedIndex), NUnit.Framework.Is.Null);
   }
 
   [Test]
@@ -112,7 +112,7 @@ public abstract class IReadOnlyIndexedGraphTests<TGraph> where TGraph : IReadOnl
     var (graph, expectedNode) = GraphWithNode;
 
     // ASSERT
-    Assert.That(graph.TryGetNode(expectedNode.Index, out _), Is.True);
+    Assert.That(graph.TryGetNode(expectedNode.Index, out _), NUnit.Framework.Is.True);
   }
 
   [Test]
@@ -125,7 +125,7 @@ public abstract class IReadOnlyIndexedGraphTests<TGraph> where TGraph : IReadOnl
     graph.TryGetNode(expectedNode.Index, out var node);
 
     // ASSERT
-    Assert.That(node, Is.EqualTo(expectedNode));
+    Assert.That(node, NUnit.Framework.Is.EqualTo(expectedNode));
   }
 
   [Test]
@@ -135,8 +135,8 @@ public abstract class IReadOnlyIndexedGraphTests<TGraph> where TGraph : IReadOnl
     var (graph, removedIndex) = EmptyGraphWithRemovedNodeIndex;
 
     // ASSERT
-    Assert.That(graph.TryGetNode(removedIndex, out _), Is.False);
-    Assert.That(graph.TryGetNode(UnrelatedIndex, out _), Is.False);
+    Assert.That(graph.TryGetNode(removedIndex, out _), NUnit.Framework.Is.False);
+    Assert.That(graph.TryGetNode(UnrelatedIndex, out _), NUnit.Framework.Is.False);
   }
 
   [Test]
@@ -147,7 +147,7 @@ public abstract class IReadOnlyIndexedGraphTests<TGraph> where TGraph : IReadOnl
 
     // ASSERT
     foreach (var index in expectedIndices)
-      Assert.That(graph.Contains(index), Is.True);
+      Assert.That(graph.Contains(index), NUnit.Framework.Is.True);
   }
 
   [Test]
@@ -157,7 +157,7 @@ public abstract class IReadOnlyIndexedGraphTests<TGraph> where TGraph : IReadOnl
     var (graph, removedIndex) = EmptyGraphWithRemovedNodeIndex;
 
     // ASSERT
-    Assert.That(graph.Contains(removedIndex), Is.False);
-    Assert.That(graph.Contains(UnrelatedIndex), Is.False);
+    Assert.That(graph.Contains(removedIndex), NUnit.Framework.Is.False);
+    Assert.That(graph.Contains(UnrelatedIndex), NUnit.Framework.Is.False);
   }
 }

@@ -1,14 +1,11 @@
-﻿using JetBrains.Annotations;
-
-namespace DataForge.GraphCreation;
+﻿namespace DataForge.GraphCreation;
 
 /// <summary>
 /// Creation options for a complete graph.
 /// </summary>
 /// <typeparam name="TNodeData">Type of the data the nodes are holding.</typeparam>
 /// <typeparam name="TEdgeData">Type of the data the edges are holding.</typeparam>
-/// TODO: use required keyword in C# 11
-[PublicAPI]
+/// [PublicAPI]
 public sealed class CompleteGraphCreationOptions<TNodeData, TEdgeData>
   : UnindexedGraphEdgeDataCreationOption<TNodeData, TEdgeData>
 {
@@ -16,8 +13,7 @@ public sealed class CompleteGraphCreationOptions<TNodeData, TEdgeData>
   /// <summary>
   /// A collection of node data to create the nodes of the graph from.
   /// </summary>
-  public /*required*/ IEnumerable<TNodeData> NodeData { get; init; }
-#pragma warning restore CS8618
+  public required IEnumerable<TNodeData> NodeData { get; init; }
 
   /// <summary>
   /// Direction in which edged in the graph should be created.

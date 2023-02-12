@@ -5,21 +5,10 @@ namespace DataForge.GridUtilities;
 
 /// <summary>
 /// Information about an edge in a cartesian grid. The lower and upper coordinates are equal in all dimensions except
-/// the one indicated by <see cref="DimensionOfChange"/>, in which they differ by 1.
+/// the one indicated by <see cref="DimensionOfChange" />, in which they differ by 1.
 /// </summary>
 public sealed class GridEdgeInformation : IEquatable<GridEdgeInformation>
 {
-  /// <summary> The lower coordinate of the edge. </summary>
-  public IReadOnlyList<int> LowerCoordinate { get; }
-
-  /// <summary> The upper coordinate of the edge. </summary>
-  public IReadOnlyList<int> UpperCoordinate { get; }
-
-  /// <summary>
-  /// The dimension in which the coordinates differ and thus the dimension along which the edge runs.
-  /// </summary>
-  public int DimensionOfChange { get; }
-
   internal GridEdgeInformation(IReadOnlyList<int> lowerCoordinate, int dimensionOfChange)
   {
     Guard.Against.NullOrEmpty(lowerCoordinate);
@@ -48,15 +37,16 @@ public sealed class GridEdgeInformation : IEquatable<GridEdgeInformation>
     DimensionOfChange = dimensionOfChange;
   }
 
-  [ExcludeFromCodeCoverage]
-  public static bool operator ==(GridEdgeInformation left, GridEdgeInformation right) => left.Equals(right);
+  /// <summary> The lower coordinate of the edge. </summary>
+  public IReadOnlyList<int> LowerCoordinate { get; }
 
-  [ExcludeFromCodeCoverage]
-  public static bool operator !=(GridEdgeInformation left, GridEdgeInformation right) => !(left == right);
+  /// <summary> The upper coordinate of the edge. </summary>
+  public IReadOnlyList<int> UpperCoordinate { get; }
 
-  [ExcludeFromCodeCoverage]
-  public override string ToString() =>
-    $"([{string.Join(", ", LowerCoordinate)}] => [{string.Join(", ", UpperCoordinate)}]; {DimensionOfChange})";
+  /// <summary>
+  /// The dimension in which the coordinates differ and thus the dimension along which the edge runs.
+  /// </summary>
+  public int DimensionOfChange { get; }
 
   /// <inheritdoc />
   public bool Equals(GridEdgeInformation? other)
@@ -66,8 +56,18 @@ public sealed class GridEdgeInformation : IEquatable<GridEdgeInformation>
     if (ReferenceEquals(this, other))
       return true;
     return LowerCoordinate.CoordinatesEqual(other.LowerCoordinate) &&
-      UpperCoordinate.CoordinatesEqual(other.UpperCoordinate);
+           UpperCoordinate.CoordinatesEqual(other.UpperCoordinate);
   }
+
+  [ExcludeFromCodeCoverage]
+  public static bool operator ==(GridEdgeInformation left, GridEdgeInformation right) => left.Equals(right);
+
+  [ExcludeFromCodeCoverage]
+  public static bool operator !=(GridEdgeInformation left, GridEdgeInformation right) => !(left == right);
+
+  [ExcludeFromCodeCoverage]
+  public override string ToString() =>
+    $"([{string.Join(", ", LowerCoordinate)}] => [{string.Join(", ", UpperCoordinate)}]; {DimensionOfChange})";
 
   /// <inheritdoc />
   public override bool Equals(object? obj)

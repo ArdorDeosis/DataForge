@@ -6,7 +6,7 @@ public static class CollectionExtensions
     new SafeReadOnlyCollectionWrapper<T>(collection);
 
   /// <summary>
-  /// Adds an entry with the provided key and value to the <see cref="IDictionary{TKey,TValue}"/>. If an entry with the
+  /// Adds an entry with the provided key and value to the <see cref="IDictionary{TKey,TValue}" />. If an entry with the
   /// provided key already exists in the dictionary, its value is overwritten.
   /// </summary>
   public static void ForceAdd<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, TValue value)
@@ -23,7 +23,10 @@ public static class CollectionExtensions
   /// <typeparam name="T">The type of elements in the enumerable.</typeparam>
   /// <param name="enumerable">The enumerable to search.</param>
   /// <param name="predicate">The predicate used to determine which element to return.</param>
-  /// <param name="value">If successful, contains the first element in the enumerable that satisfies the given predicate; otherwise, the default value of the type.</param>
+  /// <param name="value">
+  /// If successful, contains the first element in the enumerable that satisfies the given predicate;
+  /// otherwise, the default value of the type.
+  /// </param>
   /// <returns>True if an element is found that satisfies the given predicate; otherwise, false.</returns>
   public static bool TryGetFirst<T>(this IEnumerable<T> enumerable, Predicate<T> predicate, out T value)
   {

@@ -10,8 +10,7 @@ namespace DataForge.GraphCreation;
 [PublicAPI]
 public sealed class TreeIndex : IEquatable<TreeIndex>
 {
-  public TreeIndex()
-  { }
+  public TreeIndex() { }
 
   public TreeIndex(TreeIndex parentIndex, int childIndex)
   {
@@ -31,7 +30,7 @@ public sealed class TreeIndex : IEquatable<TreeIndex>
   public int ChildIndex { get; private init; }
 
   /// <summary>
-  /// The depth of the node from the root node. (How far down the tree is this node?) 
+  /// The depth of the node from the root node. (How far down the tree is this node?)
   /// </summary>
   public int Depth { get; private init; }
 

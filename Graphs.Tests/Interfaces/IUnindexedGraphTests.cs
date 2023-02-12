@@ -27,7 +27,7 @@ public abstract class IUnindexedGraphTests<TGraph> where TGraph : IUnindexedGrap
     var node = graph.AddNode(data);
 
     // ASSERT
-    Assert.That(node.Data, Is.EqualTo(data));
+    Assert.That(node.Data, NUnit.Framework.Is.EqualTo(data));
     Assert.That(graph.Nodes, Does.Contain(node));
   }
 
@@ -55,7 +55,7 @@ public abstract class IUnindexedGraphTests<TGraph> where TGraph : IUnindexedGrap
     var nodes = graph.AddNodes(data).ToArray();
 
     // ASSERT
-    Assert.That(nodes.Select(node => node.Data), Is.EquivalentTo(data));
+    Assert.That(nodes.Select(node => node.Data), NUnit.Framework.Is.EquivalentTo(data));
   }
 
   [Test]
@@ -69,7 +69,7 @@ public abstract class IUnindexedGraphTests<TGraph> where TGraph : IUnindexedGrap
     var nodes = graph.AddNodes(data).ToArray();
 
     // ASSERT
-    Assert.That(graph.Nodes, Is.EquivalentTo(nodes));
+    Assert.That(graph.Nodes, NUnit.Framework.Is.EquivalentTo(nodes));
   }
 
   [Test]
@@ -83,7 +83,7 @@ public abstract class IUnindexedGraphTests<TGraph> where TGraph : IUnindexedGrap
     var edge = graph.AddEdge(graph.AddNode(default), graph.AddNode(default), data);
 
     // ASSERT
-    Assert.That(edge.Data, Is.EqualTo(data));
+    Assert.That(edge.Data, NUnit.Framework.Is.EqualTo(data));
   }
 
   [Test]
@@ -122,7 +122,7 @@ public abstract class IUnindexedGraphTests<TGraph> where TGraph : IUnindexedGrap
     // ASSERT
     Assert.That(
       graph.TryAddEdge(graph.AddNode(default), graph.AddNode(default), default, out _),
-      Is.True);
+      NUnit.Framework.Is.True);
   }
 
   [Test]
@@ -136,8 +136,8 @@ public abstract class IUnindexedGraphTests<TGraph> where TGraph : IUnindexedGrap
     graph.TryAddEdge(graph.AddNode(default), graph.AddNode(default), data, out var edge);
 
     // ASSERT
-    Assert.That(edge, Is.Not.Null);
-    Assert.That(edge.Data, Is.EqualTo(data));
+    Assert.That(edge, NUnit.Framework.Is.Not.Null);
+    Assert.That(edge.Data, NUnit.Framework.Is.EqualTo(data));
   }
 
   [Test]
@@ -161,9 +161,9 @@ public abstract class IUnindexedGraphTests<TGraph> where TGraph : IUnindexedGrap
     var (graph, removedNode) = EmptyGraphWithRemovedNode;
 
     // ASSERT
-    Assert.That(graph.TryAddEdge(graph.AddNode(default), NodeFromOtherGraph, default, out _), Is.False);
-    Assert.That(graph.TryAddEdge(NodeFromOtherGraph, graph.AddNode(default), default, out _), Is.False);
-    Assert.That(graph.TryAddEdge(graph.AddNode(default), removedNode, default, out _), Is.False);
-    Assert.That(graph.TryAddEdge(removedNode, graph.AddNode(default), default, out _), Is.False);
+    Assert.That(graph.TryAddEdge(graph.AddNode(default), NodeFromOtherGraph, default, out _), NUnit.Framework.Is.False);
+    Assert.That(graph.TryAddEdge(NodeFromOtherGraph, graph.AddNode(default), default, out _), NUnit.Framework.Is.False);
+    Assert.That(graph.TryAddEdge(graph.AddNode(default), removedNode, default, out _), NUnit.Framework.Is.False);
+    Assert.That(graph.TryAddEdge(removedNode, graph.AddNode(default), default, out _), NUnit.Framework.Is.False);
   }
 }
