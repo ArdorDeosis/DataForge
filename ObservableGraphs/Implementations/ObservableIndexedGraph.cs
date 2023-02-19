@@ -33,6 +33,12 @@ public sealed class ObservableIndexedGraph<TIndex, TNodeData, TEdgeData> :
     AddNode(index, data);
 
   public event EventHandler<IndexedGraphChangedEventArgs<TIndex, TNodeData, TEdgeData>>? GraphChanged;
+
+  event EventHandler<IGraphChangedEventArgs<TNodeData, TEdgeData>>? IObservableGraph<TNodeData, TEdgeData>.GraphChanged
+  {
+    add => GraphChangedInterfaceImplementation += value;
+    remove => GraphChangedInterfaceImplementation -= value;
+  }
   
   private event EventHandler<IGraphChangedEventArgs<TNodeData, TEdgeData>>? GraphChangedInterfaceImplementation;
 
@@ -246,11 +252,5 @@ public sealed class ObservableIndexedGraph<TIndex, TNodeData, TEdgeData> :
   {
     GraphChanged?.Invoke(this, eventArgs);
     GraphChangedInterfaceImplementation?.Invoke(this, eventArgs);
-  }
-
-  event EventHandler<IGraphChangedEventArgs<TNodeData, TEdgeData>>? IObservableGraph<TNodeData, TEdgeData>.GraphChanged
-  {
-    add => GraphChangedInterfaceImplementation += value;
-    remove => GraphChangedInterfaceImplementation -= value;
   }
 }

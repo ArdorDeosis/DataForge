@@ -22,6 +22,12 @@ public sealed class ObservableGraph<TNodeData, TEdgeData> : IObservableUnindexed
 
   public event EventHandler<GraphChangedEventArgs<TNodeData, TEdgeData>>? GraphChanged;
   
+  event EventHandler<IGraphChangedEventArgs<TNodeData, TEdgeData>>? IObservableGraph<TNodeData, TEdgeData>.GraphChanged
+  {
+    add => GraphChangedInterfaceImplementation += value;
+    remove => GraphChangedInterfaceImplementation -= value;
+  }
+  
   private event EventHandler<IGraphChangedEventArgs<TNodeData, TEdgeData>>? GraphChangedInterfaceImplementation;
 
   IReadOnlyCollection<INode<TNodeData, TEdgeData>> IReadOnlyGraph<TNodeData, TEdgeData>.Nodes => graph.Nodes;
@@ -282,11 +288,5 @@ public sealed class ObservableGraph<TNodeData, TEdgeData> : IObservableUnindexed
   {
     GraphChanged?.Invoke(this, eventArgs);
     GraphChangedInterfaceImplementation?.Invoke(this, eventArgs);
-  }
-
-  event EventHandler<IGraphChangedEventArgs<TNodeData, TEdgeData>>? IObservableGraph<TNodeData, TEdgeData>.GraphChanged
-  {
-    add => GraphChangedInterfaceImplementation += value;
-    remove => GraphChangedInterfaceImplementation -= value;
   }
 }
