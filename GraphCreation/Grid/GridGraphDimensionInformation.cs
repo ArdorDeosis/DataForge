@@ -43,5 +43,5 @@ public class GridGraphDimensionInformation
   /// <param name="length">The length of the produced dimension information.</param>
   [ExcludeFromCodeCoverage]
   public static implicit operator GridGraphDimensionInformation(int length) =>
-    new GridGraphDimensionInformation { Length = length };
+    new() { Length = length };
 }
